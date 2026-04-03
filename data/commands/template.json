@@ -1,0 +1,29 @@
+{
+  "comment": "https://docs.discord.com/developers/interactions/application-commands",
+
+  "comment": {
+    "CHAT_INPUT": [1, "Slash commands; a text-based command that shows up when a user types /"],
+    "USER": [2, "A UI-based command that shows up when you right click or tap on a user"],
+    "MESSAGE": [3, "A UI-based command that shows up when you right click or tap on a message"],
+    "PRIMARY_ENTRY_POINT": [4, "A UI-based command that represents the primary way to invoke an app’s Activity"],
+
+    "optional": "defaults to 1"
+  },
+  "type": 1,
+
+  "name": "1-32 characters",
+
+  "description": "Description for CHAT_INPUT commands, 1-100 characters. Empty string for USER and MESSAGE commands",
+
+  "comment": [
+    "Parameters for the command, max of 25",
+    "https://docs.discord.com/developers/interactions/application-commands#application-command-object-application-command-option-structure"
+  ],
+  "options": [],
+
+  "comment": [
+    "Set of permissions represented as a bit set",
+    "discord.dev -> select app -> Overview -> Bot -> Bot Permissions"
+  ],
+  "default_member_permissions": "123"
+}

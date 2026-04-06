@@ -2,7 +2,7 @@ include/*
 lib/*
 .cache/*
 compile_commands.json
-program
+plugins/libendian.so
 
 build/*
 CMakeLists.txt.user

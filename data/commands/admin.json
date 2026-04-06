@@ -1,0 +1,9 @@
+{
+  "type": "CHAT_INPUT",
+
+  "name": "admin",
+
+  "description": "Only an admin can execute this command",
+
+  "default_member_permissions": "8"
+}

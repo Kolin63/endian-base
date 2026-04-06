@@ -1,0 +1,9 @@
+{
+  "comment": {
+    "CALLBACK": "void foo(const struct api* api, struct discord* client, const struct discord_interaction* event)",
+    "GET_API": "void foo(const struct api* api)"
+  },
+  "type": "CALLBACK",
+  "name": "foobar",
+  "plugin": "libendian"
+}

@@ -1,4 +1,9 @@
 {
+  "type": "CHAT_INPUT",
+
   "name": "ping",
-  "description": "Tests connection"
+
+  "description": "Tests connection",
+
+  "callback": "ping_cb"
 }

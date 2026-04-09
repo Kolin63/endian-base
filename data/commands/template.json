@@ -23,9 +23,10 @@
 
   "comment": [
     "Set of permissions represented as a bit set",
+    "Has a trailing underscore to be compatible with silly Concord stuff",
     "discord.dev -> select app -> Overview -> Bot -> Bot Permissions"
   ],
-  "default_member_permissions": "123",
+  "default_member_permissions_": "123",
 
   "callback": "foobar"
 }

@@ -5,5 +5,5 @@
 
   "description": "Only an admin can execute this command",
 
-  "default_member_permissions": "8"
+  "default_member_permissions_": "8"
 }

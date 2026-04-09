@@ -1,0 +1,19 @@
+{
+  "type": "CHAT_INPUT",
+
+  "name": "echo",
+
+  "description": "Echo a string",
+
+  "options": [
+    {
+      "type": 3,
+      "name": "content",
+      "description": "String content to echo back",
+      "required": true,
+      "autocomplete": false
+    }
+  ],
+
+  "callback": "echo_cb"
+}

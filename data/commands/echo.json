@@ -7,7 +7,7 @@
 
   "options": [
     {
-      "type": 3,
+      "type": "STRING",
       "name": "content",
       "description": "String content to echo back",
       "required": true,

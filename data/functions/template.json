@@ -1,7 +1,8 @@
 {
   "comment": {
     "CALLBACK": "void foo(const struct api* api, struct discord* client, const struct discord_interaction* event)",
-    "GET_API": "void foo(const struct api* api)"
+    "GET_API": "void foo(const struct api* api)",
+    "EXPORT": "void foo(anything)"
   },
   "type": "CALLBACK",
   "name": "foobar",

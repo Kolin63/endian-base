@@ -2,8 +2,13 @@
 #include <concord/discord.h>
 #include <string.h>
 
+#include "function.h"
+
 void echo_cb(struct api* api, struct discord* client,
              const struct discord_interaction* event) {
+  int err;
+  function_call(api, "hello_world", err);
+
   char* content = "(error)";
 
   for (int i = 0; i < event->data->options->size; ++i) {

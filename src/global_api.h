@@ -1,5 +1,5 @@
-#ifndef ENDIAN_GLOBAL_API_H_
-#define ENDIAN_GLOBAL_API_H_
+#ifndef ENDIAN_BASE_GLOBAL_API_H_
+#define ENDIAN_BASE_GLOBAL_API_H_
 
 #include <api.h>
 

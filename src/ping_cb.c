@@ -1,6 +1,5 @@
+#include <api.h>
 #include <concord/discord.h>
-
-#include "api.h"
 
 void ping_cb(struct api* api, struct discord* client,
              const struct discord_interaction* event) {

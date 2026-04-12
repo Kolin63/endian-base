@@ -1,8 +1,7 @@
+#include <api.h>
 #include <concord/discord.h>
 #include <concord/discord_codecs.h>
 #include <string.h>
-
-#include "api.h"
 
 void foobar_cb(struct api* api, struct discord* client,
                const struct discord_interaction* event) {

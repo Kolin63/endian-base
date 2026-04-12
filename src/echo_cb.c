@@ -1,7 +1,6 @@
+#include <api.h>
 #include <concord/discord.h>
 #include <string.h>
-
-#include "api.h"
 
 void echo_cb(struct api* api, struct discord* client,
              const struct discord_interaction* event) {

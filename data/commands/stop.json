@@ -1,4 +1,5 @@
 {
   "name": "stop",
-  "description": "Stop the bot"
+  "description": "Stop the bot",
+  "callback": "stop_cb"
 }

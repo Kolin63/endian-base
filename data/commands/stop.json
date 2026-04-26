@@ -1,5 +1,6 @@
 {
   "name": "stop",
   "description": "Stop the bot",
-  "callback": "stop_cb"
+  "callback": "stop_cb",
+  "default_member_permissions": "8"
 }

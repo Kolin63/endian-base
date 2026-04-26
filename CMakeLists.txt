@@ -6,6 +6,8 @@ file(GLOB SOURCES "src/*.c")
 
 add_library(${PROJECT_NAME} SHARED ${SOURCES})
 
+target_compile_definitions(${PROJECT_NAME} PRIVATE MOD_NAME=${PROJECT_NAME})
+
 target_include_directories(${PROJECT_NAME} PRIVATE "${CMAKE_CURRENT_SOURCE_DIR}/include")
 
 set_target_properties(${PROJECT_NAME} PROPERTIES

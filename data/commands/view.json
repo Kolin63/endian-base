@@ -1,0 +1,23 @@
+{
+  "type": "CHAT_INPUT",
+
+  "name": "view",
+
+  "description": "Get basic information about a player",
+
+  "options": [
+    {
+      "type": "USER",
+
+      "name": "user",
+
+      "description": "The user to view. Leave blank to view yourself.",
+
+      "required": false,
+
+      "autocomplete": true
+    }
+  ],
+
+  "callback": "view_cb"
+}

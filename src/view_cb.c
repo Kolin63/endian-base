@@ -53,5 +53,4 @@ void view_cb(const struct api* api, struct discord* client, const struct discord
                                                           }}};
 
   api->discord_create_interaction_response(client, event->id, event->token, &params, NULL);
-  log_info(api, "Pong!");
 }

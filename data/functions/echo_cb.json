@@ -1,5 +1,0 @@
-{
-  "type": "CALLBACK",
-  "name": "echo_cb",
-  "plugin": "libendian"
-}

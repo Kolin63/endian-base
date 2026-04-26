@@ -1,5 +1,0 @@
-{
-  "type": "CALLBACK",
-  "name": "foobar_cb",
-  "plugin": "libendian"
-}

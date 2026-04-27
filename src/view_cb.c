@@ -1,8 +1,7 @@
 #include <api.h>
 #include <concord/discord.h>
-#include <player.h>
-#include <stdlib.h>
 #include <string.h>
+#include <user.h>
 
 void view_cb(const struct api* api, struct discord* client, const struct discord_interaction* event) {
   unsigned long uuid = 0;
@@ -21,26 +20,26 @@ void view_cb(const struct api* api, struct discord* client, const struct discord
       return;
     }
 
-    uuid = strtoul(uuid_str, NULL, 10);
+    uuid = api->string_to_uuid(uuid_str);
   } else {
     uuid = event->member->user->id;
   }
 
-  struct player* player = api->player_get(uuid);
+  struct user* user = api->user_get(uuid);
 
-  if (player == NULL) {
-    log_error(api, "Could not get player %zi", uuid);
+  if (user == NULL) {
+    log_error(api, "Could not get user %zi", uuid);
     return;
   }
 
   struct discord_embed embeds[] = {
       {
-          .title = player->username,
+          .title = user->username,
           .description = "Interesting, a description!",
           .color = 0x3498DB,
           .thumbnail =
               &(struct discord_embed_thumbnail){
-                  .url = player->avatar,
+                  .url = user->avatar,
               },
       },
   };

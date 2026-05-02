@@ -2,7 +2,8 @@
   "comment": {
     "CALLBACK": "void foo(const struct api* api, struct discord* client, const struct discord_interaction* event)",
     "GET_API": "void foo(const struct api* api)",
-    "LOAD": ["void foo(const struct api* api)", "called after GET_API"],
+    "INIT": ["void foo(const struct api* api)", "called after GET_API"],
+    "LOAD": ["void foo(const struct api* api)", "called after INIT"],
     "EXPORT": "void foo(anything)"
   },
   "type": "CALLBACK",

@@ -4,7 +4,8 @@
     "GET_API": "void foo(const struct api* api)",
     "INIT": ["void foo(const struct api* api)", "called after GET_API"],
     "LOAD": ["void foo(const struct api* api)", "called after INIT"],
-    "EXPORT": "void foo(anything)"
+    "EXPORT": "void foo(anything)",
+    "CLEANUP": "void foo(const struct api* api)"
   },
   "type": "CALLBACK",
   "name": "foobar",

@@ -8,7 +8,7 @@ struct end_regman {
 };
 
 void end_regman_init(const struct api* api);
-void end_regman_cleanup();
+void end_regman_cleanup(const struct api* api);
 
 struct end_regman* end_regman_get();
 

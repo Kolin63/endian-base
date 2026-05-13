@@ -1,5 +1,5 @@
 {
   "type": "CLEANUP",
   "name": "end_regman_cleanup",
-  "plugin": "libendian"
+  "plugin": "endian:libendian"
 }

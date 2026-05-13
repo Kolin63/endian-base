@@ -9,5 +9,7 @@
   },
   "type": "CALLBACK",
   "name": "foobar",
-  "plugin": "libendian"
+
+  "comment": "plugin_name:namespace_name",
+  "plugin": "endian:libendian"
 }

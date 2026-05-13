@@ -11,7 +11,7 @@ target_compile_definitions(${PROJECT_NAME} PRIVATE MOD_NAME=${PROJECT_NAME})
 target_include_directories(${PROJECT_NAME} PRIVATE "${CMAKE_CURRENT_SOURCE_DIR}/include")
 
 set_target_properties(${PROJECT_NAME} PROPERTIES
-  LIBRARY_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/plugins"
+  LIBRARY_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/data/endian/plugins"
   C_STANDARD 23
   C_STANDARD_REQUIRED ON
 )

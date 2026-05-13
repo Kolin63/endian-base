@@ -1,5 +1,5 @@
 {
   "type": "GET_API",
   "name": "global_api_set",
-  "plugin": "libendian"
+  "plugin": "endian:libendian"
 }

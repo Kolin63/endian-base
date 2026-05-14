@@ -58,6 +58,8 @@ const struct function* function_get(char* name) { return global->function_get(na
 const struct registry* get_command_registry() { return global->get_command_registry(); }
 const struct command* command_get(char* name) { return global->command_get(name); }
 
+struct bot* bot_get_global() { return global->bot_get_global(); }
+
 struct user* user_init(unsigned long uuid) { return global->user_init(uuid); }
 
 struct user* user_get(unsigned long uuid) { return global->user_get(uuid); }

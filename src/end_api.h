@@ -75,6 +75,8 @@ const struct function* function_get(char* name);
 const struct registry* get_command_registry();
 const struct command* command_get(char* name);
 
+struct bot* bot_get_global();
+
 // initializes user
 // returns pointer to user in registry
 struct user* user_init(unsigned long uuid);

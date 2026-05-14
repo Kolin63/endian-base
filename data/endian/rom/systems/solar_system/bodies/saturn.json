@@ -1,0 +1,14 @@
+{
+  "id": "saturn",
+  "name": "Saturn",
+  "desc": "Pretty rings",
+
+  "type": "GAS_GIANT",
+
+  "primary": "sol",
+
+  "comment": "128 bit integer in kilograms",
+  "mass": 5972170000000000000000000,
+
+  "semimajoraxis": 1433530000
+}

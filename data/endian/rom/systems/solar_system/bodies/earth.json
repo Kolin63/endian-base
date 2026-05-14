@@ -1,0 +1,13 @@
+{
+  "id": "earth",
+  "name": "Earth",
+  "desc": "Blue marble",
+
+  "type": "TERRESTRIAL",
+
+  "primary": "sol",
+
+  "mass": 5972170000000000000000000,
+
+  "semimajoraxis": 149598023
+}

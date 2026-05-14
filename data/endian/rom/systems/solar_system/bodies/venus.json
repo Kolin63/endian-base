@@ -1,0 +1,13 @@
+{
+  "id": "venus",
+  "name": "Venus",
+  "desc": "foo",
+
+  "type": "PLANET",
+
+  "primary": "sol",
+
+  "mass": 4867310000000000000000000,
+
+  "semimajoraxis": 108210000
+}

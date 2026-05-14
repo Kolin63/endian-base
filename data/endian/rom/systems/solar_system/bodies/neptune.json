@@ -1,0 +1,13 @@
+{
+  "id": "neptune",
+  "name": "Neptune",
+  "desc": "Nepo baby",
+
+  "type": "ICE_GIANT",
+
+  "primary": "sol",
+
+  "mass": 102409200000000000000000000,
+
+  "semimajoraxis": 4500000000
+}

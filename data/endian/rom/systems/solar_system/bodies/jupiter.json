@@ -1,0 +1,13 @@
+{
+  "id": "jupiter",
+  "name": "Jupiter",
+  "desc": "Tuba",
+
+  "type": "GAS_GIANT",
+
+  "primary": "sol",
+
+  "mass": 1898125000000000000000000000,
+
+  "semimajoraxis": 778479000
+}

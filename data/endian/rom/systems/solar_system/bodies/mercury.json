@@ -1,0 +1,13 @@
+{
+  "id": "mercury",
+  "name": "Mercury",
+  "desc": "foo",
+
+  "type": "TERRESTRIAL",
+
+  "primary": "sol",
+
+  "mass": 330110000000000000000000,
+
+  "semimajoraxis": 57910000
+}

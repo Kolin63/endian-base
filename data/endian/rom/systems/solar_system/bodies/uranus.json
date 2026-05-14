@@ -1,0 +1,13 @@
+{
+  "id": "uranus",
+  "name": "Uranus",
+  "desc": "(To scale)",
+
+  "type": "ICE_GIANT",
+
+  "primary": "sol",
+
+  "mass": 86809900000000000000000000,
+
+  "semimajoraxis": 2870972000
+}

@@ -1,0 +1,13 @@
+{
+  "id": "moon",
+  "name": "The Moon",
+  "desc": "Hollywood",
+
+  "type": "MOON",
+
+  "primary": "earth",
+
+  "mass": 73460000000000000000000,
+
+  "semimajoraxis": 384399
+}

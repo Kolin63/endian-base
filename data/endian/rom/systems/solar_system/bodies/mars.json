@@ -1,0 +1,13 @@
+{
+  "id": "mars",
+  "name": "Mars",
+  "desc": "bar",
+
+  "type": "TERRESTRIAL",
+
+  "primary": "sol",
+
+  "mass": 641710000000000000000000,
+
+  "semimajoraxis": 227939366
+}

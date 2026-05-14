@@ -1,10 +1,10 @@
-#include <api.h>
 #include <concord/discord.h>
 #include <string.h>
 
+#include "end_api.h"
 #include "end_player.h"
 
-void view_cb(const struct api* api, struct discord* client, const struct discord_interaction* event) {
+void view_cb(struct discord* client, const struct discord_interaction* event) {
   unsigned long uuid = 0;
 
   if (event->data->options != NULL) {
@@ -17,11 +17,11 @@ void view_cb(const struct api* api, struct discord* client, const struct discord
     }
 
     if (uuid_str == NULL) {
-      log_error(api, "Could not get UUID argument");
+      log_error("Could not get UUID argument");
       return;
     }
 
-    uuid = api->string_to_uuid(uuid_str);
+    uuid = string_to_uuid(uuid_str);
   } else {
     uuid = event->member->user->id;
   }
@@ -29,7 +29,7 @@ void view_cb(const struct api* api, struct discord* client, const struct discord
   struct end_player* player = end_player_get(uuid);
 
   if (player == NULL) {
-    log_error(api, "Could not get player %zi", uuid);
+    log_error("Could not get player %zi", uuid);
     return;
   }
 
@@ -52,5 +52,5 @@ void view_cb(const struct api* api, struct discord* client, const struct discord
                                                               .array = embeds,
                                                           }}};
 
-  api->discord_create_interaction_response(client, event->id, event->token, &params, NULL);
+  discord_create_interaction_response(client, event->id, event->token, &params, NULL);
 }

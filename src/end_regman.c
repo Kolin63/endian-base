@@ -2,19 +2,19 @@
 
 #include <stdlib.h>
 
-#include "api.h"
+#include "end_api.h"
 #include "end_player.h"
 
 struct end_regman* global;
 
-void end_regman_init(const struct api* api) {
+void end_regman_init() {
   global = malloc(sizeof(struct end_regman));
 
-  global->player = api->registry_init(sizeof(struct end_player*), (void*)end_player_cmp, (void*)end_player_cleanup);
+  global->player = registry_init(sizeof(struct end_player*), (void*)end_player_cmp, (void*)end_player_cleanup);
 }
 
-void end_regman_cleanup(const struct api* api) {
-  api->registry_cleanup(global->player);
+void end_regman_cleanup() {
+  registry_cleanup(global->player);
   free(global);
 }
 

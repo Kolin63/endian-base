@@ -14,8 +14,8 @@
   "comment": "The id of the body that this body orbits",
   "primary": "sol",
 
-  "comment": "128 bit integer in kilograms",
-  "mass": 5972170000000000000000000,
+  "comment": "128 bit integer in kilograms, using scientific notation in format 0.0e0",
+  "mass": 5.97217e24,
 
   "comment": "Integer. Semi-Major Axis of elliptical orbit",
   "semimajoraxis": 149598023

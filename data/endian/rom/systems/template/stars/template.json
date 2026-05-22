@@ -3,8 +3,8 @@
   "name": "Sol",
   "desc": "Big ball of fire",
 
-  "comment": "128 bit integer in kilograms",
-  "mass": 1988475000000000000000000000000,
+  "comment": "128 bit integer in kilograms, using scientific notation in format 0.0e0",
+  "mass": 1.988475e30,
 
   "comment": "Integer. Position relative to center of star system",
   "x": 0,

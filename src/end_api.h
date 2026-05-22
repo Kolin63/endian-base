@@ -27,11 +27,11 @@ CCORDcode discord_create_interaction_response(struct discord* client, u64snowfla
                                               struct discord_interaction_response* params,
                                               struct discord_ret_interaction_response* ret);
 
-// puts a new registry on the heap. registry_cleanup() must be called when it
-// is done being used
-struct registry* registry_init(int val_size,
-                               int cmp(const void*, const void*),
-                               void cleanup(void* elem));
+// initializes a registry. registry_cleanup() must be called when it is done
+// being used
+void registry_init(struct registry* reg, int val_size,
+                   int (*cmp)(const void*, const void*),
+                   void (*cleanup)(void* elem));
 
 // frees allocated memory for a registry. if the registry contains structs
 // with data on the heap, those fields must be freed before calling this

@@ -22,8 +22,8 @@ CCORDcode discord_create_interaction_response(struct discord* client, u64snowfla
   return global->discord_create_interaction_response(client, interaction_id, interaction_token, params, ret);
 }
 
-struct registry* registry_init(int val_size, int cmp(const void*, const void*), void cleanup(void* elem)) {
-  return global->registry_init(val_size, cmp, cleanup);
+void registry_init(struct registry* reg, int val_size, int cmp(const void*, const void*), void cleanup(void* elem)) {
+  return global->registry_init(reg, val_size, cmp, cleanup);
 }
 
 void registry_cleanup(struct registry* reg) { global->registry_cleanup(reg); }

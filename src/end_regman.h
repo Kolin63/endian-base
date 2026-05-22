@@ -1,8 +1,10 @@
 #ifndef ENDIAN_BASE_REGMAN_H_
 #define ENDIAN_BASE_REGMAN_H_
 
+#include "registry.h"
+
 struct end_regman {
-  struct registry* player;
+  struct registry player;
 };
 
 void end_regman_init();

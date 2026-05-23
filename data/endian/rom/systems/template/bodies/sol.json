@@ -15,6 +15,9 @@
   "comment": "128 bit integer in kilograms, using scientific notation in format 0.0e0",
   "mass": 1.988475e30,
 
+  "comment": "32 bit integer. Mean radius in km",
+  "radius": 695700,
+
   "comment": "Integer. Position relative to center of star system in kilometers",
   "pos": {
     "x": 0,

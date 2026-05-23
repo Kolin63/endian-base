@@ -48,6 +48,11 @@ int end_body_fillout(const char* namespace_name, const char* mod_name,
       char scinot[128];
       jsmn_iterator_get_string(scinot, sizeof(scinot), json, iter.val);
       body->mass = scinot_to_spaceint(scinot);
+    } else if (strcmp(iter.key, "radius") == 0) {
+      END_JSON_CHECK_NUMBER(iter);
+      char str[128];
+      jsmn_iterator_get_string(str, sizeof(str), json, iter.val);
+      body->radius = strtoul(str, NULL, 10);
     } else if (strcmp(iter.key, "semimajoraxis") == 0) {
       END_JSON_CHECK_NUMBER(iter);
       char str[128];

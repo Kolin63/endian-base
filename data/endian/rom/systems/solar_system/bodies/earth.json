@@ -9,5 +9,7 @@
 
   "mass": 5.97217e24,
 
+  "radius":	6371,
+
   "semimajoraxis": 149598023
 }

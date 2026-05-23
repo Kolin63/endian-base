@@ -26,6 +26,8 @@ struct end_body {
 
   spaceint_t mass;
 
+  unsigned int radius;
+
   // can be 0
   unsigned long semimajoraxis;
 

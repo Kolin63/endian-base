@@ -18,6 +18,9 @@
   "comment": "128 bit integer in kilograms, using scientific notation in format 0.0e0",
   "mass": 5.97217e24,
 
+  "comment": "32 bit integer. Mean radius in km",
+  "radius": 6371,
+
   "comment": "Integer. Semi-Major Axis of elliptical orbit",
   "semimajoraxis": 149598023
 }

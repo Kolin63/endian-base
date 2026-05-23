@@ -15,7 +15,7 @@ struct end_system {
 
 void end_system_load(const char* system_path, const char* namespace_name,
                      const char* mod_name, const char* file_name);
-struct end_system* end_system_get(char* id);
+struct end_system* end_system_get(const char* id);
 int end_system_cmp(const struct end_system* a, const struct end_system* b);
 void end_system_cleanup(struct end_system* elem);
 

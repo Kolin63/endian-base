@@ -96,8 +96,8 @@ void end_system_load(const char* system_path, const char* namespace_name,
   log_info("Done loading system %s:%s:%s", namespace_name, mod_name, sys.id);
 }
 
-struct end_system* end_system_get(char* id) {
-  return registry_ktov(end_regman_get_system(), &(struct end_system){.id = id});
+struct end_system* end_system_get(const char* id) {
+  return registry_ktov(end_regman_get_system(), &(struct end_system){.id = (char*)id});
 }
 
 int end_system_cmp(const struct end_system* a, const struct end_system* b) {

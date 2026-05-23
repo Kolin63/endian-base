@@ -9,6 +9,7 @@
 #include "end_body.h"
 #include "end_pos.h"
 #include "end_regman.h"
+#include "json_macros.h"
 #include "registry.h"
 
 int end_system_fillout(const char* namespace_name, const char* mod_name,
@@ -21,10 +22,13 @@ int end_system_fillout(const char* namespace_name, const char* mod_name,
 
   while (jsmn_iterator_next(&iter)) {
     if (strcmp(iter.key, "id") == 0) {
+      END_JSON_CHECK_STRING(iter);
       sys->id = jsmn_iterator_get_string_heap(json, iter.val);
     } else if (strcmp(iter.key, "name") == 0) {
+      END_JSON_CHECK_STRING(iter);
       sys->name = jsmn_iterator_get_string_heap(json, iter.val);
     } else if (strcmp(iter.key, "desc") == 0) {
+      END_JSON_CHECK_STRING(iter);
       sys->desc = jsmn_iterator_get_string_heap(json, iter.val);
     } else if (strcmp(iter.key, "pos") == 0) {
       end_sys_pos_fillout(namespace_name, mod_name, file_name, iter.val, json, &(sys->pos));

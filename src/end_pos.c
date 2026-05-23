@@ -23,14 +23,17 @@ int end_sys_pos_fillout(const char* namespace_name, const char* mod_name,
 
   while (jsmn_iterator_next(&iter)) {
     if (strcmp(iter.key, "x") == 0) {
+      END_JSON_CHECK_NUMBER(iter);
       char* str = jsmn_iterator_get_string_heap(json, iter.val);
       sys_pos->x = atoi(str);
       free(str);
     } else if (strcmp(iter.key, "y") == 0) {
+      END_JSON_CHECK_NUMBER(iter);
       char* str = jsmn_iterator_get_string_heap(json, iter.val);
       sys_pos->y = atoi(str);
       free(str);
     } else if (strcmp(iter.key, "z") == 0) {
+      END_JSON_CHECK_NUMBER(iter);
       char* str = jsmn_iterator_get_string_heap(json, iter.val);
       sys_pos->z = atoi(str);
       free(str);
@@ -57,14 +60,17 @@ int end_body_pos_fillout(const char* namespace_name, const char* mod_name,
 
   while (jsmn_iterator_next(&iter)) {
     if (strcmp(iter.key, "x") == 0) {
+      END_JSON_CHECK_NUMBER(iter);
       char* str = jsmn_iterator_get_string_heap(json, iter.val);
       body_pos->x = strtoul(str, NULL, 10);
       free(str);
     } else if (strcmp(iter.key, "y") == 0) {
+      END_JSON_CHECK_NUMBER(iter);
       char* str = jsmn_iterator_get_string_heap(json, iter.val);
       body_pos->y = strtoul(str, NULL, 10);
       free(str);
     } else if (strcmp(iter.key, "z") == 0) {
+      END_JSON_CHECK_NUMBER(iter);
       char* str = jsmn_iterator_get_string_heap(json, iter.val);
       body_pos->z = strtoul(str, NULL, 10);
       free(str);
@@ -109,10 +115,12 @@ int end_pos_fillout(const char* namespace_name, const char* mod_name,
       free(str);
       pos->body = body->id;
     } else if (strcmp(iter.key, "x") == 0) {
+      END_JSON_CHECK_NUMBER(iter);
       char* str = jsmn_iterator_get_string_heap(json, iter.val);
       pos->x = atoi(str);
       free(str);
     } else if (strcmp(iter.key, "y") == 0) {
+      END_JSON_CHECK_NUMBER(iter);
       char* str = jsmn_iterator_get_string_heap(json, iter.val);
       pos->y = atoi(str);
       free(str);

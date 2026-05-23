@@ -6,6 +6,7 @@
 
 #include "end_api.h"
 #include "end_regman.h"
+#include "json_macros.h"
 #include "registry.h"
 #include "spaceint.h"
 
@@ -22,12 +23,16 @@ int end_body_fillout(const char* namespace_name, const char* mod_name,
 
   while (jsmn_iterator_next(&iter)) {
     if (strcmp(iter.key, "id") == 0) {
+      END_JSON_CHECK_STRING(iter);
       body->id = jsmn_iterator_get_string_heap(json, iter.val);
     } else if (strcmp(iter.key, "name") == 0) {
+      END_JSON_CHECK_STRING(iter);
       body->name = jsmn_iterator_get_string_heap(json, iter.val);
     } else if (strcmp(iter.key, "desc") == 0) {
+      END_JSON_CHECK_STRING(iter);
       body->desc = jsmn_iterator_get_string_heap(json, iter.val);
     } else if (strcmp(iter.key, "type") == 0) {
+      END_JSON_CHECK_STRING(iter);
       char type[64];
       jsmn_iterator_get_string(type, sizeof(type), json, iter.val);
       if (strcmp(type, "STAR") == 0) body->type = END_BODY_STAR;
@@ -36,12 +41,15 @@ int end_body_fillout(const char* namespace_name, const char* mod_name,
       else if (strcmp(type, "ICE_GIANT") == 0) body->type = END_BODY_ICE_GIANT;
       else if (strcmp(type, "MOON") == 0) body->type = END_BODY_MOON;
     } else if (strcmp(iter.key, "primary") == 0) {
+      END_JSON_CHECK_STRING(iter);
       body->primary = jsmn_iterator_get_string_heap(json, iter.val);
     } else if (strcmp(iter.key, "mass") == 0) {
+      END_JSON_CHECK_NUMBER(iter);
       char scinot[128];
       jsmn_iterator_get_string(scinot, sizeof(scinot), json, iter.val);
       body->mass = scinot_to_spaceint(scinot);
     } else if (strcmp(iter.key, "semimajoraxis") == 0) {
+      END_JSON_CHECK_NUMBER(iter);
       char str[128];
       jsmn_iterator_get_string(str, sizeof(str), json, iter.val);
       body->semimajoraxis = strtoul(str, NULL, 10);

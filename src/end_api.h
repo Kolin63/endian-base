@@ -2,6 +2,7 @@
 #define ENDIAN_BASE_END_API_H_
 
 #include <api.h>
+#include <jsmn_iterator.h>
 
 void end_api_set(const struct api* api);
 const struct api* end_api_get();
@@ -74,6 +75,38 @@ const struct registry* get_function_registry();
 const struct function* function_get(char* name);
 const struct registry* get_command_registry();
 const struct command* command_get(char* name);
+
+// gets the string value of a JSMN token and puts it in a string buffer. size is
+// the length of the buffer, including the null terminator. json is the string
+// of the json content, and the same string that is passed to jsmn_parse()
+void jsmn_iterator_get_string(char* buf, unsigned long size, const char* json, const jsmntok_t* tok);
+
+// gets the string value of a JSMN token and puts it on the heap. the string
+// must be freed after use. json is the string of the json content, and the same
+// string that is passed to jsmn_parse()
+char* jsmn_iterator_get_string_heap(const char* json, const jsmntok_t* tok);
+
+// converts JSMN integer error code into a string
+// return values:
+//       0: "JSMN_UNDEFINED"
+//       1: "JSMN_OBJECT"
+//       2: "JSMN_ARRAY"
+//       4: "JSMN_STRING"
+//       8: "JSMN_PRIMITIVE"
+// default: "ERROR - NOT A TYPE"
+const char* jsmn_iterator_type_to_str(jsmntype_t type);
+
+// root is the root object/array to iterate over. json is the string of the json
+// content, and the same string that is passed to jsmn_parse()
+void jsmn_iterator_init(struct jsmn_iterator* iter, const jsmntok_t* root, const char* json);
+
+// iterates to next value. returns 1 if iteration can continue, and 0 if not
+int jsmn_iterator_next(struct jsmn_iterator* iter);
+
+// Moves all contents of file into a buffer. buf must be freed after use
+char* fileio_read_all(FILE* file);
+
+jsmntok_t* fileio_read_json(const char* json);
 
 struct bot* bot_get_global();
 

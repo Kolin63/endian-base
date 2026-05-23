@@ -58,6 +58,26 @@ const struct function* function_get(char* name) { return global->function_get(na
 const struct registry* get_command_registry() { return global->get_command_registry(); }
 const struct command* command_get(char* name) { return global->command_get(name); }
 
+void jsmn_iterator_get_string(char* buf, unsigned long size, const char* json, const jsmntok_t* tok) {
+  global->jsmn_iterator_get_string(buf, size, json, tok);
+}
+char* jsmn_iterator_get_string_heap(const char* json, const jsmntok_t* tok) {
+  return global->jsmn_iterator_get_string_heap(json, tok);
+}
+const char* jsmn_iterator_type_to_str(jsmntype_t type) {
+  return global->jsmn_iterator_type_to_str(type);
+}
+void jsmn_iterator_init(struct jsmn_iterator* iter, const jsmntok_t* root, const char* json) {
+  global->jsmn_iterator_init(iter, root, json);
+}
+int jsmn_iterator_next(struct jsmn_iterator* iter) {
+  return global->jsmn_iterator_next(iter);
+}
+
+char* fileio_read_all(FILE* file) { return global->fileio_read_all(file); }
+
+jsmntok_t* fileio_read_json(const char* json) { return global->fileio_read_json(json); }
+
 struct bot* bot_get_global() { return global->bot_get_global(); }
 
 struct user* user_init(unsigned long uuid) { return global->user_init(uuid); }

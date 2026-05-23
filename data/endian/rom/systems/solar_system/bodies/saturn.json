@@ -7,7 +7,6 @@
 
   "primary": "sol",
 
-  "comment": "128 bit integer in kilograms",
   "mass": 5.68317e26,
 
   "semimajoraxis": 1433530000

@@ -81,6 +81,8 @@ void end_system_load(const char* system_path, const char* namespace_name,
   strcpy(sys_rel_path, "bodies");
   dir_load(path_buf, end_body_load(&sys, file_path, namespace_name, mod_name, file_name));
 
+  free(path_buf);
+
   if (registry_add(end_regman_get_system(), &sys) == NULL) {
     log_error("System %s:%s:%s already registered", namespace_name, mod_name, sys.id);
     end_system_cleanup(&sys);

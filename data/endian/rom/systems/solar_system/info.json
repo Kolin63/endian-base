@@ -2,7 +2,9 @@
   "id": "solar_system",
   "name": "The Solar System",
   "desc": "Description",
-  "x": 0,
-  "y": 0,
-  "z": 0
+  "pos": {
+    "x": 0,
+    "y": 0,
+    "z": 0
+  }
 }

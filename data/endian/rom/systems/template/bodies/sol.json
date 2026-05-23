@@ -1,0 +1,24 @@
+{
+  "id": "sol",
+  "name": "Sol",
+  "desc": "Big ball of fire",
+
+  "comment": [
+    "STAR",
+    "TERRESTRIAL",
+    "GAS_GIANT",
+    "ICE_GIANT",
+    "MOON"
+  ],
+  "type": "STAR",
+
+  "comment": "128 bit integer in kilograms, using scientific notation in format 0.0e0",
+  "mass": 1.988475e30,
+
+  "comment": "Integer. Position relative to center of star system in kilometers",
+  "pos": {
+    "x": 0,
+    "y": 0,
+    "z": 0
+  }
+}

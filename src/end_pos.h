@@ -19,6 +19,7 @@ struct end_body_pos {
 
 // hex grid cube coordinates
 struct end_pos {
+  const char* body;
   int x;
   int y;
 };

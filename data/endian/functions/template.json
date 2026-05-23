@@ -10,6 +10,6 @@
   "type": "CALLBACK",
   "name": "foobar",
 
-  "comment": "plugin_name:namespace_name",
+  "comment": "namespace_name:plugin_name",
   "plugin": "endian:libendian"
 }

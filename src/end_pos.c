@@ -132,5 +132,3 @@ int end_pos_fillout(const char* namespace_name, const char* mod_name,
   }
   return error;
 }
-
-int end_pos_get_z(const struct end_pos* pos) { return pos->x + pos->y; }

@@ -17,7 +17,6 @@ struct end_body_pos {
   unsigned long z;
 };
 
-// hex grid cube coordinates
 struct end_pos {
   const char* body;
   int x;
@@ -35,7 +34,5 @@ int end_body_pos_fillout(const char* namespace_name, const char* mod_name,
 int end_pos_fillout(const char* namespace_name, const char* mod_name,
                     const char* file_name, const jsmntok_t* jsmn,
                     const char* json, struct end_pos* pos);
-
-int end_pos_get_z(const struct end_pos* pos);
 
 #endif

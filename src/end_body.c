@@ -95,13 +95,11 @@ void end_body_load(struct end_system* system,
   log_info("Loading body %s:%s:%s", namespace_name, mod_name, body.id);
 }
 
-struct end_body* end_body_get(char* system, char* id) {
-  return registry_ktov(end_regman_get_body(), &(struct end_body){.system = system, .id = id});
+struct end_body* end_body_get(char* id) {
+  return registry_ktov(end_regman_get_body(), &(struct end_body){id = id});
 }
 
 int end_body_cmp(const struct end_body* a, const struct end_body* b) {
-  int system_cmp = registry_strcmp(a->system, b->system);
-  if (system_cmp != 0) return system_cmp;
   return registry_strcmp(a->id, b->id);
 }
 

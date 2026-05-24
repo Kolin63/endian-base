@@ -1,8 +1,11 @@
 #include <concord/discord.h>
+#include <stdlib.h>
 #include <string.h>
 
 #include "end_api.h"
 #include "end_player.h"
+#include "end_pos.h"
+#include "str_cat_arr.h"
 
 void view_cb(struct discord* client, const struct discord_interaction* event) {
   unsigned long uuid = 0;
@@ -33,15 +36,38 @@ void view_cb(struct discord* client, const struct discord_interaction* event) {
     return;
   }
 
+  struct discord_embed_field fields[] = {
+      {
+          .name = "Temporary field",
+          .value = "I put this here so I wouldn't forget how to do it",
+      },
+  };
+
+  char pos[128];
+  end_pos_human_readable(pos, sizeof(pos), player->pos);
+
+  const char* desc_array[] = {
+      "Interesting, a description!\n",
+      pos,
+      "\n\n",
+      "foobar",
+  };
+
+  char* desc = str_cat_arr(desc_array, sizeof(desc_array) / sizeof(*desc_array));
+
   struct discord_embed embeds[] = {
       {
           .title = player->user->username,
-          .description = "Interesting, a description!",
+          .description = desc,
           .color = 0x3498DB,
-          .thumbnail =
-              &(struct discord_embed_thumbnail){
-                  .url = player->user->avatar,
+          .fields =
+              &(struct discord_embed_fields){
+                  .size = sizeof(fields) / sizeof *fields,
+                  .array = fields,
               },
+          .thumbnail = &(struct discord_embed_thumbnail){
+              .url = player->user->avatar,
+          },
       },
   };
 
@@ -53,4 +79,5 @@ void view_cb(struct discord* client, const struct discord_interaction* event) {
                                                           }}};
 
   discord_create_interaction_response(client, event->id, event->token, &params, NULL);
+  free(desc);
 }

@@ -22,6 +22,7 @@ struct end_pos {
   const char* system;
   int x;
   int y;
+  int z;
 };
 
 int end_sys_pos_fillout(const char* namespace_name, const char* mod_name,
@@ -35,5 +36,8 @@ int end_body_pos_fillout(const char* namespace_name, const char* mod_name,
 int end_pos_fillout(const char* namespace_name, const char* mod_name,
                     const char* file_name, const jsmntok_t* jsmn,
                     const char* json, struct end_pos* pos);
+
+// buf should be 128 characters long
+void end_pos_human_readable(char* buf, size_t size, struct end_pos pos);
 
 #endif

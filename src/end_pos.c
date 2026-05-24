@@ -3,6 +3,7 @@
 #include <concord/jsmn.h>
 #include <jsmn_iterator.h>
 #include <json_macros.h>
+#include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 
@@ -166,4 +167,22 @@ int end_pos_fillout(const char* namespace_name, const char* mod_name,
   }
 
   return error;
+}
+
+void end_pos_human_readable(char* buf, size_t size, struct end_pos pos) {
+  const int x = pos.x;
+  const int y = pos.y;
+  const int z = pos.z;
+  const char* body = pos.body;
+  const char* system = pos.system;
+
+  if (body != NULL && system != NULL) {
+    snprintf(buf, size, "(%i, %i) on %s, %s", x, y, body, system);
+  } else if (body == NULL && system != NULL) {
+    snprintf(buf, size, "(%i, %i, %i) in %s", x, y, z, system);
+  } else if (body != NULL && system == NULL) {
+    snprintf(buf, size, "(%i, %i, %i) on %s, interstellar", x, y, z, body);
+  } else if (body == NULL && system == NULL) {
+    snprintf(buf, size, "(%i, %i, %i) interstellar", x, y, z);
+  }
 }

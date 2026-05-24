@@ -79,7 +79,7 @@ const struct command* command_get(char* name);
 // gets the string value of a JSMN token and puts it in a string buffer. size is
 // the length of the buffer, including the null terminator. json is the string
 // of the json content, and the same string that is passed to jsmn_parse()
-void jsmn_iterator_get_string(char* buf, unsigned long long size, const char* json, const jsmntok_t* tok);
+void jsmn_iterator_get_string(char* buf, unsigned long size, const char* json, const jsmntok_t* tok);
 
 // gets the string value of a JSMN token and puts it on the heap. the string
 // must be freed after use. json is the string of the json content, and the same
@@ -112,22 +112,22 @@ struct bot* bot_get_global();
 
 // initializes user
 // returns pointer to user in registry
-struct user* user_init(unsigned long long uuid);
+struct user* user_init(unsigned long uuid);
 
 // returns pointer to user in registry
 // initializes the user if it is not in registry
-struct user* user_get(unsigned long long uuid);
+struct user* user_get(unsigned long uuid);
 
 int user_cmp(struct user* const* a, struct user* const* b);
 
 void user_cleanup(struct user** elem);
 
-// converts uuid (unsigned long long) to string.
+// converts uuid (unsigned long) to string.
 // string should be of length UUID_STR_LEN
-void uuid_to_string(unsigned long long uuid, char* buf);
+void uuid_to_string(unsigned long uuid, char* buf);
 
-// converts string to uuid (unsigned long long)
-unsigned long long string_to_uuid(const char* str);
+// converts string to uuid (unsigned long)
+unsigned long string_to_uuid(const char* str);
 
 // writes to save file. returns 0 if ok.
 // dir does not need a trailing slash

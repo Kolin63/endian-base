@@ -129,7 +129,3 @@ int spaceint_get_amt_digits(spaceint_t val) {
   } while (val != 0);
   return n;
 }
-
-unsigned long long spaceint_sqrt(spaceint_t val) {
-
-}

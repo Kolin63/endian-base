@@ -12,9 +12,9 @@ struct end_sys_pos {
 
 // in kilometers
 struct end_body_pos {
-  unsigned long long x;
-  unsigned long long y;
-  unsigned long long z;
+  unsigned long x;
+  unsigned long y;
+  unsigned long z;
 };
 
 struct end_pos {

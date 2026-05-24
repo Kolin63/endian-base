@@ -58,7 +58,7 @@ const struct function* function_get(char* name) { return global->function_get(na
 const struct registry* get_command_registry() { return global->get_command_registry(); }
 const struct command* command_get(char* name) { return global->command_get(name); }
 
-void jsmn_iterator_get_string(char* buf, unsigned long long size, const char* json, const jsmntok_t* tok) {
+void jsmn_iterator_get_string(char* buf, unsigned long size, const char* json, const jsmntok_t* tok) {
   global->jsmn_iterator_get_string(buf, size, json, tok);
 }
 char* jsmn_iterator_get_string_heap(const char* json, const jsmntok_t* tok) {
@@ -80,17 +80,17 @@ jsmntok_t* fileio_read_json(const char* json) { return global->fileio_read_json(
 
 struct bot* bot_get_global() { return global->bot_get_global(); }
 
-struct user* user_init(unsigned long long uuid) { return global->user_init(uuid); }
+struct user* user_init(unsigned long uuid) { return global->user_init(uuid); }
 
-struct user* user_get(unsigned long long uuid) { return global->user_get(uuid); }
+struct user* user_get(unsigned long uuid) { return global->user_get(uuid); }
 
 int user_cmp(struct user* const* a, struct user* const* b) { return global->user_cmp(a, b); }
 
 void user_cleanup(struct user** elem) { global->user_cleanup(elem); }
 
-void uuid_to_string(unsigned long long uuid, char* buf) { global->uuid_to_string(uuid, buf); }
+void uuid_to_string(unsigned long uuid, char* buf) { global->uuid_to_string(uuid, buf); }
 
-unsigned long long string_to_uuid(const char* str) { return global->string_to_uuid(str); }
+unsigned long string_to_uuid(const char* str) { return global->string_to_uuid(str); }
 
 int save_write(const char* dir, const char* file, const char* ext, const char* content) {
   return global->save_write(dir, file, ext, content);

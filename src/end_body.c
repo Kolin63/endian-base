@@ -123,7 +123,3 @@ void end_body_cleanup(struct end_body* elem) {
   free(elem->desc);
   if (elem->primary != NULL) free(elem->primary);
 }
-
-time_t calc_orbital_period(unsigned long long semimajoraxis, spaceint_t larger_mass) {
-  // https://www.desmos.com/calculator/wobxspxb65
-}

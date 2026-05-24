@@ -19,6 +19,7 @@ struct end_body_pos {
 
 struct end_pos {
   const char* body;
+  const char* system;
   int x;
   int y;
 };

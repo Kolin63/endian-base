@@ -8,6 +8,7 @@
 
 #include "end_api.h"
 #include "end_body.h"
+#include "end_system.h"
 
 int end_sys_pos_fillout(const char* namespace_name, const char* mod_name,
                         const char* file_name, const jsmntok_t* jsmn,
@@ -89,6 +90,7 @@ int end_pos_fillout(const char* namespace_name, const char* mod_name,
   int error = 0;
 
   pos->body = NULL;
+  pos->system = NULL;
   pos->x = 0;
   pos->y = 0;
 
@@ -108,12 +110,32 @@ int end_pos_fillout(const char* namespace_name, const char* mod_name,
       char* str = jsmn_iterator_get_string_heap(json, iter.val);
       const struct end_body* body = end_body_get(str);
       if (body == NULL) {
-        log_error("Body %s is not registered", str);
+        log_error("Body %s is not registered in file %s from %s:%s", str, file_name, mod_name, namespace_name);
         error++;
+        free(str);
         continue;
       }
       free(str);
       pos->body = body->id;
+    } else if (strcmp(iter.key, "system") == 0) {
+      // system can be null
+      if (iter.val->type == JSMN_PRIMITIVE) {
+        char buf[2];
+        jsmn_iterator_get_string(buf, sizeof(buf), json, iter.val);
+        if (buf[0] == 'n') continue;
+      }
+      END_JSON_CHECK_STRING(iter);
+      // only for cmp purposes, don't set pos->system to this
+      char* str = jsmn_iterator_get_string_heap(json, iter.val);
+      const struct end_system* sys = end_system_get(str);
+      if (sys == NULL) {
+        log_error("System %s is not registered in file %s from %s:%s", str, file_name, mod_name, namespace_name);
+        error++;
+        free(str);
+        continue;
+      }
+      free(str);
+      pos->system = sys->id;
     } else if (strcmp(iter.key, "x") == 0) {
       END_JSON_CHECK_NUMBER(iter);
       char* str = jsmn_iterator_get_string_heap(json, iter.val);
@@ -130,5 +152,18 @@ int end_pos_fillout(const char* namespace_name, const char* mod_name,
       error++;
     }
   }
+
+  // check that the body is in the system
+  if (pos->body != NULL && pos->system != NULL) {
+    const struct end_system* sys = end_system_get(pos->system);
+    const struct end_system_body_id_entry key = {.id = pos->body};
+    const int i = registry_ktoi(&(sys->body_ids), &key);
+    if (i < 0) {
+      log_error("Body %s is not in system %s in file %s from %s:%s",
+                pos->body, pos->system, file_name, mod_name, namespace_name);
+      error++;
+    }
+  }
+
   return error;
 }

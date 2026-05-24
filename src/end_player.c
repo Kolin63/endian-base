@@ -22,7 +22,7 @@ void end_player_cleanup(struct end_player** elem) {
   free(x);
 }
 
-struct end_player* end_player_init(unsigned long uuid) {
+struct end_player* end_player_init(unsigned long long uuid) {
   struct user* disc = user_get(uuid);
   if (disc == NULL) {
     log_error("Could not initialize player %zi", uuid);
@@ -51,7 +51,7 @@ struct end_player* end_player_init(unsigned long uuid) {
   return player;
 }
 
-struct end_player* end_player_get(unsigned long uuid) {
+struct end_player* end_player_get(unsigned long long uuid) {
   struct user* key_user = &(struct user){.uuid = uuid};
   struct end_player* key = &(struct end_player){.user = key_user};
 

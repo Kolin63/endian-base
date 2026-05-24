@@ -14,14 +14,14 @@ void test_digit(int n, int digits) {
 }
 
 void test_limit() {
-  const unsigned long limit64 = 0xffffffffffffffff;
+  const unsigned long long limit64 = 0xffffffffffffffff;
   const spaceint_t limit128 = 0 - 1;
-  const unsigned long* a = (const unsigned long*)&limit128;
-  const unsigned long* b = a + 1;
+  const unsigned long long* a = (const unsigned long long*)&limit128;
+  const unsigned long long* b = a + 1;
   if (*a == limit64 && *b == limit64) {
-    test_pass("Limit is OK (%lx %lx)\n", *a, *b);
+    test_pass("Limit is OK (%llx %llx)\n", *a, *b);
   } else {
-    test_fail("Limit is bad (%lx %lx)\n", *a, *b);
+    test_fail("Limit is bad (%llx %llx)\n", *a, *b);
   }
 }
 

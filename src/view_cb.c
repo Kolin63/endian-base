@@ -8,7 +8,7 @@
 #include "str_cat_arr.h"
 
 void view_cb(struct discord* client, const struct discord_interaction* event) {
-  unsigned long uuid = 0;
+  unsigned long long uuid = 0;
 
   if (event->data->options != NULL) {
     char* uuid_str = NULL;

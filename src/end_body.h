@@ -29,7 +29,7 @@ struct end_body {
   unsigned int radius;
 
   // can be 0
-  unsigned long semimajoraxis;
+  unsigned long long semimajoraxis;
 
   struct end_body_pos pos;
 };

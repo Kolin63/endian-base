@@ -15,10 +15,10 @@ void end_player_cleanup(struct end_player** elem);
 
 // initializes player
 // returns pointer to player in registry
-struct end_player* end_player_init(unsigned long uuid);
+struct end_player* end_player_init(unsigned long long uuid);
 
 // returns pointer to player in registry
 // initializes the player if it is not in registry
-struct end_player* end_player_get(unsigned long uuid);
+struct end_player* end_player_get(unsigned long long uuid);
 
 #endif

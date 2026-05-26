@@ -63,7 +63,22 @@ void test_scinot(const char* str, spaceint_t n) {
   }
 }
 
+void test_sqrt(spaceint_t num, unsigned long expect) {
+  char buf[64];
+  spaceint_to_string(num, buf, sizeof(buf));
+
+  unsigned long res = spaceint_sqrt(num);
+  if (res == expect) {
+    test_pass("sqrt(%s) == %lu\n", buf, res);
+  } else {
+    test_fail("sqrt(%s): expected %lu, got %lu\n", buf, expect, res);
+  }
+}
+
 int main() {
+  const spaceint_t limit128 = 0 - 1;
+  const unsigned long limit64 = 0xffffffffffffffff;
+
   test_digit(0, 1);
   test_digit(1, 1);
   test_digit(9, 1);
@@ -109,6 +124,16 @@ int main() {
   test_scinot("1.0000000e0", 1);
   test_scinot("1.0000001e0", 1);
   test_scinot("1.0000111e0", 1);
+
+  test_sqrt(0, 0);
+  test_sqrt(16, 4);
+  test_sqrt(32, 5);
+  test_sqrt(36, 6);
+  test_sqrt(80, 8);
+  test_sqrt(81, 9);
+  test_sqrt(82, 9);
+  test_sqrt(65536, 256);
+  test_sqrt(limit128, 0xffffffffffffffff);
 
   tests_return;
 }

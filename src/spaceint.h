@@ -19,4 +19,6 @@ void spaceint_to_string(spaceint_t val, char* buf, size_t size);
 
 int spaceint_get_amt_digits(spaceint_t val);
 
+unsigned long spaceint_sqrt(spaceint_t val);
+
 #endif

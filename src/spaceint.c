@@ -129,3 +129,26 @@ int spaceint_get_amt_digits(spaceint_t val) {
   } while (val != 0);
   return n;
 }
+
+unsigned long spaceint_sqrt(spaceint_t val) {
+  // https://en.wikipedia.org/wiki/Integer_square_root#Algorithm_using_Newton's_method
+
+  if (val <= 1) return val;
+
+  spaceint_t prev2;
+  spaceint_t prev1 = 2;
+
+  while (1) {
+    const spaceint_t x1 = (prev1 + (val / prev1)) / 2;
+
+    if (x1 == prev1) return x1;
+
+    if (x1 == prev2 && x1 != prev1) {
+      if (prev1 <= x1) return prev1;
+      return x1;
+    }
+
+    prev2 = prev1;
+    prev1 = x1;
+  }
+}

@@ -3,7 +3,6 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <math.h>
 
 #include "end_api.h"
 #include "end_regman.h"
@@ -122,4 +121,35 @@ void end_body_cleanup(struct end_body* elem) {
   free(elem->name);
   free(elem->desc);
   if (elem->primary != NULL) free(elem->primary);
+}
+
+time_t calc_orbital_period(unsigned long semimajoraxis, spaceint_t larger_mass) {
+  // https://www.desmos.com/calculator/wobxspxb65
+  const spaceint_t a = semimajoraxis;
+  const spaceint_t M = larger_mass;
+  return spaceint_sqrt((spaceint_t)(4000000000 * 9.86960440109 * a * a * a) / ((66743 * M) / (1000000000000000)));
+}
+
+int end_body_post_load_fillout() {
+  int error = 0;
+  struct registry* reg = end_regman_get_body();
+
+  for (int i = 0; i < reg->length; i++) {
+    struct end_body* body = registry_itov(reg, i);
+
+    // if the primary id is NULL, the body intentionally has no primary
+    if (body->primary != NULL) {
+      // get primary and check that it exists
+      struct end_body* prim = end_body_get(body->primary);
+      if (prim == NULL) {
+        log_error("From body %s, primary %s does not exist", body->id, body->primary);
+        error++;
+        continue;
+      }
+
+      // calculate all orbital periods
+      body->orbital_period = calc_orbital_period(body->semimajoraxis, prim->mass);
+    }
+  }
+  return error;
 }

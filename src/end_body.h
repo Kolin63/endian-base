@@ -1,6 +1,8 @@
 #ifndef ENDIAN_BASE_END_BODY_TYPE_H_
 #define ENDIAN_BASE_END_BODY_TYPE_H_
 
+#include <time.h>
+
 #include "end_pos.h"
 #include "end_system.h"
 #include "spaceint.h"
@@ -28,6 +30,9 @@ struct end_body {
 
   unsigned int radius;
 
+  // in seconds
+  time_t orbital_period;
+
   // can be 0
   unsigned long semimajoraxis;
 
@@ -40,5 +45,13 @@ void end_body_load(struct end_system* system,
 struct end_body* end_body_get(const char* id);
 int end_body_cmp(const struct end_body* a, const struct end_body* b);
 void end_body_cleanup(struct end_body* elem);
+
+// returns orbital period in seconds
+time_t calc_orbital_period(unsigned long semimajoraxis, spaceint_t larger_mass);
+
+// assumes that every referenced body is registered
+// returns 0 if ok
+// calculates orbital periods for all registered bodies
+int end_body_post_load_fillout();
 
 #endif

@@ -127,7 +127,7 @@ time_t calc_orbital_period(unsigned long semimajoraxis, spaceint_t larger_mass) 
   // https://www.desmos.com/calculator/wobxspxb65
   const spaceint_t a = semimajoraxis;
   const spaceint_t M = larger_mass;
-  return spaceint_sqrt((spaceint_t)(4000000000 * 9.86960440109 * a * a * a) / ((66743 * M) / (1000000000000000)));
+  return spaceint_sqrt((_BitInt(256))(4000000000 * 9.86960440109 * a * a * a) / ((66743 * M) / (1000000000000000)));
 }
 
 int end_body_post_load_fillout() {

@@ -130,6 +130,13 @@ time_t calc_orbital_period(unsigned long semimajoraxis, spaceint_t larger_mass) 
   return spaceint_sqrt((_BitInt(256))(4000000000 * 9.86960440109 * a * a * a) / ((66743 * M) / (1000000000000000)));
 }
 
+unsigned int calc_face_width(unsigned int radius) {
+  // https://www.desmos.com/calculator/retkabho7a
+  // radius <= 176 would equate to 0, but we don't want bodies with no body
+  if (radius <= 176) return 1;
+  return radius * 0.00565313480124;
+}
+
 int end_body_post_load_fillout() {
   int error = 0;
   struct registry* reg = end_regman_get_body();
@@ -150,6 +157,10 @@ int end_body_post_load_fillout() {
       // calculate all orbital periods
       body->orbital_period = calc_orbital_period(body->semimajoraxis, prim->mass);
     }
+
+    // calculate face width and total tiles
+    body->face_width = calc_face_width(body->radius);
+    body->total_tiles = (body->face_width * body->face_width) * 6;
   }
   return error;
 }

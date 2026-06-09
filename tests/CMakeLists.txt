@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.16)
 
-add_executable(space_int_test space_int_test.c)
+add_executable(space_int_test src/space_int_test.c)
 
 target_link_libraries(space_int_test PRIVATE endian)
 

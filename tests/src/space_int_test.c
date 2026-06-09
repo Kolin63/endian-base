@@ -1,4 +1,4 @@
-#include "../src/spaceint.h"
+#include "../../src/spaceint.h"
 
 #include <string.h>
 

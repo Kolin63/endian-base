@@ -1,0 +1,9 @@
+{
+  "name": "city_info",
+  "fillout": "end_com_city_info_fillout",
+  "cleanup": "end_com_city_info_cleanup",
+
+  "template": {
+    "popl": 0
+  }
+}

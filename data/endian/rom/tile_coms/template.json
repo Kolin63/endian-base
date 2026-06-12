@@ -1,0 +1,10 @@
+{
+  "name": "foo",
+  "fillout": "foo_fillout",
+  "cleanup": "foo_cleanup",
+
+  "template": {
+    "foo": 5,
+    "bar": "baz"
+  }
+}

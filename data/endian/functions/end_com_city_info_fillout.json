@@ -1,0 +1,6 @@
+{
+  "type": "FILLOUT",
+  "name": "end_com_city_info_fillout",
+
+  "plugin": "endian:libendian"
+}

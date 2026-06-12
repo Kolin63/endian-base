@@ -91,7 +91,7 @@ void end_body_load(struct end_system* system,
 
   FILE* file = fopen(body_path, "r");
   if (file == NULL) {
-    log_error("Could not open 'info.json' at %s from %s:%s", body_path, namespace_name, mod_name);
+    log_error("Could not open %s from %s:%s", body_path, namespace_name, mod_name);
     return;
   }
   char* json = fileio_read_all(file);

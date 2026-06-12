@@ -5,7 +5,7 @@
 
   "type": "ICE_GIANT",
 
-  "primary": "sun",
+  "primary": "endian:sun",
 
   "mass": 1.024092e26,
 

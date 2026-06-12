@@ -5,7 +5,7 @@
 
   "type": "GAS_GIANT",
 
-  "primary": "sun",
+  "primary": "endian:sun",
 
   "mass": 1.898125e27,
 

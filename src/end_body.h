@@ -17,12 +17,14 @@ enum end_body_type {
 
 struct end_body {
   char* id;
+  const char* namespace;
   char* name;
   char* desc;
   enum end_body_type type;
 
   // can be NULL
-  char* primary;
+  const char* primary;
+  char* primary_namespace;
 
   const char* system;
 
@@ -45,7 +47,7 @@ struct end_body {
 void end_body_load(struct end_system* system,
                    const char* body_path, const char* namespace_name,
                    const char* mod_name, const char* file_name);
-struct end_body* end_body_get(const char* id);
+struct end_body* end_body_get(const char* ns, const char* id);
 int end_body_cmp(const struct end_body* a, const struct end_body* b);
 void end_body_cleanup(struct end_body* elem);
 

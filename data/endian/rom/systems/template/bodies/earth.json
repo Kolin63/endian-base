@@ -13,7 +13,7 @@
   "type": "TERRESTRIAL",
 
   "comment": "The id of the body that this body orbits",
-  "primary": "sun",
+  "primary": "endian:sun",
 
   "comment": "128 bit integer in kilograms, using scientific notation in format 0.0e0",
   "mass": 5.97217e24,

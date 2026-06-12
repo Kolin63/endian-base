@@ -17,6 +17,8 @@ int end_system_fillout(const char* namespace_name, const char* mod_name,
                        const char* json, struct end_system* sys) {
   int error = 0;
 
+  sys->namespace = namespace_name;
+
   struct jsmn_iterator iter;
   jsmn_iterator_init(&iter, jsmn, json);
 
@@ -96,11 +98,13 @@ void end_system_load(const char* system_path, const char* namespace_name,
   log_info("Done loading system %s:%s:%s", namespace_name, mod_name, sys.id);
 }
 
-struct end_system* end_system_get(const char* id) {
-  return registry_ktov(end_regman_get_system(), &(struct end_system){.id = (char*)id});
+struct end_system* end_system_get(const char* ns, const char* id) {
+  return registry_ktov(end_regman_get_system(), &(struct end_system){.id = (char*)id, .namespace = ns});
 }
 
 int end_system_cmp(const struct end_system* a, const struct end_system* b) {
+  int ns = registry_strcmp(a->namespace, b->namespace);
+  if (ns != 0) return ns;
   return registry_strcmp(a->id, b->id);
 }
 

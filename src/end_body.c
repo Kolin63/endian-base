@@ -15,7 +15,9 @@ int end_body_fillout(const char* namespace_name, const char* mod_name,
                      const char* json, struct end_body* body) {
   int error = 0;
 
+  body->namespace = namespace_name;
   body->primary = NULL;
+  body->primary_namespace = NULL;
   body->semimajoraxis = 0;
 
   struct jsmn_iterator iter;
@@ -42,7 +44,19 @@ int end_body_fillout(const char* namespace_name, const char* mod_name,
       else if (strcmp(type, "MOON") == 0) body->type = END_BODY_MOON;
     } else if (strcmp(iter.key, "primary") == 0) {
       END_JSON_CHECK_STRING(iter);
-      body->primary = jsmn_iterator_get_string_heap(json, iter.val);
+      char* prim_ns = jsmn_iterator_get_string_heap(json, iter.val);
+      char* colon = prim_ns;
+      while (*colon != ':' && *colon != '\0') colon++;
+      if (*colon == '\0') {
+        log_error("Primary body from %s:%s:%s is not formatted in namespace:bodyname (got %s)",
+                  mod_name, namespace_name, file_name, prim_ns);
+        error++;
+        free(prim_ns);
+        continue;
+      }
+      *colon = '\0';
+      body->primary = colon + 1;
+      body->primary_namespace = prim_ns;
     } else if (strcmp(iter.key, "mass") == 0) {
       END_JSON_CHECK_NUMBER(iter);
       char scinot[128];
@@ -108,11 +122,13 @@ void end_body_load(struct end_system* system,
   log_info("Loading body %s:%s:%s", namespace_name, mod_name, body.id);
 }
 
-struct end_body* end_body_get(const char* id) {
-  return registry_ktov(end_regman_get_body(), &(struct end_body){.id = (char*)id});
+struct end_body* end_body_get(const char* ns, const char* id) {
+  return registry_ktov(end_regman_get_body(), &(struct end_body){.id = (char*)id, .namespace = ns});
 }
 
 int end_body_cmp(const struct end_body* a, const struct end_body* b) {
+  int ns = registry_strcmp(a->namespace, b->namespace);
+  if (ns != 0) return ns;
   return registry_strcmp(a->id, b->id);
 }
 
@@ -120,7 +136,7 @@ void end_body_cleanup(struct end_body* elem) {
   free(elem->id);
   free(elem->name);
   free(elem->desc);
-  if (elem->primary != NULL) free(elem->primary);
+  if (elem->primary_namespace != NULL) free(elem->primary_namespace);
 }
 
 time_t calc_orbital_period(unsigned long semimajoraxis, spaceint_t larger_mass) {
@@ -147,7 +163,7 @@ int end_body_post_load_fillout() {
     // if the primary id is NULL, the body intentionally has no primary
     if (body->primary != NULL) {
       // get primary and check that it exists
-      struct end_body* prim = end_body_get(body->primary);
+      struct end_body* prim = end_body_get(body->primary_namespace, body->primary);
       if (prim == NULL) {
         log_error("From body %s, primary %s does not exist", body->id, body->primary);
         error++;

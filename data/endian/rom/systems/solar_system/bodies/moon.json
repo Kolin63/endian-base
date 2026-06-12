@@ -5,7 +5,7 @@
 
   "type": "MOON",
 
-  "primary": "earth",
+  "primary": "endian:earth",
 
   "mass": 7.346e22,
 

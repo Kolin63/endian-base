@@ -108,15 +108,28 @@ int end_pos_fillout(const char* namespace_name, const char* mod_name,
       }
       END_JSON_CHECK_STRING(iter);
       // only for cmp purposes, don't set pos->body to this
-      char* str = jsmn_iterator_get_string_heap(json, iter.val);
-      const struct end_body* body = end_body_get(str);
-      if (body == NULL) {
-        log_error("Body %s is not registered in file %s from %s:%s", str, file_name, mod_name, namespace_name);
+      char* ns = jsmn_iterator_get_string_heap(json, iter.val);
+      char* colon = ns;
+      while (*colon != ':' && *colon != '\0') colon++;
+      if (*colon == '\0') {
+        log_error("Body in pos %s:%s:%s not formatted in namespace:bodyname (got %s)",
+                  mod_name, namespace_name, file_name, ns);
         error++;
-        free(str);
+        free(ns);
         continue;
       }
-      free(str);
+      *colon = '\0';
+      const char* id = colon + 1;
+
+      const struct end_body* body = end_body_get(ns, id);
+      if (body == NULL) {
+        log_error("Body %s:%s is not registered in file %s from %s:%s", ns, id, file_name, mod_name, namespace_name);
+        error++;
+        free(ns);
+        continue;
+      }
+      free(ns);
+      pos->body_ns = body->namespace;
       pos->body = body->id;
     } else if (strcmp(iter.key, "system") == 0) {
       // system can be null
@@ -127,16 +140,29 @@ int end_pos_fillout(const char* namespace_name, const char* mod_name,
       }
       END_JSON_CHECK_STRING(iter);
       // only for cmp purposes, don't set pos->system to this
-      char* str = jsmn_iterator_get_string_heap(json, iter.val);
-      const struct end_system* sys = end_system_get(str);
-      if (sys == NULL) {
-        log_error("System %s is not registered in file %s from %s:%s", str, file_name, mod_name, namespace_name);
+      char* ns = jsmn_iterator_get_string_heap(json, iter.val);
+      char* colon = ns;
+      while (*colon != ':' && *colon != '\0') colon++;
+      if (*colon == '\0') {
+        log_error("System in pos %s:%s:%s not formatted in namespace:sysname (got %s)",
+                  mod_name, namespace_name, file_name, ns);
         error++;
-        free(str);
+        free(ns);
         continue;
       }
-      free(str);
+      *colon = '\0';
+      const char* id = colon + 1;
+
+      const struct end_system* sys = end_system_get(ns, id);
+      if (sys == NULL) {
+        log_error("System %s:%s is not registered in file %s from %s:%s", ns, id, file_name, mod_name, namespace_name);
+        error++;
+        free(ns);
+        continue;
+      }
+      free(ns);
       pos->system = sys->id;
+      pos->system_ns = sys->namespace;
     } else if (strcmp(iter.key, "x") == 0) {
       END_JSON_CHECK_NUMBER(iter);
       char* str = jsmn_iterator_get_string_heap(json, iter.val);
@@ -156,12 +182,12 @@ int end_pos_fillout(const char* namespace_name, const char* mod_name,
 
   // check that the body is in the system
   if (pos->body != NULL && pos->system != NULL) {
-    const struct end_system* sys = end_system_get(pos->system);
-    const struct end_system_body_id_entry key = {.id = pos->body};
+    const struct end_system* sys = end_system_get(pos->system_ns, pos->system);
+    const struct end_system_body_id_entry key = {.id = pos->body, .namespace = pos->body_ns};
     const int i = registry_ktoi(&(sys->body_ids), &key);
     if (i < 0) {
-      log_error("Body %s is not in system %s in file %s from %s:%s",
-                pos->body, pos->system, file_name, mod_name, namespace_name);
+      log_error("Body %s:%s is not in system %s:%s in file %s from %s:%s",
+                pos->body_ns, pos->body, pos->system_ns, pos->system, file_name, mod_name, namespace_name);
       error++;
     }
   }

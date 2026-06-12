@@ -5,7 +5,7 @@
 
   "type": "PLANET",
 
-  "primary": "sun",
+  "primary": "endian:sun",
 
   "mass": 4.86731e24,
 

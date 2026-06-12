@@ -5,7 +5,7 @@
 
   "type": "TERRESTRIAL",
 
-  "primary": "sun",
+  "primary": "endian:sun",
 
   "mass": 3.3011e23,
 

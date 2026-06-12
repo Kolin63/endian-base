@@ -16,6 +16,8 @@ const struct api* end_api_get();
 
 // attempts exit. if cleanup is not ready, function returns
 void handle_exit();
+// server saves all data and tells mods to save all data
+void handle_save();
 // premature cleanup before everything is initialized, for example to abort
 // the program during the cli args initialization phase
 void abort_cleanup(int code);

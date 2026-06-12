@@ -12,6 +12,10 @@ void handle_exit() {
   global->handle_exit();
 }
 
+void handle_save() {
+  global->handle_save();
+}
+
 void abort_cleanup(int code) { global->abort_cleanup(code); }
 int get_cleanup_ready() { return global->get_cleanup_ready(); }
 

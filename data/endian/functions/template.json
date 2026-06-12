@@ -6,7 +6,9 @@
     "LOAD": ["void foo()", "called after INIT"],
     "FILLOUT": "int foo_fillout(const char* namespace_name, const char* mod_name, const char* file_name, const jsmntok_t* jsmn, const char* json, struct end_tile_com* com)",
     "EXPORT": "void foo(anything)",
+    "TO_JSON": "char* foo(const bar*)",
     "DATA": "void foo(void* x)",
+    "SAVE": "void foo()",
     "CLEANUP": "void foo()"
   },
   "type": "CALLBACK",

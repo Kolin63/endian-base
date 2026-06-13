@@ -53,7 +53,7 @@ void view_cb(struct discord* client, const struct discord_interaction* event) {
       "foobar",
   };
 
-  char* desc = str_cat_arr(desc_array, sizeof(desc_array) / sizeof(*desc_array));
+  char* desc = str_cat_arr(desc_array, sizeof(desc_array));
 
   struct discord_embed embeds[] = {
       {

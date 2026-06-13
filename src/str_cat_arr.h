@@ -7,6 +7,7 @@
 #define STR(x) _STR(x)
 
 // concatenates all strings in arr, puts on heap
+// size should be sizeof(arr), not sizeof(arr) / sizeof(char*)
 char* str_cat_arr(const char** arr, size_t size);
 
 #endif

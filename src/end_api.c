@@ -38,6 +38,12 @@ int registry_safe_cmp(const struct registry* reg, const void* a, const void* b) 
 
 void* registry_add(struct registry* reg, const void* val) { return global->registry_add(reg, val); }
 
+int registry_del_val(struct registry* reg, void* val) { return global->registry_del_val(reg, val); }
+
+int registry_del_key(struct registry* reg, const void* key) { return global->registry_del_key(reg, key); }
+
+int registry_del_i(struct registry* reg, int i) { return global->registry_del_i(reg, i); }
+
 void registry_clear(struct registry* reg) { global->registry_clear(reg); }
 
 void* registry_itov(const struct registry* reg, int i) { return global->registry_itov(reg, i); }
@@ -47,6 +53,8 @@ void* registry_itov_safe(const struct registry* reg, int i) { return global->reg
 int registry_ktoi(const struct registry* reg, const void* key) { return global->registry_ktoi(reg, key); }
 
 void* registry_ktov(const struct registry* reg, const void* key) { return global->registry_ktov(reg, key); }
+
+int registry_vtoi(const struct registry* reg, const void* val) { return global->registry_vtoi(reg, val); }
 
 int registry_strcmp(const char* a, const char* b) { return global->registry_strcmp(a, b); }
 

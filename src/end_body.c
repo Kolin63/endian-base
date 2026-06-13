@@ -75,7 +75,7 @@ int end_body_fillout(const char* namespace_name, const char* mod_name,
     } else if (strcmp(iter.key, "pos") == 0) {
       end_body_pos_fillout(namespace_name, mod_name, file_name, iter.val, json, &(body->pos));
     } else {
-      log_error("Unknown object %s in end_system in file %s from %s:%s",
+      log_error("Unknown object %s in end_body in file %s from %s:%s",
                 iter.key, file_name, mod_name, namespace_name);
       error++;
     }

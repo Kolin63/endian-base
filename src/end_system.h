@@ -20,6 +20,10 @@ struct end_system* end_system_get(const char* ns, const char* id);
 int end_system_cmp(const struct end_system* a, const struct end_system* b);
 void end_system_cleanup(struct end_system* elem);
 
+void end_system_load_save(const char* file_path, const char* namespace_name, const char* file_name);
+void end_system_save(const struct end_system* sys);
+void end_system_save_all();
+
 struct end_system_body_id_entry {
   int id;
 };

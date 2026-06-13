@@ -11,6 +11,7 @@
 #include "end_regman.h"
 #include "json_macros.h"
 #include "registry.h"
+#include "str_cat_arr.h"
 
 int end_system_fillout(const char* namespace_name, const char* mod_name,
                        const char* file_name, const jsmntok_t* jsmn,
@@ -113,6 +114,30 @@ void end_system_cleanup(struct end_system* elem) {
   free(elem->name);
   free(elem->desc);
   registry_cleanup(&(elem->body_ids));
+}
+
+void end_system_load_save(const char* file_path, const char* namespace_name, const char* file_name) {
+}
+
+void end_system_save(const struct end_system* sys) {
+  const char* arr[] = {
+    STR({})
+  };
+
+  char* str = str_cat_arr(arr, sizeof(arr));
+
+  save_write("endian", "systems", sys->id, "json", str);
+
+  free(str);
+}
+
+void end_system_save_all() {
+  const struct registry* reg = end_regman_get_system();
+  for (int i = 0; i < reg->length; i++) {
+    const struct end_system* sys = registry_itov(reg, i);
+    log_info("Saving system %s:%s", sys->namespace, sys->id);
+    end_system_save(sys);
+  }
 }
 
 int end_system_body_id_entry_cmp(const struct end_system_body_id_entry* a, const struct end_system_body_id_entry* b) {

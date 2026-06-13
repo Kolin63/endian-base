@@ -18,6 +18,8 @@ void load_data() {
 
 void save_data() {
   log_info("Saving data from endian!");
+  end_system_save_all();
+  log_info("Done saving data from endian!");
 }
 
 void save_cb(struct discord* client, const struct discord_interaction* event) {

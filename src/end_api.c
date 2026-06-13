@@ -96,10 +96,10 @@ void uuid_to_string(unsigned long uuid, char* buf) { global->uuid_to_string(uuid
 
 unsigned long string_to_uuid(const char* str) { return global->string_to_uuid(str); }
 
-int save_write(const char* dir, const char* file, const char* ext, const char* content) {
-  return global->save_write(dir, file, ext, content);
+int save_write(const char* ns, const char* dir, const char* file, const char* ext, const char* content) {
+  return global->save_write(ns, dir, file, ext, content);
 }
 
-int save_read(const char* dir, const char* file, const char* ext, char** out) {
-  return global->save_read(dir, file, ext, out);
+int save_read(const char* ns, const char* dir, const char* file, const char* ext, char** out) {
+  return global->save_read(ns, dir, file, ext, out);
 }

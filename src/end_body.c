@@ -6,6 +6,7 @@
 
 #include "end_api.h"
 #include "end_regman.h"
+#include "end_system.h"
 #include "json_macros.h"
 #include "registry.h"
 #include "spaceint.h"
@@ -110,14 +111,13 @@ void end_body_load(struct end_system* system,
   free(jsmn);
 
   body.system = system->id;
+  body.system_namespace = system->namespace;
 
   if (registry_add(end_regman_get_body(), &body) == NULL) {
     log_error("Body %s:%s:%s already registered", namespace_name, mod_name, body.id);
     end_body_cleanup(&body);
     return;
   }
-
-  registry_add(&(system->body_ids), &(struct end_system_body_id_entry){.id = body.id});
 
   log_info("Loading body %s:%s:%s", namespace_name, mod_name, body.id);
 }
@@ -159,6 +159,10 @@ int end_body_post_load_fillout() {
 
   for (int i = 0; i < reg->length; i++) {
     struct end_body* body = registry_itov(reg, i);
+    struct end_system* sys = end_system_get(body->system_namespace, body->system);
+
+    // put integer id on system registry
+    registry_add(&(sys->body_ids), &(struct end_system_body_id_entry){.id = i});
 
     // if the primary id is NULL, the body intentionally has no primary
     if (body->primary != NULL) {

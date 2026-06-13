@@ -21,8 +21,7 @@ int end_system_cmp(const struct end_system* a, const struct end_system* b);
 void end_system_cleanup(struct end_system* elem);
 
 struct end_system_body_id_entry {
-  const char* id;
-  const char* namespace;
+  int id;
 };
 
 int end_system_body_id_entry_cmp(const struct end_system_body_id_entry* a, const struct end_system_body_id_entry* b);

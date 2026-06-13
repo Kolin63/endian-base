@@ -116,5 +116,5 @@ void end_system_cleanup(struct end_system* elem) {
 }
 
 int end_system_body_id_entry_cmp(const struct end_system_body_id_entry* a, const struct end_system_body_id_entry* b) {
-  return registry_strcmp(a->id, b->id);
+  return a->id - b->id;
 }

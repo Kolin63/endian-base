@@ -27,6 +27,7 @@ struct end_body {
   char* primary_namespace;
 
   const char* system;
+  const char* system_namespace;
 
   spaceint_t mass;
 

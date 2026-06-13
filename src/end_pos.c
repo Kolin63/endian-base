@@ -183,8 +183,8 @@ int end_pos_fillout(const char* namespace_name, const char* mod_name,
   // check that the body is in the system
   if (pos->body != NULL && pos->system != NULL) {
     const struct end_system* sys = end_system_get(pos->system_ns, pos->system);
-    const struct end_system_body_id_entry key = {.id = pos->body, .namespace = pos->body_ns};
-    const int i = registry_ktoi(&(sys->body_ids), &key);
+    const struct end_body* body = end_body_get(pos->body_ns, pos->body);
+    const int i = registry_vtoi(&(sys->body_ids), body);
     if (i < 0) {
       log_error("Body %s:%s is not in system %s:%s in file %s from %s:%s",
                 pos->body_ns, pos->body, pos->system_ns, pos->system, file_name, mod_name, namespace_name);

@@ -3,10 +3,10 @@
 # makes an include directory that has everything that a mod would need in its
 # include directory
 
-online_dir="$1"
+engine_dir="$1"
 
-if [[ -z "$online_dir" || "$online_dir" == "-h" || "$online_dir" == "--help" ]]; then
-  echo "Usage: $0 [endian online directory]"
+if [[ -z "$engine_dir" || "$engine_dir" == "-h" || "$engine_dir" == "--help" ]]; then
+  echo "Usage: $0 [endian engine directory]"
   exit 0
 fi
 
@@ -16,12 +16,12 @@ else
   mkdir "include"
 fi
 
-ln -s "${online_dir}/src/api.h" "include"
-ln -s "${online_dir}/src/bot.h" "include"
-ln -s "${online_dir}/src/function.h" "include"
-ln -s "${online_dir}/src/namespace.h" "include"
-ln -s "${online_dir}/dependencies/registry.h" "include"
-ln -s "${online_dir}/src/save.h" "include"
-ln -s "${online_dir}/src/user.h" "include"
-ln -s "${online_dir}/src/jsmn_iterator.h" "include"
-ln -s "${online_dir}/src/json_macros.h" "include"
+ln -s "${engine_dir}/src/api.h" "include"
+ln -s "${engine_dir}/src/bot.h" "include"
+ln -s "${engine_dir}/src/function.h" "include"
+ln -s "${engine_dir}/src/namespace.h" "include"
+ln -s "${engine_dir}/dependencies/registry.h" "include"
+ln -s "${engine_dir}/src/save.h" "include"
+ln -s "${engine_dir}/src/user.h" "include"
+ln -s "${engine_dir}/src/jsmn_iterator.h" "include"
+ln -s "${engine_dir}/src/json_macros.h" "include"

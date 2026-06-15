@@ -74,7 +74,7 @@ int end_body_fillout(const char* namespace_name, const char* mod_name,
       jsmn_iterator_get_string(str, sizeof(str), json, iter.val);
       body->semimajoraxis = strtoul(str, NULL, 10);
     } else if (strcmp(iter.key, "pos") == 0) {
-      end_body_pos_fillout(namespace_name, mod_name, file_name, iter.val, json, &(body->pos));
+      error += end_body_pos_fillout(namespace_name, mod_name, file_name, iter.val, json, &(body->pos));
     } else {
       log_error("Unknown object %s in end_body in file %s from %s:%s",
                 iter.key, file_name, mod_name, namespace_name);

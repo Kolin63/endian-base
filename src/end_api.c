@@ -4,7 +4,17 @@
 
 const static struct api* global = NULL;
 
-void end_api_set(const struct api* api) { global = api; }
+void end_api_set(const struct api* api) {
+  const int got_version = api->get_version();
+  if (got_version != API_VERSION) {
+    api->log_log(LOG_ERROR, __FILE_NAME__, __LINE__,
+                 "Expected API version %i, got version %i",
+                 API_VERSION, got_version);
+    api->handle_exit();
+    return;
+  }
+  global = api;
+}
 
 const struct api* end_api_get() { return global; }
 

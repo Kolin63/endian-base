@@ -18,7 +18,7 @@ int end_system_fillout(const char* namespace_name, const char* mod_name,
                        const char* json, struct end_system* sys) {
   int error = 0;
 
-  sys->namespace = namespace_name;
+  sys->fid.ns = namespace_name;
 
   struct jsmn_iterator iter;
   jsmn_iterator_init(&iter, jsmn, json);
@@ -26,7 +26,7 @@ int end_system_fillout(const char* namespace_name, const char* mod_name,
   while (jsmn_iterator_next(&iter)) {
     if (strcmp(iter.key, "id") == 0) {
       END_JSON_CHECK_STRING(iter);
-      sys->id = jsmn_iterator_get_string_heap(json, iter.val);
+      sys->fid.id = jsmn_iterator_get_string_heap(json, iter.val);
     } else if (strcmp(iter.key, "name") == 0) {
       END_JSON_CHECK_STRING(iter);
       sys->name = jsmn_iterator_get_string_heap(json, iter.val);
@@ -34,7 +34,7 @@ int end_system_fillout(const char* namespace_name, const char* mod_name,
       END_JSON_CHECK_STRING(iter);
       sys->desc = jsmn_iterator_get_string_heap(json, iter.val);
     } else if (strcmp(iter.key, "pos") == 0) {
-      end_sys_pos_fillout(namespace_name, mod_name, file_name, iter.val, json, &(sys->pos));
+      end_sys_pos_fillout(mod_name, namespace_name, file_name, iter.val, json, &(sys->pos));
     } else {
       log_error("Unknown object %s in end_system in file %s from %s:%s",
                 iter.key, file_name, mod_name, namespace_name);
@@ -63,7 +63,7 @@ void end_system_load(const char* system_path, const char* namespace_name,
   strcpy(sys_rel_path, "info.json");
   FILE* file = fopen(path_buf, "r");
   if (file == NULL) {
-    log_error("Could not open 'info.json' at %s from %s:%s", path_buf, namespace_name, mod_name);
+    log_error("Could not open 'info.json' at %s from %s:%s", path_buf, mod_name, namespace_name);
     return;
   }
   char* json = fileio_read_all(file);
@@ -72,7 +72,7 @@ void end_system_load(const char* system_path, const char* namespace_name,
   jsmntok_t* jsmn = fileio_read_json(json);
 
   struct end_system sys = {};
-  if (end_system_fillout(namespace_name, mod_name, file_name, jsmn, json, &sys) != 0) {
+  if (end_system_fillout(mod_name, namespace_name, file_name, jsmn, json, &sys) != 0) {
     free(json);
     free(jsmn);
     return;
@@ -83,34 +83,34 @@ void end_system_load(const char* system_path, const char* namespace_name,
 
   registry_init(&(sys.body_ids), sizeof(struct end_system_body_id_entry), (void*)end_system_body_id_entry_cmp, NULL);
 
-  log_info("Loading bodies from system %s:%s:%s", namespace_name, mod_name, sys.id);
+  log_info("Loading bodies from system %s:%s:%s", mod_name, namespace_name, sys.fid.id);
 
   strcpy(sys_rel_path, "bodies");
-  dir_load(path_buf, end_body_load(&sys, file_path, namespace_name, mod_name, file_name));
+  dir_load(path_buf, end_body_load(&sys, file_path, mod_name, namespace_name, file_name));
 
   free(path_buf);
 
   if (registry_add(end_regman_get_system(), &sys) == NULL) {
-    log_error("System %s:%s:%s already registered", namespace_name, mod_name, sys.id);
+    log_error("System %s:%s:%s already registered", mod_name, namespace_name, sys.fid.id);
     end_system_cleanup(&sys);
     return;
   }
 
-  log_info("Done loading system %s:%s:%s", namespace_name, mod_name, sys.id);
+  log_info("Done loading system %s:%s:%s", mod_name, namespace_name, sys.fid.id);
 }
 
-struct end_system* end_system_get(const char* ns, const char* id) {
-  return registry_ktov(end_regman_get_system(), &(struct end_system){.id = (char*)id, .namespace = ns});
+struct end_system* end_system_get(const struct fid* fid) {
+  return registry_ktov(end_regman_get_system(), &(struct end_system){.fid = *fid});
 }
 
 int end_system_cmp(const struct end_system* a, const struct end_system* b) {
-  int ns = registry_strcmp(a->namespace, b->namespace);
+  int ns = registry_strcmp(a->fid.ns, b->fid.ns);
   if (ns != 0) return ns;
-  return registry_strcmp(a->id, b->id);
+  return registry_strcmp(a->fid.id, b->fid.id);
 }
 
 void end_system_cleanup(struct end_system* elem) {
-  free(elem->id);
+  free((char*)elem->fid.id);
   free(elem->name);
   free(elem->desc);
   registry_cleanup(&(elem->body_ids));
@@ -121,12 +121,12 @@ void end_system_load_save(const char* file_path, const char* namespace_name, con
 
 void end_system_save(const struct end_system* sys) {
   const char* arr[] = {
-    STR({})
+      STR({}),
   };
 
   char* str = str_cat_arr(arr, sizeof(arr));
 
-  save_write("endian", "systems", sys->id, "json", str);
+  save_write(sys->fid.ns, "systems", sys->fid.id, "json", str);
 
   free(str);
 }
@@ -135,7 +135,7 @@ void end_system_save_all() {
   const struct registry* reg = end_regman_get_system();
   for (int i = 0; i < reg->length; i++) {
     const struct end_system* sys = registry_itov(reg, i);
-    log_info("Saving system %s:%s", sys->namespace, sys->id);
+    log_info("Saving system %s:%s", sys->fid.ns, sys->fid.id);
     end_system_save(sys);
   }
 }

@@ -7,6 +7,7 @@
 #include "end_api.h"
 #include "end_regman.h"
 #include "end_system.h"
+#include "fid.h"
 #include "json_macros.h"
 #include "registry.h"
 #include "spaceint.h"
@@ -16,9 +17,8 @@ int end_body_fillout(const char* namespace_name, const char* mod_name,
                      const char* json, struct end_body* body) {
   int error = 0;
 
-  body->namespace = namespace_name;
-  body->primary = NULL;
-  body->primary_namespace = NULL;
+  body->fid.ns = namespace_name;
+  body->prim_fid = (struct fid){};
   body->semimajoraxis = 0;
 
   struct jsmn_iterator iter;
@@ -27,7 +27,8 @@ int end_body_fillout(const char* namespace_name, const char* mod_name,
   while (jsmn_iterator_next(&iter)) {
     if (strcmp(iter.key, "id") == 0) {
       END_JSON_CHECK_STRING(iter);
-      body->id = jsmn_iterator_get_string_heap(json, iter.val);
+      char* id = jsmn_iterator_get_string_heap(json, iter.val);
+      body->fid.id = id;
     } else if (strcmp(iter.key, "name") == 0) {
       END_JSON_CHECK_STRING(iter);
       body->name = jsmn_iterator_get_string_heap(json, iter.val);
@@ -45,19 +46,18 @@ int end_body_fillout(const char* namespace_name, const char* mod_name,
       else if (strcmp(type, "MOON") == 0) body->type = END_BODY_MOON;
     } else if (strcmp(iter.key, "primary") == 0) {
       END_JSON_CHECK_STRING(iter);
-      char* prim_ns = jsmn_iterator_get_string_heap(json, iter.val);
-      char* colon = prim_ns;
-      while (*colon != ':' && *colon != '\0') colon++;
-      if (*colon == '\0') {
+      char* str = jsmn_iterator_get_string_heap(json, iter.val);
+      struct fid fid = fid_split(str);
+
+      if (fid.ns == NULL) {
         log_error("Primary body from %s:%s:%s is not formatted in namespace:bodyname (got %s)",
-                  mod_name, namespace_name, file_name, prim_ns);
+                  mod_name, namespace_name, file_name, str);
         error++;
-        free(prim_ns);
+        free(str);
         continue;
       }
-      *colon = '\0';
-      body->primary = colon + 1;
-      body->primary_namespace = prim_ns;
+
+      body->prim_fid = fid;
     } else if (strcmp(iter.key, "mass") == 0) {
       END_JSON_CHECK_NUMBER(iter);
       char scinot[128];
@@ -74,7 +74,7 @@ int end_body_fillout(const char* namespace_name, const char* mod_name,
       jsmn_iterator_get_string(str, sizeof(str), json, iter.val);
       body->semimajoraxis = strtoul(str, NULL, 10);
     } else if (strcmp(iter.key, "pos") == 0) {
-      error += end_body_pos_fillout(namespace_name, mod_name, file_name, iter.val, json, &(body->pos));
+      error += end_body_pos_fillout(mod_name, namespace_name, file_name, iter.val, json, &(body->pos));
     } else {
       log_error("Unknown object %s in end_body in file %s from %s:%s",
                 iter.key, file_name, mod_name, namespace_name);
@@ -92,7 +92,7 @@ void end_body_load(struct end_system* system,
 
   FILE* file = fopen(body_path, "r");
   if (file == NULL) {
-    log_error("Could not open %s from %s:%s", body_path, namespace_name, mod_name);
+    log_error("Could not open %s from %s:%s", body_path, mod_name, namespace_name);
     return;
   }
   char* json = fileio_read_all(file);
@@ -101,7 +101,7 @@ void end_body_load(struct end_system* system,
   jsmntok_t* jsmn = fileio_read_json(json);
 
   struct end_body body = {};
-  if (end_body_fillout(namespace_name, mod_name, file_name, jsmn, json, &body) != 0) {
+  if (end_body_fillout(mod_name, namespace_name, file_name, jsmn, json, &body) != 0) {
     free(json);
     free(jsmn);
     return;
@@ -110,33 +110,31 @@ void end_body_load(struct end_system* system,
   free(json);
   free(jsmn);
 
-  body.system = system->id;
-  body.system_namespace = system->namespace;
+  body.sys_fid = system->fid;
 
   if (registry_add(end_regman_get_body(), &body) == NULL) {
-    log_error("Body %s:%s:%s already registered", namespace_name, mod_name, body.id);
+    log_error("Body %s:%s:%s already registered", mod_name, namespace_name, file_name);
     end_body_cleanup(&body);
     return;
   }
 
-  log_info("Loading body %s:%s:%s", namespace_name, mod_name, body.id);
+  log_info("Loading body %s:%s:%s", mod_name, namespace_name, file_name);
 }
 
-struct end_body* end_body_get(const char* ns, const char* id) {
-  return registry_ktov(end_regman_get_body(), &(struct end_body){.id = (char*)id, .namespace = ns});
+struct end_body* end_body_get(const struct fid* fid) {
+  return registry_ktov(end_regman_get_body(), &(struct end_body){.fid = *fid});
 }
 
 int end_body_cmp(const struct end_body* a, const struct end_body* b) {
-  int ns = registry_strcmp(a->namespace, b->namespace);
+  int ns = registry_strcmp(a->fid.ns, b->fid.ns);
   if (ns != 0) return ns;
-  return registry_strcmp(a->id, b->id);
+  return registry_strcmp(a->fid.id, b->fid.id);
 }
 
 void end_body_cleanup(struct end_body* elem) {
-  free(elem->id);
+  free((char*)elem->fid.id);
   free(elem->name);
   free(elem->desc);
-  if (elem->primary_namespace != NULL) free(elem->primary_namespace);
 }
 
 time_t calc_orbital_period(unsigned long semimajoraxis, spaceint_t larger_mass) {
@@ -159,20 +157,25 @@ int end_body_post_load_fillout() {
 
   for (int i = 0; i < reg->length; i++) {
     struct end_body* body = registry_itov(reg, i);
-    struct end_system* sys = end_system_get(body->system_namespace, body->system);
+    struct end_system* sys = end_system_get(&body->sys_fid);
 
     // put integer id on system registry
     registry_add(&(sys->body_ids), &(struct end_system_body_id_entry){.id = i});
 
-    // if the primary id is NULL, the body intentionally has no primary
-    if (body->primary != NULL) {
+    // if the primary fid is NULL, the body intentionally has no primary
+    if (body->prim_fid.id != NULL) {
       // get primary and check that it exists
-      struct end_body* prim = end_body_get(body->primary_namespace, body->primary);
+      struct end_body* prim = end_body_get(&body->prim_fid);
       if (prim == NULL) {
-        log_error("From body %s, primary %s does not exist", body->id, body->primary);
+        log_error("From body %s:%s, primary %s:%s does not exist",
+                  body->fid.ns, body->fid.id, body->prim_fid.ns, body->prim_fid.id);
         error++;
         continue;
       }
+
+      // replace the body's primary fid with a pointer to the primary's fid
+      free((char*)body->prim_fid.ns);
+      body->prim_fid = prim->fid;
 
       // calculate all orbital periods
       body->orbital_period = calc_orbital_period(body->semimajoraxis, prim->mass);

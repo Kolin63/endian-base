@@ -19,6 +19,7 @@ fi
 ln -s "${engine_dir}/src/api.h" "include"
 ln -s "${engine_dir}/src/bot.h" "include"
 ln -s "${engine_dir}/src/function.h" "include"
+ln -s "${engine_dir}/src/fid.h" "include"
 ln -s "${engine_dir}/src/namespace.h" "include"
 ln -s "${engine_dir}/dependencies/registry.h" "include"
 ln -s "${engine_dir}/src/save.h" "include"

@@ -74,7 +74,7 @@ const struct namespace_mod_entry* namespace_mod_entry_get(const struct namespace
   return global->namespace_mod_entry_get(ns, name);
 }
 const struct registry* get_plugin_registry() { return global->get_plugin_registry(); }
-const struct plugin* plugin_get(char* namespace, char* name) { return global->plugin_get(namespace, name); }
+const struct plugin* plugin_get(const struct fid* fid) { return global->plugin_get(fid); }
 const struct registry* get_function_registry() { return global->get_function_registry(); }
 const struct function* function_get(char* name) { return global->function_get(name); }
 const struct registry* get_command_registry() { return global->get_command_registry(); }
@@ -121,3 +121,5 @@ int save_write(const char* ns, const char* dir, const char* file, const char* ex
 int save_read(const char* ns, const char* dir, const char* file, const char* ext, char** out) {
   return global->save_read(ns, dir, file, ext, out);
 }
+
+struct fid fid_split(char* str) { return global->fid_split(str); }

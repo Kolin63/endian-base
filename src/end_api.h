@@ -84,7 +84,7 @@ const struct registry* get_namespace_registry();
 const struct namespace* namespace_get(const char* name);
 const struct namespace_mod_entry* namespace_mod_entry_get(const struct namespace* ns, const char* name);
 const struct registry* get_plugin_registry();
-const struct plugin* plugin_get(char* namespace, char* name);
+const struct plugin* plugin_get(const struct fid* fid);
 const struct registry* get_function_registry();
 const struct function* function_get(char* name);
 const struct registry* get_command_registry();
@@ -156,5 +156,11 @@ int save_write(const char* ns, const char* dir, const char* file, const char* ex
 // ext is file extension, and it should not include the dot. for example, a
 // json file has the extension "json", not ".json"
 int save_read(const char* ns, const char* dir, const char* file, const char* ext, char** out);
+
+// takes a string formatted as namespace:id and replaces the colon with a null
+// terminator.
+// if the string cannot be properly split, it sets the id to the full string and
+// sets the namespace to NULL
+struct fid fid_split(char* str);
 
 #endif

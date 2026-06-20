@@ -4,10 +4,10 @@
 #include <registry.h>
 
 #include "end_pos.h"
+#include "fid.h"
 
 struct end_system {
-  char* id;
-  const char* namespace;
+  struct fid fid;
   char* name;
   char* desc;
   struct registry body_ids;
@@ -16,7 +16,7 @@ struct end_system {
 
 void end_system_load(const char* system_path, const char* namespace_name,
                      const char* mod_name, const char* file_name);
-struct end_system* end_system_get(const char* ns, const char* id);
+struct end_system* end_system_get(const struct fid* fid);
 int end_system_cmp(const struct end_system* a, const struct end_system* b);
 void end_system_cleanup(struct end_system* elem);
 

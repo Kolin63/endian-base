@@ -91,7 +91,7 @@ int end_pos_fillout(const char* namespace_name, const char* mod_name,
   int error = 0;
 
   pos->body = NULL;
-  pos->system = NULL;
+  pos->sys = NULL;
   pos->x = 0;
   pos->y = 0;
 
@@ -121,7 +121,7 @@ int end_pos_fillout(const char* namespace_name, const char* mod_name,
       *colon = '\0';
       const char* id = colon + 1;
 
-      const struct end_body* body = end_body_get(ns, id);
+      const struct end_body* body = end_body_get(&(struct fid){.ns = ns, .id = id});
       if (body == NULL) {
         log_error("Body %s:%s is not registered in file %s from %s:%s", ns, id, file_name, mod_name, namespace_name);
         error++;
@@ -129,8 +129,7 @@ int end_pos_fillout(const char* namespace_name, const char* mod_name,
         continue;
       }
       free(ns);
-      pos->body_ns = body->namespace;
-      pos->body = body->id;
+      pos->body = &body->fid;
     } else if (strcmp(iter.key, "system") == 0) {
       // system can be null
       if (iter.val->type == JSMN_PRIMITIVE) {
@@ -140,29 +139,26 @@ int end_pos_fillout(const char* namespace_name, const char* mod_name,
       }
       END_JSON_CHECK_STRING(iter);
       // only for cmp purposes, don't set pos->system to this
-      char* ns = jsmn_iterator_get_string_heap(json, iter.val);
-      char* colon = ns;
-      while (*colon != ':' && *colon != '\0') colon++;
-      if (*colon == '\0') {
+      char* str = jsmn_iterator_get_string_heap(json, iter.val);
+      struct fid fid = fid_split(str);
+      if (fid.ns == NULL) {
         log_error("System in pos %s:%s:%s not formatted in namespace:sysname (got %s)",
-                  mod_name, namespace_name, file_name, ns);
+                  mod_name, namespace_name, file_name, str);
         error++;
-        free(ns);
+        free(str);
         continue;
       }
-      *colon = '\0';
-      const char* id = colon + 1;
 
-      const struct end_system* sys = end_system_get(ns, id);
+      const struct end_system* sys = end_system_get(&fid);
       if (sys == NULL) {
-        log_error("System %s:%s is not registered in file %s from %s:%s", ns, id, file_name, mod_name, namespace_name);
+        log_error("System %s:%s is not registered in file %s from %s:%s",
+                  fid.ns, fid.id, file_name, mod_name, namespace_name);
         error++;
-        free(ns);
+        free(str);
         continue;
       }
-      free(ns);
-      pos->system = sys->id;
-      pos->system_ns = sys->namespace;
+      free(str);
+      pos->sys = &sys->fid;
     } else if (strcmp(iter.key, "x") == 0) {
       END_JSON_CHECK_NUMBER(iter);
       char* str = jsmn_iterator_get_string_heap(json, iter.val);
@@ -181,13 +177,14 @@ int end_pos_fillout(const char* namespace_name, const char* mod_name,
   }
 
   // check that the body is in the system
-  if (pos->body != NULL && pos->system != NULL) {
-    const struct end_system* sys = end_system_get(pos->system_ns, pos->system);
-    const struct end_body* body = end_body_get(pos->body_ns, pos->body);
+  if (pos->body != NULL && pos->sys != NULL) {
+    const struct end_system* sys = end_system_get(pos->sys);
+    const struct end_body* body = end_body_get(pos->body);
     const int i = registry_vtoi(&(sys->body_ids), body);
     if (i < 0) {
       log_error("Body %s:%s is not in system %s:%s in file %s from %s:%s",
-                pos->body_ns, pos->body, pos->system_ns, pos->system, file_name, mod_name, namespace_name);
+                pos->body->ns, pos->body->id, pos->sys->ns, pos->sys->id,
+                file_name, mod_name, namespace_name);
       error++;
     }
   }
@@ -199,15 +196,27 @@ void end_pos_human_readable(char* buf, size_t size, struct end_pos pos) {
   const int x = pos.x;
   const int y = pos.y;
   const int z = pos.z;
-  const char* body = pos.body;
-  const char* system = pos.system;
+  const struct fid* body = pos.body;
+  const struct fid* system = pos.sys;
+  const char* body_name = NULL;
+  const char* system_name = NULL;
+
+  if (body != NULL) {
+    const struct end_body* b = end_body_get(body);
+    body_name = b->name;
+  }
+
+  if (system != NULL) {
+    const struct end_system* s = end_system_get(body);
+    system_name = s->name;
+  }
 
   if (body != NULL && system != NULL) {
-    snprintf(buf, size, "(%i, %i) on %s, %s", x, y, body, system);
+    snprintf(buf, size, "(%i, %i) on %s, %s", x, y, body_name, system_name);
   } else if (body == NULL && system != NULL) {
-    snprintf(buf, size, "(%i, %i, %i) in %s", x, y, z, system);
+    snprintf(buf, size, "(%i, %i, %i) in %s", x, y, z, system_name);
   } else if (body != NULL && system == NULL) {
-    snprintf(buf, size, "(%i, %i, %i) on %s, interstellar", x, y, z, body);
+    snprintf(buf, size, "(%i, %i, %i) on %s, interstellar", x, y, z, body_name);
   } else if (body == NULL && system == NULL) {
     snprintf(buf, size, "(%i, %i, %i) interstellar", x, y, z);
   }

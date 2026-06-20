@@ -4,14 +4,15 @@
 #define JSMN_HEADER
 #include <concord/jsmn.h>
 
+#include "fid.h"
+
 struct end_tile_com {
   int id;
   void* data;
 };
 
 struct end_tile_com_ent {
-  char* id;
-  const char* namespace;
+  struct fid fid;
   int (*fillout)(const char* namespace_name, const char* mod_name,
                  const char* file_name, const jsmntok_t* jsmn,
                  const char* json, struct end_tile_com* com);
@@ -26,7 +27,7 @@ void end_tile_com_cleanup(struct end_tile_com* elem);
 
 void end_tile_com_ent_load(const char* file_path, const char* namespace_name,
                            const char* mod_name, const char* file_name);
-struct end_tile_com_ent* end_tile_com_ent_get(const char* ns, const char* id);
+struct end_tile_com_ent* end_tile_com_ent_get(const struct fid* fid);
 int end_tile_com_ent_cmp(const struct end_tile_com_ent* a, const struct end_tile_com_ent* b);
 void end_tile_com_ent_cleanup(struct end_tile_com_ent* elem);
 

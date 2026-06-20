@@ -31,7 +31,7 @@ int end_tile_ent_coms_fillout(const char* namespace_name, const char* mod_name,
     *colon = '\0';
     char* id = colon + 1;
 
-    int i = registry_ktoi(end_regman_get_tile_com(), &(struct end_tile_com_ent){.id = id, .namespace = ns});
+    int i = registry_ktoi(end_regman_get_tile_com(), &(struct end_tile_com_ent){.fid.id = id, .fid.ns = ns});
     if (i == -1) {
       log_error("Tile compenent %s:%s does not exist in %s:%s:%s",
                 ns, id, mod_name, namespace_name, file_name);
@@ -60,7 +60,7 @@ int end_tile_ent_fillout(const char* namespace_name, const char* mod_name,
                          const char* json, struct end_tile_ent* tile) {
   int error = 0;
 
-  tile->namespace = namespace_name;
+  tile->fid.ns = namespace_name;
 
   registry_init(&(tile->coms), sizeof(struct end_tile_com), (void*)end_tile_com_cmp, (void*)end_tile_com_cleanup);
 
@@ -70,7 +70,7 @@ int end_tile_ent_fillout(const char* namespace_name, const char* mod_name,
   while (jsmn_iterator_next(&iter)) {
     if (strcmp(iter.key, "id") == 0) {
       END_JSON_CHECK_STRING(iter);
-      tile->id = jsmn_iterator_get_string_heap(json, iter.val);
+      tile->fid.id = jsmn_iterator_get_string_heap(json, iter.val);
     } else if (strcmp(iter.key, "name") == 0) {
       END_JSON_CHECK_STRING(iter);
       tile->name = jsmn_iterator_get_string_heap(json, iter.val);
@@ -82,7 +82,7 @@ int end_tile_ent_fillout(const char* namespace_name, const char* mod_name,
       tile->icon = jsmn_iterator_get_string_heap(json, iter.val);
     } else if (strcmp(iter.key, "coms") == 0) {
       END_JSON_CHECK_ARRAY(iter);
-      error += end_tile_ent_coms_fillout(namespace_name, mod_name, file_name, iter.val, json, &(tile->coms));
+      error += end_tile_ent_coms_fillout(mod_name, namespace_name, file_name, iter.val, json, &(tile->coms));
     }
   }
 
@@ -95,7 +95,7 @@ void end_tile_ent_load(const char* file_path, const char* namespace_name,
 
   FILE* file = fopen(file_path, "r");
   if (file == NULL) {
-    log_error("Could not open %s from %s:%s", file_path, namespace_name, mod_name);
+    log_error("Could not open %s from %s:%s", file_path, mod_name, namespace_name);
     return;
   }
   char* json = fileio_read_all(file);
@@ -104,7 +104,7 @@ void end_tile_ent_load(const char* file_path, const char* namespace_name,
   jsmntok_t* jsmn = fileio_read_json(json);
 
   struct end_tile_ent tile = {};
-  if (end_tile_ent_fillout(namespace_name, mod_name, file_name, jsmn, json, &tile) != 0) {
+  if (end_tile_ent_fillout(mod_name, namespace_name, file_name, jsmn, json, &tile) != 0) {
     free(json);
     free(jsmn);
     return;
@@ -114,26 +114,26 @@ void end_tile_ent_load(const char* file_path, const char* namespace_name,
   free(jsmn);
 
   if (registry_add(end_regman_get_tile(), &tile) == NULL) {
-    log_error("Tile %s:%s:%s already registered", namespace_name, mod_name, tile.id);
+    log_error("Tile %s:%s:%s already registered", mod_name, namespace_name, tile.fid.id);
     end_tile_ent_cleanup(&tile);
     return;
   }
 
-  log_info("Loading tile %s:%s:%s", namespace_name, mod_name, tile.id);
+  log_info("Loading tile %s:%s:%s", mod_name, namespace_name, tile.fid.id);
 }
 
-struct end_tile_ent* end_tile_ent_get(const char* ns, const char* id) {
-  return registry_ktov(end_regman_get_tile(), &(struct end_tile_ent){.id = (char*)id, .namespace = ns});
+struct end_tile_ent* end_tile_ent_get(const struct fid* fid) {
+  return registry_ktov(end_regman_get_tile(), &(struct end_tile_ent){.fid = *fid});
 }
 
 int end_tile_ent_cmp(const struct end_tile_ent* a, const struct end_tile_ent* b) {
-  int ns = registry_strcmp(a->namespace, b->namespace);
+  int ns = registry_strcmp(a->fid.ns, b->fid.ns);
   if (ns != 0) return ns;
-  return registry_strcmp(a->id, b->id);
+  return registry_strcmp(a->fid.id, b->fid.id);
 }
 
 void end_tile_ent_cleanup(struct end_tile_ent* elem) {
-  free(elem->id);
+  free((char*)elem->fid.id);
   free(elem->name);
   free(elem->desc);
   free(elem->icon);

@@ -18,10 +18,8 @@ struct end_body_pos {
 };
 
 struct end_pos {
-  const char* body_ns;
-  const char* body;
-  const char* system_ns;
-  const char* system;
+  const struct fid* sys;
+  const struct fid* body;
   int x;
   int y;
   int z;

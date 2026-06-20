@@ -17,7 +17,7 @@ int end_tile_com_fillout(const char* namespace_name, const char* mod_name,
   com->data = NULL;
 
   int i = registry_ktoi(end_regman_get_tile_com(),
-                        &(struct end_tile_com_ent){.id = (char*)key, .namespace = namespace_name});
+                        &(struct end_tile_com_ent){.fid.id = (char*)key, .fid.ns = namespace_name});
   if (i == -1) {
     log_error("Tile component %s doesn't exist from %s:%s:%s",
               key, mod_name, namespace_name, file_name);
@@ -45,7 +45,7 @@ int end_tile_com_ent_fillout(const char* namespace_name, const char* mod_name,
                              const char* json, struct end_tile_com_ent* com) {
   int error = 0;
 
-  com->namespace = namespace_name;
+  com->fid.ns = namespace_name;
 
   struct jsmn_iterator iter;
   jsmn_iterator_init(&iter, jsmn, json);
@@ -53,7 +53,7 @@ int end_tile_com_ent_fillout(const char* namespace_name, const char* mod_name,
   while (jsmn_iterator_next(&iter)) {
     if (strcmp(iter.key, "name") == 0) {
       END_JSON_CHECK_STRING(iter);
-      com->id = jsmn_iterator_get_string_heap(json, iter.val);
+      com->fid.id = jsmn_iterator_get_string_heap(json, iter.val);
     } else if (strcmp(iter.key, "fillout") == 0) {
       END_JSON_CHECK_STRING(iter);
       char* func_name = jsmn_iterator_get_string_heap(json, iter.val);
@@ -130,24 +130,24 @@ void end_tile_com_ent_load(const char* file_path, const char* namespace_name,
   free(jsmn);
 
   if (registry_add(end_regman_get_tile_com(), &com) == NULL) {
-    log_error("Tile component %s:%s:%s already registered", mod_name, namespace_name, com.id);
+    log_error("Tile component %s:%s:%s already registered", mod_name, namespace_name, com.fid.id);
     end_tile_com_ent_cleanup(&com);
     return;
   }
 
-  log_info("Loading tile component %s:%s:%s", mod_name, namespace_name, com.id);
+  log_info("Loading tile component %s:%s:%s", mod_name, namespace_name, com.fid.id);
 }
 
-struct end_tile_com_ent* end_tile_com_ent_get(const char* ns, const char* id) {
-  return registry_ktov(end_regman_get_tile_com(), &(struct end_tile_com_ent){.id = (char*)id, .namespace = ns});
+struct end_tile_com_ent* end_tile_com_ent_get(const struct fid* fid) {
+  return registry_ktov(end_regman_get_tile_com(), &(struct end_tile_com_ent){.fid = *fid});
 }
 
 int end_tile_com_ent_cmp(const struct end_tile_com_ent* a, const struct end_tile_com_ent* b) {
-  int ns = registry_strcmp(a->namespace, b->namespace);
+  int ns = registry_strcmp(a->fid.ns, b->fid.ns);
   if (ns != 0) return ns;
-  return registry_strcmp(a->id, b->id);
+  return registry_strcmp(a->fid.id, b->fid.id);
 }
 
 void end_tile_com_ent_cleanup(struct end_tile_com_ent* elem) {
-  free(elem->id);
+  free((char*)elem->fid.id);
 }

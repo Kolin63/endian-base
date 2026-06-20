@@ -11,5 +11,11 @@
 
   "radius":	6371,
 
-  "semimajoraxis": 149598023
+  "semimajoraxis": 149598023,
+
+  "tiles": [
+    {
+      "id": "endian:empty"
+    }
+  ]
 }

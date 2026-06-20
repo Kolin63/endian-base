@@ -1,7 +1,7 @@
 {
   "name": "city_info",
   "fillout": "end_com_city_info_fillout",
-  "cleanup": "end_com_city_info_cleanup",
+  "to_json": "end_com_city_info_to_json",
 
   "template": {
     "popl": 0

@@ -1,0 +1,7 @@
+{
+  "name": "end_biome",
+  "fillout": "end_com_biome_fillout",
+  "to_json": "end_com_biome_to_json",
+
+  "template": "ocean"
+}

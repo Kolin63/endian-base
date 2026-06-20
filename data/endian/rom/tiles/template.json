@@ -1,0 +1,10 @@
+{
+  "id": "foo",
+  "name": "Foo",
+  "desc": "Foo bar baz bop",
+  "icon": "F",
+  "coms": [
+    "ns:foo",
+    "ns:bar"
+  ]
+}

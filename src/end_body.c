@@ -7,6 +7,7 @@
 #include "end_api.h"
 #include "end_regman.h"
 #include "end_system.h"
+#include "end_tilemap.h"
 #include "fid.h"
 #include "json_macros.h"
 #include "registry.h"
@@ -20,6 +21,7 @@ int end_body_fillout(const char* namespace_name, const char* mod_name,
   body->fid.ns = namespace_name;
   body->prim_fid = (struct fid){};
   body->semimajoraxis = 0;
+  body->tilemap = (struct end_tilemap){.face_width = 0, .total_tiles = 0, .tiles = NULL};
 
   struct jsmn_iterator iter;
   jsmn_iterator_init(&iter, jsmn, json);
@@ -68,13 +70,17 @@ int end_body_fillout(const char* namespace_name, const char* mod_name,
       char str[128];
       jsmn_iterator_get_string(str, sizeof(str), json, iter.val);
       body->radius = strtoul(str, NULL, 10);
+      body->tilemap.face_width = body->radius * 0.00565313480124;
+      if (body->tilemap.face_width == 0) body->tilemap.face_width = 1;
     } else if (strcmp(iter.key, "semimajoraxis") == 0) {
       END_JSON_CHECK_NUMBER(iter);
       char str[128];
       jsmn_iterator_get_string(str, sizeof(str), json, iter.val);
       body->semimajoraxis = strtoul(str, NULL, 10);
     } else if (strcmp(iter.key, "pos") == 0) {
-      error += end_body_pos_fillout(mod_name, namespace_name, file_name, iter.val, json, &(body->pos));
+      error += end_body_pos_fillout(namespace_name, mod_name, file_name, iter.val, json, &(body->pos));
+    } else if (strcmp(iter.key, "tiles") == 0) {
+      error += end_tilemap_fillout(namespace_name, mod_name, file_name, iter.val, json, &(body->tilemap));
     } else {
       log_error("Unknown object %s in end_body in file %s from %s:%s",
                 iter.key, file_name, mod_name, namespace_name);
@@ -182,8 +188,8 @@ int end_body_post_load_fillout() {
     }
 
     // calculate face width and total tiles
-    body->face_width = calc_face_width(body->radius);
-    body->total_tiles = (body->face_width * body->face_width) * 6;
+    body->tilemap.face_width = calc_face_width(body->radius);
+    body->tilemap.total_tiles = (body->tilemap.face_width * body->tilemap.face_width) * 6;
   }
   return error;
 }

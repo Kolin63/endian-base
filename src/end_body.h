@@ -5,6 +5,7 @@
 
 #include "end_pos.h"
 #include "end_system.h"
+#include "end_tilemap.h"
 #include "fid.h"
 #include "spaceint.h"
 
@@ -34,8 +35,7 @@ struct end_body {
   // in seconds
   time_t orbital_period;
 
-  unsigned int face_width;
-  unsigned int total_tiles;
+  struct end_tilemap tilemap;
 
   // can be 0
   unsigned long semimajoraxis;

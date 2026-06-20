@@ -22,5 +22,7 @@
   "radius": 6371,
 
   "comment": "Integer. Semi-Major Axis of elliptical orbit",
-  "semimajoraxis": 149598023
+  "semimajoraxis": 149598023,
+
+  "tiles": []
 }

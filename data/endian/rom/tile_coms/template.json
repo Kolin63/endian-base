@@ -1,6 +1,7 @@
 {
   "name": "foo",
   "fillout": "foo_fillout",
+  "to_json": "foo_to_json",
   "cleanup": "foo_cleanup",
 
   "template": {

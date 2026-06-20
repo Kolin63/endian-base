@@ -1,50 +1,52 @@
 #include "end_com_city_info.h"
 
+#include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 
 #include "end_api.h"
 #include "jsmn_iterator.h"
 #include "json_macros.h"
+#include "str_cat_arr.h"
 
 enum end_city_size end_com_city_info_get_size(unsigned long popl) {
-  if (popl >= 0 && popl < 50) return ECCIS_CAMP;
-  else if (popl >= 50 && popl < 100) return ECCIS_HAMLET;
-  else if (popl >= 100 && popl < 500) return ECCIS_SETTLEMENT;
-  else if (popl >= 500 && popl < 1000) return ECCIS_VILLAGE;
-  else if (popl >= 1000 && popl < 250000) return ECCIS_TOWN;
-  else if (popl >= 250000 && popl < 1000000) return ECCIS_CITY;
-  else if (popl >= 1000000 && popl < 10000000) return ECCIS_METROPOLIS;
-  else if (popl >= 10000000 && popl < 250000000) return ECCIS_MEGALOPOLIS;
-  else if (popl >= 250000000 && popl < 1000000000) return ECCIS_EPEROPOLIS;
-  else if (popl >= 1000000000 && popl < 5000000000) return ECCIS_DIPEROPOLIS;
-  else if (popl >= 5000000000) return ECCIS_ECUMENOPOLIS;
-  return ECCIS_ECUMENOPOLIS;
+  if (popl >= 0 && popl < 50) return ECS_CAMP;
+  else if (popl >= 50 && popl < 100) return ECS_HAMLET;
+  else if (popl >= 100 && popl < 500) return ECS_SETTLEMENT;
+  else if (popl >= 500 && popl < 1000) return ECS_VILLAGE;
+  else if (popl >= 1000 && popl < 250000) return ECS_TOWN;
+  else if (popl >= 250000 && popl < 1000000) return ECS_CITY;
+  else if (popl >= 1000000 && popl < 10000000) return ECS_METROPOLIS;
+  else if (popl >= 10000000 && popl < 250000000) return ECS_MEGALOPOLIS;
+  else if (popl >= 250000000 && popl < 1000000000) return ECS_EPEROPOLIS;
+  else if (popl >= 1000000000 && popl < 5000000000) return ECS_DIPEROPOLIS;
+  else if (popl >= 5000000000) return ECS_ECUMENOPOLIS;
+  return ECS_ECUMENOPOLIS;
 }
 
 const char* end_city_size_get_string(enum end_city_size size) {
   switch (size) {
-  case ECCIS_CAMP:
+  case ECS_CAMP:
     return "Camp";
-  case ECCIS_HAMLET:
+  case ECS_HAMLET:
     return "Hamlet";
-  case ECCIS_SETTLEMENT:
+  case ECS_SETTLEMENT:
     return "Settlement";
-  case ECCIS_VILLAGE:
+  case ECS_VILLAGE:
     return "Village";
-  case ECCIS_TOWN:
+  case ECS_TOWN:
     return "Town";
-  case ECCIS_CITY:
+  case ECS_CITY:
     return "City";
-  case ECCIS_METROPOLIS:
+  case ECS_METROPOLIS:
     return "Metropolis";
-  case ECCIS_MEGALOPOLIS:
+  case ECS_MEGALOPOLIS:
     return "Megalopolis";
-  case ECCIS_EPEROPOLIS:
+  case ECS_EPEROPOLIS:
     return "Eperopolis";
-  case ECCIS_DIPEROPOLIS:
+  case ECS_DIPEROPOLIS:
     return "Diperopolis";
-  case ECCIS_ECUMENOPOLIS:
+  case ECS_ECUMENOPOLIS:
     return "Ecumenopolis";
   }
 }
@@ -82,4 +84,15 @@ int end_com_city_info_fillout(const char* namespace_name, const char* mod_name,
   return error;
 }
 
-void end_com_city_info_cleanup(void* elem) {}
+char* end_com_city_info_to_json(const struct end_com_city_info* elem) {
+  char popl[32];
+  snprintf(popl, sizeof(popl), "%lu", elem->popl);
+
+  const char* arr[] = {
+    "{\"popl\":",
+    popl,
+    "}"
+  };
+
+  return str_cat_arr(arr, sizeof(arr));
+}

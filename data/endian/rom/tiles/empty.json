@@ -1,0 +1,10 @@
+{
+  "id": "empty",
+  "name": "Empty",
+  "desc": "Nothing to see here!",
+  "icon": ".",
+  "coms": [
+    "endian:end_biome",
+    "endian:end_resource"
+  ]
+}

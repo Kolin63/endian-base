@@ -46,6 +46,9 @@ int end_tile_com_ent_fillout(const char* namespace_name, const char* mod_name,
   int error = 0;
 
   com->fid.ns = namespace_name;
+  com->fillout = NULL;
+  com->to_json = NULL;
+  com->cleanup = NULL;
 
   struct jsmn_iterator iter;
   jsmn_iterator_init(&iter, jsmn, json);
@@ -66,13 +69,33 @@ int end_tile_com_ent_fillout(const char* namespace_name, const char* mod_name,
         continue;
       }
       if (func_data->type != FT_FILLOUT) {
-        log_error("Tile component fillout function is not of type fillout %s:%s:%s func %s",
+        log_error("Tile component fillout function is not of type FILLOUT %s:%s:%s func %s",
                   mod_name, namespace_name, file_name, func_name);
         error++;
         free(func_name);
         continue;
       }
       com->fillout = (void*)func_data->function;
+      free(func_name);
+    } else if (strcmp(iter.key, "to_json") == 0) {
+      END_JSON_CHECK_STRING(iter);
+      char* func_name = jsmn_iterator_get_string_heap(json, iter.val);
+      const struct function* func_data = function_get(func_name);
+      if (func_data == NULL) {
+        log_error("Could not get function %s from %s:%s:%s",
+                  func_name, mod_name, namespace_name, file_name);
+        error++;
+        free(func_name);
+        continue;
+      }
+      if (func_data->type != FT_TO_JSON) {
+        log_error("Tile component fillout function is not of type TO_JSON %s:%s:%s func %s",
+                  mod_name, namespace_name, file_name, func_name);
+        error++;
+        free(func_name);
+        continue;
+      }
+      com->to_json = (void*)func_data->function;
       free(func_name);
     } else if (strcmp(iter.key, "cleanup") == 0) {
       END_JSON_CHECK_STRING(iter);
@@ -86,7 +109,7 @@ int end_tile_com_ent_fillout(const char* namespace_name, const char* mod_name,
         continue;
       }
       if (func_data->type != FT_DATA) {
-        log_error("Tile component fillout function is not of type data %s:%s:%s func %s",
+        log_error("Tile component fillout function is not of type DATA %s:%s:%s func %s",
                   mod_name, namespace_name, file_name, func_name);
         error++;
         free(func_name);
@@ -102,6 +125,13 @@ int end_tile_com_ent_fillout(const char* namespace_name, const char* mod_name,
       continue;
     }
   }
+
+  if (com->to_json == NULL) {
+    log_error("Tile component must have cleanup function (%s:%s:%s)",
+              mod_name, namespace_name, file_name);
+    error++;
+  }
+
   return error;
 }
 

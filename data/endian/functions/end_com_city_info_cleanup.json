@@ -1,5 +1,0 @@
-{
-  "type": "DATA",
-  "name": "end_com_city_info_cleanup",
-  "plugin": "endian:libendian"
-}

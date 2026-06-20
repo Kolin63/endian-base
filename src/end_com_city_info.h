@@ -6,17 +6,17 @@
 #include "end_tile_com.h"
 
 enum end_city_size {
-  ECCIS_CAMP,          // 0-49
-  ECCIS_HAMLET,        // 50-99
-  ECCIS_SETTLEMENT,    // 100-499
-  ECCIS_VILLAGE,       // 500-999
-  ECCIS_TOWN,          // 1k-250k
-  ECCIS_CITY,          // 250k-1m
-  ECCIS_METROPOLIS,    // 1m-10m
-  ECCIS_MEGALOPOLIS,   // 10m-250m
-  ECCIS_EPEROPOLIS,    // 250m-1b   (continental)
-  ECCIS_DIPEROPOLIS,   // 1b-5b     (intercontinental)
-  ECCIS_ECUMENOPOLIS,  // 5b+       (global)
+  ECS_CAMP,          // 0-49
+  ECS_HAMLET,        // 50-99
+  ECS_SETTLEMENT,    // 100-499
+  ECS_VILLAGE,       // 500-999
+  ECS_TOWN,          // 1k-250k
+  ECS_CITY,          // 250k-1m
+  ECS_METROPOLIS,    // 1m-10m
+  ECS_MEGALOPOLIS,   // 10m-250m
+  ECS_EPEROPOLIS,    // 250m-1b   (continental)
+  ECS_DIPEROPOLIS,   // 1b-5b     (intercontinental)
+  ECS_ECUMENOPOLIS,  // 5b+       (global)
 };
 
 enum end_city_size end_com_city_info_get_size(unsigned long popl);
@@ -29,6 +29,6 @@ struct end_com_city_info {
 int end_com_city_info_fillout(const char* namespace_name, const char* mod_name,
                               const char* file_name, const jsmntok_t* jsmn,
                               const char* json, struct end_tile_com* com);
-void end_com_city_info_cleanup(void* elem);
+char* end_com_city_info_to_json(const struct end_com_city_info* elem);
 
 #endif

@@ -79,7 +79,9 @@ int end_tile_ent_fillout(const char* namespace_name, const char* mod_name,
       tile->desc = jsmn_iterator_get_string_heap(json, iter.val);
     } else if (strcmp(iter.key, "icon") == 0) {
       END_JSON_CHECK_STRING(iter);
-      tile->icon = jsmn_iterator_get_string_heap(json, iter.val);
+      char buf[2];
+      jsmn_iterator_get_string(buf, sizeof(buf), json, iter.val);
+      tile->icon = buf[0];
     } else if (strcmp(iter.key, "coms") == 0) {
       END_JSON_CHECK_ARRAY(iter);
       error += end_tile_ent_coms_fillout(mod_name, namespace_name, file_name, iter.val, json, &(tile->coms));
@@ -136,8 +138,8 @@ void end_tile_ent_cleanup(struct end_tile_ent* elem) {
   free((char*)elem->fid.id);
   free(elem->name);
   free(elem->desc);
-  free(elem->icon);
 }
 
-int end_tile_set(const char* id);
-const struct end_tile_ent* end_tile_get_ent(const struct end_tile* tile);
+const struct end_tile_ent* end_tile_get_ent(const struct end_tile* tile) {
+  return registry_itov(end_regman_get_tile(), tile->id);
+}

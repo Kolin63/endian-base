@@ -1,4 +1,4 @@
-#include "end_com_resource.h"
+#include "end_tile_com_resource.h"
 
 #include <string.h>
 
@@ -30,12 +30,12 @@ enum end_resource_type end_resource_type_from_string_id(const char* str) {
   else return ERT_NONE;
 }
 
-int end_com_resource_fillout(const char* namespace_name, const char* mod_name,
-                             const char* file_name, const jsmntok_t* jsmn,
-                             const char* json, struct end_tile_com* com) {
+int end_tile_com_resource_fillout(const char* namespace_name, const char* mod_name,
+                                  const char* file_name, const jsmntok_t* jsmn,
+                                  const char* json, struct end_tile_com* com) {
   int error = 0;
 
-  struct end_com_resource* res = com->data;
+  struct end_tile_com_resource* res = com->data;
 
   struct jsmn_iterator iter;
   jsmn_iterator_init(&iter, jsmn, json);
@@ -47,7 +47,7 @@ int end_com_resource_fillout(const char* namespace_name, const char* mod_name,
   return error;
 }
 
-char* end_com_resource_to_json(const struct end_com_resource* elem) {
+char* end_tile_com_resource_to_json(const struct end_tile_com_resource* elem) {
   const char* arr[] = {
       "\"",
       end_resource_type_get_string(elem->type),

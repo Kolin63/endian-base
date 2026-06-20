@@ -1,0 +1,7 @@
+{
+  "name": "end_resource",
+  "fillout": "endian:end_tile_com_resource_fillout",
+  "to_json": "endian:end_tile_com_resource_to_json",
+
+  "template": "iron"
+}

@@ -1,5 +1,5 @@
 {
   "type": "TO_JSON",
-  "name": "end_com_city_info_to_json",
+  "name": "end_tile_com_city_info_to_json",
   "plugin": "endian:libendian"
 }

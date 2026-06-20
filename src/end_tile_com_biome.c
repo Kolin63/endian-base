@@ -1,4 +1,4 @@
-#include "end_com_biome.h"
+#include "end_tile_com_biome.h"
 
 #include <stdlib.h>
 #include <string.h>
@@ -41,12 +41,12 @@ enum end_biome_type end_biome_type_from_string_id(const char* str) {
   else return EBT_OCEAN;
 }
 
-int end_com_biome_fillout(const char* namespace_name, const char* mod_name,
-                          const char* file_name, const jsmntok_t* jsmn,
-                          const char* json, struct end_tile_com* com) {
+int end_tile_com_biome_fillout(const char* namespace_name, const char* mod_name,
+                               const char* file_name, const jsmntok_t* jsmn,
+                               const char* json, struct end_tile_com* com) {
   int error = 0;
 
-  struct end_com_biome* biome = com->data;
+  struct end_tile_com_biome* biome = com->data;
 
   struct jsmn_iterator iter;
   jsmn_iterator_init(&iter, jsmn, json);
@@ -59,7 +59,7 @@ int end_com_biome_fillout(const char* namespace_name, const char* mod_name,
   return error;
 }
 
-char* end_com_biome_to_json(const struct end_com_biome* elem) {
+char* end_tile_com_biome_to_json(const struct end_tile_com_biome* elem) {
   const char* arr[] = {
       "\"",
       end_biome_type_get_string(elem->type),

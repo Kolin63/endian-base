@@ -1,9 +1,0 @@
-{
-  "name": "city_info",
-  "fillout": "end_com_city_info_fillout",
-  "to_json": "end_com_city_info_to_json",
-
-  "template": {
-    "popl": 0
-  }
-}

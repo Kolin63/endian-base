@@ -1,6 +1,5 @@
 {
   "type": "FILLOUT",
-  "name": "end_com_city_info_fillout",
-
+  "name": "end_tile_com_biome_fillout",
   "plugin": "endian:libendian"
 }

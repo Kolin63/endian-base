@@ -1,5 +1,6 @@
 {
   "type": "FILLOUT",
-  "name": "end_com_resource_fillout",
+  "name": "end_tile_com_city_info_fillout",
+
   "plugin": "endian:libendian"
 }

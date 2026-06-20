@@ -1,0 +1,9 @@
+{
+  "name": "city_info",
+  "fillout": "endian:end_tile_com_city_info_fillout",
+  "to_json": "endian:end_tile_com_city_info_to_json",
+
+  "template": {
+    "popl": 0
+  }
+}

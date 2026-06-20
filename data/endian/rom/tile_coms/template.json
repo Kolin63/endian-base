@@ -1,8 +1,8 @@
 {
   "name": "foo",
-  "fillout": "foo_fillout",
-  "to_json": "foo_to_json",
-  "cleanup": "foo_cleanup",
+  "fillout": "bar:foo_fillout",
+  "to_json": "bar:foo_to_json",
+  "cleanup": "bar:foo_cleanup",
 
   "template": {
     "foo": 5,

@@ -1,7 +1,0 @@
-{
-  "name": "end_resource",
-  "fillout": "end_com_resource_fillout",
-  "to_json": "end_com_resource_to_json",
-
-  "template": "iron"
-}

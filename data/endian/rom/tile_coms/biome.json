@@ -1,0 +1,7 @@
+{
+  "name": "end_biome",
+  "fillout": "endian:end_tile_com_biome_fillout",
+  "to_json": "endian:end_tile_com_biome_to_json",
+
+  "template": "ocean"
+}

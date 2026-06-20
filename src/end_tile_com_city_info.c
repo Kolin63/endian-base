@@ -1,4 +1,4 @@
-#include "end_com_city_info.h"
+#include "end_tile_com_city_info.h"
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -9,7 +9,7 @@
 #include "json_macros.h"
 #include "str_cat_arr.h"
 
-enum end_city_size end_com_city_info_get_size(unsigned long popl) {
+enum end_city_size end_city_info_get_size(unsigned long popl) {
   if (popl >= 0 && popl < 50) return ECS_CAMP;
   else if (popl >= 50 && popl < 100) return ECS_HAMLET;
   else if (popl >= 100 && popl < 500) return ECS_SETTLEMENT;
@@ -51,13 +51,13 @@ const char* end_city_size_get_string(enum end_city_size size) {
   }
 }
 
-int end_com_city_info_fillout(const char* namespace_name, const char* mod_name,
-                              const char* file_name, const jsmntok_t* jsmn,
-                              const char* json, struct end_tile_com* com) {
+int end_tile_com_city_info_fillout(const char* namespace_name, const char* mod_name,
+                                   const char* file_name, const jsmntok_t* jsmn,
+                                   const char* json, struct end_tile_com* com) {
   int error = 0;
 
   if (com->data == NULL) com->data = malloc(sizeof(struct end_tile_com));
-  struct end_com_city_info* data = com->data;
+  struct end_tile_com_city_info* data = com->data;
 
   struct jsmn_iterator iter;
   jsmn_iterator_init(&iter, jsmn, json);
@@ -84,15 +84,14 @@ int end_com_city_info_fillout(const char* namespace_name, const char* mod_name,
   return error;
 }
 
-char* end_com_city_info_to_json(const struct end_com_city_info* elem) {
+char* end_tile_com_city_info_to_json(const struct end_tile_com_city_info* elem) {
   char popl[32];
   snprintf(popl, sizeof(popl), "%lu", elem->popl);
 
   const char* arr[] = {
-    "{\"popl\":",
-    popl,
-    "}"
-  };
+      "{\"popl\":",
+      popl,
+      "}"};
 
   return str_cat_arr(arr, sizeof(arr));
 }

@@ -19,5 +19,5 @@
     }
   ],
 
-  "callback": "view_cb"
+  "callback": "endian:view_cb"
 }

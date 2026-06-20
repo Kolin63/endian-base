@@ -77,5 +77,5 @@
   ],
   "default_member_permissions": 123,
 
-  "callback": "foobar"
+  "callback": "namespace:foobar"
 }

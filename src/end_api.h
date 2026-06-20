@@ -86,7 +86,7 @@ const struct namespace_mod_entry* namespace_mod_entry_get(const struct namespace
 const struct registry* get_plugin_registry();
 const struct plugin* plugin_get(const struct fid* fid);
 const struct registry* get_function_registry();
-const struct function* function_get(char* name);
+const struct function* function_get(const struct fid* fid);
 const struct registry* get_command_registry();
 const struct command* command_get(char* name);
 

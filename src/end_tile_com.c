@@ -5,6 +5,7 @@
 
 #include "end_api.h"
 #include "end_regman.h"
+#include "fid.h"
 #include "function.h"
 #include "jsmn_iterator.h"
 #include "json_macros.h"
@@ -60,7 +61,15 @@ int end_tile_com_ent_fillout(const char* namespace_name, const char* mod_name,
     } else if (strcmp(iter.key, "fillout") == 0) {
       END_JSON_CHECK_STRING(iter);
       char* func_name = jsmn_iterator_get_string_heap(json, iter.val);
-      const struct function* func_data = function_get(func_name);
+      struct fid fid = fid_split(func_name);
+      if (fid.ns == NULL) {
+        log_error("In tile component %s:%s:%s, fillout must be namespace:function",
+                  mod_name, namespace_name, file_name);
+        error++;
+        free(func_name);
+        return error;
+      }
+      const struct function* func_data = function_get(&fid);
       if (func_data == NULL) {
         log_error("Could not get function %s from %s:%s:%s",
                   func_name, mod_name, namespace_name, file_name);
@@ -80,7 +89,15 @@ int end_tile_com_ent_fillout(const char* namespace_name, const char* mod_name,
     } else if (strcmp(iter.key, "to_json") == 0) {
       END_JSON_CHECK_STRING(iter);
       char* func_name = jsmn_iterator_get_string_heap(json, iter.val);
-      const struct function* func_data = function_get(func_name);
+      struct fid fid = fid_split(func_name);
+      if (fid.ns == NULL) {
+        log_error("In tile component %s:%s:%s, to_json must be namespace:function",
+                  mod_name, namespace_name, file_name);
+        error++;
+        free(func_name);
+        return error;
+      }
+      const struct function* func_data = function_get(&fid);
       if (func_data == NULL) {
         log_error("Could not get function %s from %s:%s:%s",
                   func_name, mod_name, namespace_name, file_name);
@@ -100,7 +117,15 @@ int end_tile_com_ent_fillout(const char* namespace_name, const char* mod_name,
     } else if (strcmp(iter.key, "cleanup") == 0) {
       END_JSON_CHECK_STRING(iter);
       char* func_name = jsmn_iterator_get_string_heap(json, iter.val);
-      const struct function* func_data = function_get(func_name);
+      struct fid fid = fid_split(func_name);
+      if (fid.ns == NULL) {
+        log_error("In tile component %s:%s:%s, cleanup must be namespace:function",
+                  mod_name, namespace_name, file_name);
+        error++;
+        free(func_name);
+        return error;
+      }
+      const struct function* func_data = function_get(&fid);
       if (func_data == NULL) {
         log_error("Could not get function %s from %s:%s:%s",
                   func_name, mod_name, namespace_name, file_name);

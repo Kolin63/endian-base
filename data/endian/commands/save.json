@@ -3,5 +3,5 @@
   "name": "save",
   "description": "Save all data",
   "default_member_permissions": 8,
-  "callback": "save_cb"
+  "callback": "endian:save_cb"
 }

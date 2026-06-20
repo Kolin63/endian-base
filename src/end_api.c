@@ -76,7 +76,7 @@ const struct namespace_mod_entry* namespace_mod_entry_get(const struct namespace
 const struct registry* get_plugin_registry() { return global->get_plugin_registry(); }
 const struct plugin* plugin_get(const struct fid* fid) { return global->plugin_get(fid); }
 const struct registry* get_function_registry() { return global->get_function_registry(); }
-const struct function* function_get(char* name) { return global->function_get(name); }
+const struct function* function_get(const struct fid* fid) { return global->function_get(fid); }
 const struct registry* get_command_registry() { return global->get_command_registry(); }
 const struct command* command_get(char* name) { return global->command_get(name); }
 

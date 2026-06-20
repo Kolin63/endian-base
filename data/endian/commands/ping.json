@@ -5,5 +5,5 @@
 
   "description": "Tests connection",
 
-  "callback": "ping_cb"
+  "callback": "endian:ping_cb"
 }

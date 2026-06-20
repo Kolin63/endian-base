@@ -27,7 +27,7 @@ int end_tile_com_fillout(const char* namespace_name, const char* mod_name,
   com->id = i;
 
   const struct end_tile_com_ent* ent = registry_itov(end_regman_get_tile_com(), i);
-  error += ent->fillout(namespace_name, mod_name, file_name, jsmn, json, com);
+  error += ent->fillout(mod_name, namespace_name, file_name, jsmn, json, com);
 
   return error;
 }
@@ -111,7 +111,7 @@ void end_tile_com_ent_load(const char* file_path, const char* namespace_name,
 
   FILE* file = fopen(file_path, "r");
   if (file == NULL) {
-    log_error("Could not open %s from %s:%s", file_path, namespace_name, mod_name);
+    log_error("Could not open %s from %s:%s", file_path, mod_name, namespace_name);
     return;
   }
   char* json = fileio_read_all(file);
@@ -120,7 +120,7 @@ void end_tile_com_ent_load(const char* file_path, const char* namespace_name,
   jsmntok_t* jsmn = fileio_read_json(json);
 
   struct end_tile_com_ent com = {};
-  if (end_tile_com_ent_fillout(namespace_name, mod_name, file_name, jsmn, json, &com) != 0) {
+  if (end_tile_com_ent_fillout(mod_name, namespace_name, file_name, jsmn, json, &com) != 0) {
     free(json);
     free(jsmn);
     return;
@@ -130,12 +130,12 @@ void end_tile_com_ent_load(const char* file_path, const char* namespace_name,
   free(jsmn);
 
   if (registry_add(end_regman_get_tile_com(), &com) == NULL) {
-    log_error("Tile component %s:%s:%s already registered", namespace_name, mod_name, com.id);
+    log_error("Tile component %s:%s:%s already registered", mod_name, namespace_name, com.id);
     end_tile_com_ent_cleanup(&com);
     return;
   }
 
-  log_info("Loading tile component %s:%s:%s", namespace_name, mod_name, com.id);
+  log_info("Loading tile component %s:%s:%s", mod_name, namespace_name, com.id);
 }
 
 struct end_tile_com_ent* end_tile_com_ent_get(const char* ns, const char* id) {

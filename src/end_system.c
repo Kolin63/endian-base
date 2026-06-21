@@ -34,7 +34,7 @@ int end_system_fillout(const char* namespace_name, const char* mod_name,
       END_JSON_CHECK_STRING(iter);
       sys->desc = jsmn_iterator_get_string_heap(json, iter.val);
     } else if (strcmp(iter.key, "pos") == 0) {
-      end_sys_pos_fillout(mod_name, namespace_name, file_name, iter.val, json, &(sys->pos));
+      end_sys_pos_fillout(namespace_name, mod_name, file_name, iter.val, json, &(sys->pos));
     } else {
       log_error("Unknown object %s in end_system in file %s from %s:%s",
                 iter.key, file_name, mod_name, namespace_name);
@@ -72,7 +72,7 @@ void end_system_load(const char* system_path, const char* namespace_name,
   jsmntok_t* jsmn = fileio_read_json(json);
 
   struct end_system sys = {};
-  if (end_system_fillout(mod_name, namespace_name, file_name, jsmn, json, &sys) != 0) {
+  if (end_system_fillout(namespace_name, mod_name, file_name, jsmn, json, &sys) != 0) {
     free(json);
     free(jsmn);
     return;
@@ -86,7 +86,7 @@ void end_system_load(const char* system_path, const char* namespace_name,
   log_info("Loading bodies from system %s:%s:%s", mod_name, namespace_name, sys.fid.id);
 
   strcpy(sys_rel_path, "bodies");
-  dir_load(path_buf, end_body_load(&sys, file_path, mod_name, namespace_name, file_name));
+  dir_load(path_buf, end_body_load(&sys, file_path, namespace_name, mod_name, file_name));
 
   free(path_buf);
 

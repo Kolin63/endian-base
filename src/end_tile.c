@@ -84,7 +84,7 @@ int end_tile_ent_fillout(const char* namespace_name, const char* mod_name,
       tile->icon = buf[0];
     } else if (strcmp(iter.key, "coms") == 0) {
       END_JSON_CHECK_ARRAY(iter);
-      error += end_tile_ent_coms_fillout(mod_name, namespace_name, file_name, iter.val, json, &(tile->coms));
+      error += end_tile_ent_coms_fillout(namespace_name, mod_name, file_name, iter.val, json, &(tile->coms));
     }
   }
 
@@ -106,7 +106,7 @@ void end_tile_ent_load(const char* file_path, const char* namespace_name,
   jsmntok_t* jsmn = fileio_read_json(json);
 
   struct end_tile_ent tile = {};
-  if (end_tile_ent_fillout(mod_name, namespace_name, file_name, jsmn, json, &tile) != 0) {
+  if (end_tile_ent_fillout(namespace_name, mod_name, file_name, jsmn, json, &tile) != 0) {
     free(json);
     free(jsmn);
     return;

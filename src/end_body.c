@@ -107,7 +107,7 @@ void end_body_load(struct end_system* system,
   jsmntok_t* jsmn = fileio_read_json(json);
 
   struct end_body body = {};
-  if (end_body_fillout(mod_name, namespace_name, file_name, jsmn, json, &body) != 0) {
+  if (end_body_fillout(namespace_name, mod_name, file_name, jsmn, json, &body) != 0) {
     free(json);
     free(jsmn);
     return;

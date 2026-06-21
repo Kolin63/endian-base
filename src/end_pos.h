@@ -17,12 +17,18 @@ struct end_body_pos {
   unsigned long z;
 };
 
-struct end_pos {
+struct end_pos_rich {
   const struct fid* sys;
   const struct fid* body;
   unsigned int x;
   unsigned int y;
   unsigned int z;
+};
+
+struct end_pos {
+  const struct fid* sys;
+  const struct fid* body;
+  unsigned int i;
 };
 
 int end_sys_pos_fillout(const char* mod_name, const char* namespace_name,
@@ -39,5 +45,8 @@ int end_pos_fillout(const char* mod_name, const char* namespace_name,
 
 // buf should be 128 characters long
 void end_pos_human_readable(char* buf, size_t size, struct end_pos pos);
+
+struct end_pos_rich end_pos_get_rich(const struct end_pos* pos);
+struct end_pos end_pos_rich_get_pos(const struct end_pos_rich* pos);
 
 #endif

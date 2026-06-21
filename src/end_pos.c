@@ -92,8 +92,7 @@ int end_pos_fillout(const char* mod_name, const char* namespace_name,
 
   pos->body = NULL;
   pos->sys = NULL;
-  pos->x = 0;
-  pos->y = 0;
+  pos->i = 0;
 
   struct jsmn_iterator iter;
   jsmn_iterator_init(&iter, jsmn, json);
@@ -159,15 +158,10 @@ int end_pos_fillout(const char* mod_name, const char* namespace_name,
       }
       free(str);
       pos->sys = &sys->fid;
-    } else if (strcmp(iter.key, "x") == 0) {
+    } else if (strcmp(iter.key, "i") == 0) {
       END_JSON_CHECK_NUMBER(iter);
       char* str = jsmn_iterator_get_string_heap(json, iter.val);
-      pos->x = atoi(str);
-      free(str);
-    } else if (strcmp(iter.key, "y") == 0) {
-      END_JSON_CHECK_NUMBER(iter);
-      char* str = jsmn_iterator_get_string_heap(json, iter.val);
-      pos->y = atoi(str);
+      pos->i = atoi(str);
       free(str);
     } else {
       log_error("Unknown object %s in end_pos in file %s from %s:%s",
@@ -193,9 +187,10 @@ int end_pos_fillout(const char* mod_name, const char* namespace_name,
 }
 
 void end_pos_human_readable(char* buf, size_t size, struct end_pos pos) {
-  const int x = pos.x;
-  const int y = pos.y;
-  const int z = pos.z;
+  const struct end_pos_rich rich = end_pos_get_rich(&pos);
+  const int x = rich.x;
+  const int y = rich.y;
+  const int z = rich.z;
   const struct fid* body = pos.body;
   const struct fid* system = pos.sys;
   const char* body_name = NULL;
@@ -220,4 +215,52 @@ void end_pos_human_readable(char* buf, size_t size, struct end_pos pos) {
   } else if (body == NULL && system == NULL) {
     snprintf(buf, size, "(%i, %i, %i) interstellar", x, y, z);
   }
+}
+
+struct end_pos_rich end_pos_get_rich(const struct end_pos* pos) {
+  struct end_pos_rich ret = {.sys = pos->sys, .body = pos->body};
+
+  if (pos->body == NULL) return ret;
+
+  const struct end_body* body = end_body_get(pos->body);
+  if (body == NULL) {
+    log_error("Body %s:%s does not exist (failed to make rich pos)",
+              pos->body->ns, pos->body->ns);
+    return ret;
+  }
+
+  unsigned int i = pos->i;
+  const unsigned int w = body->tilemap.face_width;
+
+  const unsigned int z = i / (w * w);
+
+  i -= w * w * z;
+  const unsigned int y = i / w;
+
+  i -= w * y;
+  const unsigned int x = i;
+
+  ret.x = x;
+  ret.y = y;
+  ret.z = z;
+
+  return ret;
+}
+
+struct end_pos end_pos_rich_get_pos(const struct end_pos_rich* pos) {
+  struct end_pos ret = {.sys = pos->sys, .body = pos->body};
+
+  if (pos->body == NULL) return ret;
+
+  const struct end_body* body = end_body_get(pos->body);
+  if (body == NULL) {
+    log_error("Body %s:%s does not exist (failed to bring a rich pos into poverty)",
+              pos->body->ns, pos->body->ns);
+    return ret;
+  }
+
+  const unsigned int w = body->tilemap.face_width;
+
+  ret.i = w * w * pos->z + w * pos->y + pos->x;
+  return ret;
 }

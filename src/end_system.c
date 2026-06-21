@@ -34,7 +34,7 @@ int end_system_fillout(const char* mod_name, const char* namespace_name,
       END_JSON_CHECK_STRING(iter);
       sys->desc = jsmn_iterator_get_string_heap(json, iter.val);
     } else if (strcmp(iter.key, "pos") == 0) {
-      end_sys_pos_fillout(mod_name, namespace_name, file_name, iter.val, json, &(sys->pos));
+      error += end_sys_pos_fillout(mod_name, namespace_name, file_name, iter.val, json, &(sys->pos));
     } else {
       log_error("Unknown object %s in end_system in file %s from %s:%s",
                 iter.key, file_name, mod_name, namespace_name);

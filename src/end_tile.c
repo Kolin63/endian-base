@@ -6,6 +6,7 @@
 #include "end_api.h"
 #include "end_regman.h"
 #include "end_tile_com.h"
+#include "fid.h"
 #include "jsmn_iterator.h"
 #include "json_macros.h"
 
@@ -18,38 +19,36 @@ int end_tile_ent_coms_fillout(const char* namespace_name, const char* mod_name,
   jsmn_iterator_init(&iter, jsmn, json);
 
   while (jsmn_iterator_next(&iter)) {
-    char* ns = jsmn_iterator_get_string_heap(json, iter.val);
-    char* colon = ns;
-    while (*colon != ':' && *colon != '\0') colon++;
-    if (*colon == '\0') {
+    END_JSON_CHECK_STRING(iter);
+    char* str = jsmn_iterator_get_string_heap(json, iter.val);
+    struct fid fid = fid_split(str);
+    if (fid.ns == NULL) {
       log_error("Tile component ID from %s:%s:%s is not formatted in namespace:com (got %s)",
-                mod_name, namespace_name, file_name, ns);
+                mod_name, namespace_name, file_name, str);
       error++;
-      free(ns);
+      free(str);
       continue;
     }
-    *colon = '\0';
-    char* id = colon + 1;
-
-    int i = registry_ktoi(end_regman_get_tile_com(), &(struct end_tile_com_ent){.fid.id = id, .fid.ns = ns});
-    if (i == -1) {
-      log_error("Tile compenent %s:%s does not exist in %s:%s:%s",
-                ns, id, mod_name, namespace_name, file_name);
+    const struct end_tile_com_ent* ent = end_tile_com_ent_get(&fid);
+    if (ent == NULL) {
+      log_error("Tile compenent %s:%s does not exist (from %s:%s:%s)",
+                fid.ns, fid.id, mod_name, namespace_name, file_name);
       error++;
-      free(ns);
+      free(str);
       continue;
     }
 
+    int i = registry_vtoi(end_regman_get_tile_com(), ent);
     struct end_tile_com com = {.data = NULL, .id = i};
     if (registry_add(reg, &com) == NULL) {
       log_error("Tile %s:%s:%s already has component %s:%s",
-                mod_name, namespace_name, file_name, ns, id);
+                mod_name, namespace_name, file_name, fid.ns, fid.id);
       error++;
-      free(ns);
+      free(str);
       continue;
     }
 
-    free(ns);
+    free(str);
   }
 
   return error;

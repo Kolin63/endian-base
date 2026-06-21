@@ -25,15 +25,15 @@ struct end_pos {
   int z;
 };
 
-int end_sys_pos_fillout(const char* namespace_name, const char* mod_name,
+int end_sys_pos_fillout(const char* mod_name, const char* namespace_name,
                         const char* file_name, const jsmntok_t* jsmn,
                         const char* json, struct end_sys_pos* sys_pos);
 
-int end_body_pos_fillout(const char* namespace_name, const char* mod_name,
+int end_body_pos_fillout(const char* mod_name, const char* namespace_name,
                          const char* file_name, const jsmntok_t* jsmn,
                          const char* json, struct end_body_pos* body_pos);
 
-int end_pos_fillout(const char* namespace_name, const char* mod_name,
+int end_pos_fillout(const char* mod_name, const char* namespace_name,
                     const char* file_name, const jsmntok_t* jsmn,
                     const char* json, struct end_pos* pos);
 

@@ -11,7 +11,7 @@
 #include "end_body.h"
 #include "end_system.h"
 
-int end_sys_pos_fillout(const char* namespace_name, const char* mod_name,
+int end_sys_pos_fillout(const char* mod_name, const char* namespace_name,
                         const char* file_name, const jsmntok_t* jsmn,
                         const char* json, struct end_sys_pos* sys_pos) {
   int error = 0;
@@ -48,7 +48,7 @@ int end_sys_pos_fillout(const char* namespace_name, const char* mod_name,
   return error;
 }
 
-int end_body_pos_fillout(const char* namespace_name, const char* mod_name,
+int end_body_pos_fillout(const char* mod_name, const char* namespace_name,
                          const char* file_name, const jsmntok_t* jsmn,
                          const char* json, struct end_body_pos* body_pos) {
   int error = 0;
@@ -85,7 +85,7 @@ int end_body_pos_fillout(const char* namespace_name, const char* mod_name,
   return error;
 }
 
-int end_pos_fillout(const char* namespace_name, const char* mod_name,
+int end_pos_fillout(const char* mod_name, const char* namespace_name,
                     const char* file_name, const jsmntok_t* jsmn,
                     const char* json, struct end_pos* pos) {
   int error = 0;

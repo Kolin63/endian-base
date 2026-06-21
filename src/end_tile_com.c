@@ -10,7 +10,7 @@
 #include "jsmn_iterator.h"
 #include "json_macros.h"
 
-int end_tile_com_fillout(const char* namespace_name, const char* mod_name,
+int end_tile_com_fillout(const char* mod_name, const char* namespace_name,
                          const char* file_name, const jsmntok_t* jsmn, const char* json,
                          const char* key, struct end_tile_com* com) {
   int error = 0;
@@ -28,7 +28,7 @@ int end_tile_com_fillout(const char* namespace_name, const char* mod_name,
   com->id = i;
 
   const struct end_tile_com_ent* ent = registry_itov(end_regman_get_tile_com(), i);
-  error += ent->fillout(namespace_name, mod_name, file_name, jsmn, json, com);
+  error += ent->fillout(mod_name, namespace_name, file_name, jsmn, json, com);
 
   return error;
 }
@@ -41,7 +41,7 @@ void end_tile_com_cleanup(struct end_tile_com* elem) {
   if (elem->data != NULL) free(elem->data);
 }
 
-int end_tile_com_ent_fillout(const char* namespace_name, const char* mod_name,
+int end_tile_com_ent_fillout(const char* mod_name, const char* namespace_name,
                              const char* file_name, const jsmntok_t* jsmn,
                              const char* json, struct end_tile_com_ent* com) {
   int error = 0;
@@ -160,8 +160,8 @@ int end_tile_com_ent_fillout(const char* namespace_name, const char* mod_name,
   return error;
 }
 
-void end_tile_com_ent_load(const char* file_path, const char* namespace_name,
-                           const char* mod_name, const char* file_name) {
+void end_tile_com_ent_load(const char* file_path, const char* mod_name,
+                           const char* namespace_name, const char* file_name) {
   if (strcmp(file_name, "template.json") == 0) return;
 
   FILE* file = fopen(file_path, "r");
@@ -175,7 +175,7 @@ void end_tile_com_ent_load(const char* file_path, const char* namespace_name,
   jsmntok_t* jsmn = fileio_read_json(json);
 
   struct end_tile_com_ent com = {};
-  if (end_tile_com_ent_fillout(namespace_name, mod_name, file_name, jsmn, json, &com) != 0) {
+  if (end_tile_com_ent_fillout(mod_name, namespace_name, file_name, jsmn, json, &com) != 0) {
     free(json);
     free(jsmn);
     return;

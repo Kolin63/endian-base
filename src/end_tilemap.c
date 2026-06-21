@@ -10,7 +10,7 @@
 #include "jsmn_iterator.h"
 #include "json_macros.h"
 
-int end_tilemap_fillout(const char* namespace_name, const char* mod_name,
+int end_tilemap_fillout(const char* mod_name, const char* namespace_name,
                         const char* file_name, const jsmntok_t* jsmn,
                         const char* json, struct end_tilemap* tilemap) {
   int error = 0;

@@ -13,7 +13,7 @@
 #include "registry.h"
 #include "spaceint.h"
 
-int end_body_fillout(const char* namespace_name, const char* mod_name,
+int end_body_fillout(const char* mod_name, const char* namespace_name,
                      const char* file_name, const jsmntok_t* jsmn,
                      const char* json, struct end_body* body) {
   int error = 0;
@@ -78,9 +78,9 @@ int end_body_fillout(const char* namespace_name, const char* mod_name,
       jsmn_iterator_get_string(str, sizeof(str), json, iter.val);
       body->semimajoraxis = strtoul(str, NULL, 10);
     } else if (strcmp(iter.key, "pos") == 0) {
-      error += end_body_pos_fillout(namespace_name, mod_name, file_name, iter.val, json, &(body->pos));
+      error += end_body_pos_fillout(mod_name, namespace_name, file_name, iter.val, json, &(body->pos));
     } else if (strcmp(iter.key, "tiles") == 0) {
-      error += end_tilemap_fillout(namespace_name, mod_name, file_name, iter.val, json, &(body->tilemap));
+      error += end_tilemap_fillout(mod_name, namespace_name, file_name, iter.val, json, &(body->tilemap));
     } else {
       log_error("Unknown object %s in end_body in file %s from %s:%s",
                 iter.key, file_name, mod_name, namespace_name);
@@ -91,9 +91,9 @@ int end_body_fillout(const char* namespace_name, const char* mod_name,
   return error;
 }
 
-void end_body_load(struct end_system* system,
-                   const char* body_path, const char* namespace_name,
-                   const char* mod_name, const char* file_name) {
+void end_body_load(struct end_system* system, const char* body_path,
+                   const char* mod_name, const char* namespace_name,
+                   const char* file_name) {
   if (strcmp(file_name, "template") == 0) return;
 
   FILE* file = fopen(body_path, "r");
@@ -107,7 +107,7 @@ void end_body_load(struct end_system* system,
   jsmntok_t* jsmn = fileio_read_json(json);
 
   struct end_body body = {};
-  if (end_body_fillout(namespace_name, mod_name, file_name, jsmn, json, &body) != 0) {
+  if (end_body_fillout(mod_name, namespace_name, file_name, jsmn, json, &body) != 0) {
     free(json);
     free(jsmn);
     return;

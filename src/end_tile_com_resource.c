@@ -30,7 +30,7 @@ enum end_resource_type end_resource_type_from_string_id(const char* str) {
   else return ERT_NONE;
 }
 
-int end_tile_com_resource_fillout(const char* namespace_name, const char* mod_name,
+int end_tile_com_resource_fillout(const char* mod_name, const char* namespace_name,
                                   const char* file_name, const jsmntok_t* jsmn,
                                   const char* json, struct end_tile_com* com) {
   int error = 0;

@@ -24,7 +24,7 @@ struct end_tile_com_biome {
   enum end_biome_type type;
 };
 
-int end_tile_com_biome_fillout(const char* namespace_name, const char* mod_name,
+int end_tile_com_biome_fillout(const char* mod_name, const char* namespace_name,
                                const char* file_name, const jsmntok_t* jsmn,
                                const char* json, struct end_tile_com* com);
 char* end_tile_com_biome_to_json(const struct end_tile_com_biome* elem);

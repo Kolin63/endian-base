@@ -4,7 +4,7 @@
     "GET_API": "void foo(const struct api* api)",
     "INIT": ["void foo()", "called after GET_API"],
     "LOAD": ["void foo()", "called after INIT"],
-    "FILLOUT": "int foo_fillout(const char* namespace_name, const char* mod_name, const char* file_name, const jsmntok_t* jsmn, const char* json, struct foo* foo)",
+    "FILLOUT": "int foo_fillout(const char* mod_name, const char* namespace_name, const char* file_name, const jsmntok_t* jsmn, const char* json, struct foo* foo)",
     "EXPORT": "void foo(anything)",
     "TO_JSON": "char* foo(const bar*)",
     "DATA": "void foo(void* x)",

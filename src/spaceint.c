@@ -135,7 +135,7 @@ unsigned long spaceint_sqrt(spaceint_t val) {
 
   if (val <= 1) return val;
 
-  spaceint_t prev2;
+  spaceint_t prev2 = 0;
   spaceint_t prev1 = 2;
 
   while (1) {

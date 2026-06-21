@@ -1,5 +1,6 @@
 #include "end_tile_com_resource.h"
 
+#include <stdlib.h>
 #include <string.h>
 
 #include "end_api.h"
@@ -35,6 +36,7 @@ int end_tile_com_resource_fillout(const char* mod_name, const char* namespace_na
                                   const char* json, struct end_tile_com* com) {
   int error = 0;
 
+  com->data = malloc(sizeof(struct end_tile_com_resource));
   struct end_tile_com_resource* res = com->data;
 
   struct jsmn_iterator iter;
@@ -43,6 +45,7 @@ int end_tile_com_resource_fillout(const char* mod_name, const char* namespace_na
   END_JSON_CHECK_STRING_RET(iter, return error);
   char* str = jsmn_iterator_get_string_heap(json, iter.val);
   res->type = end_resource_type_from_string_id(str);
+  free(str);
 
   return error;
 }

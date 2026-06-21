@@ -46,6 +46,7 @@ int end_tile_com_biome_fillout(const char* mod_name, const char* namespace_name,
                                const char* json, struct end_tile_com* com) {
   int error = 0;
 
+  com->data = malloc(sizeof(struct end_tile_com_biome));
   struct end_tile_com_biome* biome = com->data;
 
   struct jsmn_iterator iter;

@@ -56,7 +56,7 @@ int end_tile_com_city_info_fillout(const char* mod_name, const char* namespace_n
                                    const char* json, struct end_tile_com* com) {
   int error = 0;
 
-  if (com->data == NULL) com->data = malloc(sizeof(struct end_tile_com));
+  com->data = malloc(sizeof(struct end_tile_com));
   struct end_tile_com_city_info* data = com->data;
 
   struct jsmn_iterator iter;

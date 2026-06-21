@@ -141,6 +141,7 @@ void end_body_cleanup(struct end_body* elem) {
   free((char*)elem->fid.id);
   free(elem->name);
   free(elem->desc);
+  end_tilemap_cleanup(&elem->tilemap);
 }
 
 time_t calc_orbital_period(unsigned long semimajoraxis, spaceint_t larger_mass) {

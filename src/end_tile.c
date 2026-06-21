@@ -137,6 +137,7 @@ void end_tile_ent_cleanup(struct end_tile_ent* elem) {
   free((char*)elem->fid.id);
   free(elem->name);
   free(elem->desc);
+  registry_cleanup(&elem->coms);
 }
 
 const struct end_tile_ent* end_tile_get_ent(const struct end_tile* tile) {

@@ -1,5 +1,5 @@
 {
-  "name": "end_biome",
+  "name": "biome",
   "fillout": "endian:end_tile_com_biome_fillout",
   "to_json": "endian:end_tile_com_biome_to_json",
 

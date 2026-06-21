@@ -20,9 +20,9 @@ struct end_body_pos {
 struct end_pos {
   const struct fid* sys;
   const struct fid* body;
-  int x;
-  int y;
-  int z;
+  unsigned int x;
+  unsigned int y;
+  unsigned int z;
 };
 
 int end_sys_pos_fillout(const char* mod_name, const char* namespace_name,

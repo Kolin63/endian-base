@@ -80,6 +80,7 @@ int end_body_fillout(const char* mod_name, const char* namespace_name,
     } else if (strcmp(iter.key, "pos") == 0) {
       error += end_body_pos_fillout(mod_name, namespace_name, file_name, iter.val, json, &(body->pos));
     } else if (strcmp(iter.key, "tiles") == 0) {
+      log_info("Loading tilemap from body %s:%s:%s", mod_name, namespace_name, file_name);
       error += end_tilemap_fillout(mod_name, namespace_name, file_name, iter.val, json, &(body->tilemap));
     } else {
       log_error("Unknown object %s in end_body in file %s from %s:%s",

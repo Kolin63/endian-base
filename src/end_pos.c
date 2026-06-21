@@ -212,7 +212,7 @@ void end_pos_human_readable(char* buf, size_t size, struct end_pos pos) {
   }
 
   if (body != NULL && system != NULL) {
-    snprintf(buf, size, "(%i, %i) on %s, %s", x, y, body_name, system_name);
+    snprintf(buf, size, "(%i, %i, %i) on %s, %s", x, y, z, body_name, system_name);
   } else if (body == NULL && system != NULL) {
     snprintf(buf, size, "(%i, %i, %i) in %s", x, y, z, system_name);
   } else if (body != NULL && system == NULL) {

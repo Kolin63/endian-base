@@ -232,6 +232,15 @@ struct end_pos_rich end_pos_get_rich(const struct end_pos* pos) {
   unsigned int i = pos->i;
   const unsigned int w = body->tilemap.face_width;
 
+  if (i >= 6 * w * w) {
+    log_warn("Poor pos %u is out of bounds for body %s:%s with width %u, clamping",
+             i, body->fid.ns, body->fid.id, w);
+    ret.x = w;
+    ret.y = w;
+    ret.z = 5;
+    return ret;
+  }
+
   const unsigned int z = i / (w * w);
 
   i -= w * w * z;
@@ -260,7 +269,28 @@ struct end_pos end_pos_rich_get_pos(const struct end_pos_rich* pos) {
   }
 
   const unsigned int w = body->tilemap.face_width;
+  unsigned int x = pos->x;
+  unsigned int y = pos->y;
+  unsigned int z = pos->z;
 
-  ret.i = w * w * pos->z + w * pos->y + pos->x;
+  if (x > w) {
+    log_warn("Rich pos x coord %u is out of bounds for body %s:%s with width %u, clamping",
+             x, body->fid.ns, body->fid.id, w);
+    x = w;
+  }
+
+  if (y > w) {
+    log_warn("Rich pos y coord %u is out of bounds for body %s:%s with width %u, clamping",
+             y, body->fid.ns, body->fid.id, w);
+    y = w;
+  }
+
+  if (z > w) {
+    log_warn("Rich pos z coord %u is out of bounds for body %s:%s, clamping",
+             z, body->fid.ns, body->fid.id, w);
+    z = 5;
+  }
+
+  ret.i = w * w * z + w * y + x;
   return ret;
 }

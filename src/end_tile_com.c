@@ -17,8 +17,14 @@ int end_tile_com_fillout(const char* mod_name, const char* namespace_name,
 
   com->data = NULL;
 
-  int i = registry_ktoi(end_regman_get_tile_com(),
-                        &(struct end_tile_com_ent){.fid.id = (char*)key, .fid.ns = namespace_name});
+  char* split_key = malloc(strlen(key) + 1);
+  strcpy(split_key, key);
+  struct fid fid = fid_split(split_key);
+
+  int i = registry_ktoi(end_regman_get_tile_com(), &(struct end_tile_com_ent){.fid = fid});
+
+  free(split_key);
+
   if (i == -1) {
     log_error("Tile component %s doesn't exist from %s:%s:%s",
               key, mod_name, namespace_name, file_name);

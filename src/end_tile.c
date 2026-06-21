@@ -10,6 +10,94 @@
 #include "jsmn_iterator.h"
 #include "json_macros.h"
 
+int end_tile_fillout(const char* mod_name, const char* namespace_name,
+                     const char* file_name, const jsmntok_t* jsmn,
+                     const char* json, struct end_tile* tile) {
+  int error = 0;
+
+  tile->id = -1;
+  registry_init(&tile->coms, sizeof(struct end_tile_com), (void*)end_tile_com_cmp, (void*)end_tile_com_cleanup);
+
+  struct jsmn_iterator iter;
+  jsmn_iterator_init(&iter, jsmn, json);
+
+  /*
+      {
+        "id": "foo:bar",
+        "coms": {
+          "baz:bop": {
+            "flip": 5,
+            "flop": 10
+          }
+        }
+      }
+   */
+  while (jsmn_iterator_next(&iter)) {
+    if (strcmp(iter.key, "id") == 0) {
+      END_JSON_CHECK_STRING(iter);
+      char* str = jsmn_iterator_get_string_heap(json, iter.val);
+      struct fid fid = fid_split(str);
+      if (fid.ns == NULL) {
+        log_error("In tilemap tile %s:%s:%s, id is not ns:id (got %s)",
+                  mod_name, namespace_name, file_name, str);
+        error++;
+        free(str);
+        continue;
+      }
+      const struct end_tile_ent* ent = end_tile_ent_get(&fid);
+      if (ent == NULL) {
+        log_error("In tilemap tile %s:%s:%s, tile %s does not exist",
+                  mod_name, namespace_name, file_name, str);
+        error++;
+        free(str);
+        continue;
+      }
+      tile->id = end_tile_ent_get_int_id(ent);
+      free(str);
+    } else if (strcmp(iter.key, "coms") == 0) {
+      END_JSON_CHECK_OBJECT(iter);
+      struct jsmn_iterator coms_iter;
+      jsmn_iterator_init(&coms_iter, iter.val, json);
+
+      while (jsmn_iterator_next(&coms_iter)) {
+        struct end_tile_com com = {};
+        int this_error = end_tile_com_fillout(mod_name, namespace_name, file_name,
+                                              coms_iter.val, json, coms_iter.key, &com);
+        if (this_error != 0) {
+          log_error("In tilemap tile %s:%s:%s, could not parse component %s",
+                    mod_name, namespace_name, file_name, coms_iter.key);
+          error += this_error;
+          end_tile_com_cleanup(&com);
+          continue;
+        }
+        if (registry_add(&tile->coms, &com) == NULL) {
+          log_error("In tilemap tile %s:%s:%s, component %s already exists",
+                    mod_name, namespace_name, file_name, coms_iter.key);
+          error++;
+          end_tile_com_cleanup(&com);
+          continue;
+        }
+      }
+    }
+  }
+
+  if (tile->id == -1) {
+    log_error("In tilemap tile %s:%s:%s, tile id was not set",
+              mod_name, namespace_name, file_name);
+    error++;
+  }
+
+  return error;
+}
+
+void end_tile_cleanup(struct end_tile* elem) {
+  registry_cleanup(&elem->coms);
+}
+
+const struct end_tile_ent* end_tile_get_ent(const struct end_tile* tile) {
+  return registry_itov_safe(end_regman_get_tile(), tile->id);
+}
+
 int end_tile_ent_coms_fillout(const char* mod_name, const char* namespace_name,
                               const char* file_name, const jsmntok_t* jsmn,
                               const char* json, struct registry* reg) {
@@ -127,6 +215,10 @@ struct end_tile_ent* end_tile_ent_get(const struct fid* fid) {
   return registry_ktov(end_regman_get_tile(), &(struct end_tile_ent){.fid = *fid});
 }
 
+int end_tile_ent_get_int_id(const struct end_tile_ent* ent) {
+  return registry_vtoi(end_regman_get_tile(), ent);
+}
+
 int end_tile_ent_cmp(const struct end_tile_ent* a, const struct end_tile_ent* b) {
   int ns = registry_strcmp(a->fid.ns, b->fid.ns);
   if (ns != 0) return ns;
@@ -138,8 +230,4 @@ void end_tile_ent_cleanup(struct end_tile_ent* elem) {
   free(elem->name);
   free(elem->desc);
   registry_cleanup(&elem->coms);
-}
-
-const struct end_tile_ent* end_tile_get_ent(const struct end_tile* tile) {
-  return registry_itov(end_regman_get_tile(), tile->id);
 }

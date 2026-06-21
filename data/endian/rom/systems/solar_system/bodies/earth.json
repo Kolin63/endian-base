@@ -15,7 +15,11 @@
 
   "tiles": [
     {
-      "id": "endian:empty"
+      "id": "endian:empty",
+      "coms": {
+        "endian:biome": "ocean",
+        "endian:resource": "none"
+      }
     }
   ]
 }

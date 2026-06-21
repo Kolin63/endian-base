@@ -2,11 +2,10 @@
 
 #include <concord/jsmn.h>
 #include <stdlib.h>
-#include <string.h>
 
 #include "end_api.h"
+#include "end_body.h"
 #include "end_tile.h"
-#include "fid.h"
 #include "jsmn_iterator.h"
 #include "json_macros.h"
 
@@ -26,36 +25,23 @@ int end_tilemap_fillout(const char* mod_name, const char* namespace_name,
 
   tilemap->tiles = malloc(tilemap->total_tiles * sizeof(struct end_tile));
 
-  struct jsmn_iterator arr_iter;
-  jsmn_iterator_init(&arr_iter, jsmn, json);
+  struct jsmn_iterator iter;
+  jsmn_iterator_init(&iter, jsmn, json);
 
-  while (jsmn_iterator_next(&arr_iter)) {
-    END_JSON_CHECK_OBJECT(arr_iter);
-
-    struct jsmn_iterator iter;
-    jsmn_iterator_init(&iter, arr_iter.val, json);
-
-    int i = 0;
-    while (jsmn_iterator_next(&iter)) {
-      struct end_tile* tile = tilemap->tiles + i;
-      if (strcmp(iter.key, "id") == 0) {
-        char* str = jsmn_iterator_get_string_heap(json, iter.val);
-        struct fid fid = fid_split(str);
-        if (fid.ns == NULL) {
-          log_error("Tile id must be ns:id (%s:%s:%s)", mod_name, namespace_name, file_name);
-          error++;
-          free(str);
-          continue;
-        }
-        const struct end_tile_ent* tile_ent = end_tile_ent_get(&fid);
-        free(str);
-      }
-    }
+  for (int i = 0; jsmn_iterator_next(&iter); i++) {
+    END_JSON_CHECK_OBJECT(iter);
+    struct end_tile* tile = tilemap->tiles + i;
+    error += end_tile_fillout(mod_name, namespace_name, file_name, iter.val, json, tile);
   }
 
   return error;
 }
 
 void end_tilemap_cleanup(struct end_tilemap* elem) {
-  free(elem->tiles);
+  if (elem->tiles != NULL) {
+    for (unsigned int i = 0; i < elem->total_tiles; i++) {
+      end_tile_cleanup(elem->tiles + i);
+    }
+    free(elem->tiles);
+  }
 }

@@ -14,8 +14,8 @@ struct end_system {
   struct end_sys_pos pos;
 };
 
-void end_system_load(const char* system_path, const char* namespace_name,
-                     const char* mod_name, const char* file_name);
+void end_system_load(const char* system_path, const char* mod_name,
+                     const char* system_name, const char* file_name);
 struct end_system* end_system_get(const struct fid* fid);
 int end_system_cmp(const struct end_system* a, const struct end_system* b);
 void end_system_cleanup(struct end_system* elem);

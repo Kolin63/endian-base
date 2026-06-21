@@ -178,8 +178,8 @@ int end_tile_ent_fillout(const char* mod_name, const char* namespace_name,
   return error;
 }
 
-void end_tile_ent_load(const char* file_path, const char* namespace_name,
-                       const char* mod_name, const char* file_name) {
+void end_tile_ent_load(const char* file_path, const char* mod_name,
+                       const char* namespace_name, const char* file_name) {
   if (strcmp(file_name, "template.json") == 0) return;
 
   FILE* file = fopen(file_path, "r");

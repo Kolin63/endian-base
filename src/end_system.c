@@ -45,8 +45,8 @@ int end_system_fillout(const char* mod_name, const char* namespace_name,
   return error;
 }
 
-void end_system_load(const char* system_path, const char* namespace_name,
-                     const char* mod_name, const char* file_name) {
+void end_system_load(const char* system_path, const char* mod_name,
+                     const char* namespace_name, const char* file_name) {
   if (strcmp(file_name, "template") == 0) return;
 
   // +1 to account for trailing slash that will be added

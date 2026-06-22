@@ -8,30 +8,29 @@
 #include "str_cat_arr.h"
 
 void view_cb(struct discord* client, const struct discord_interaction* event) {
-  unsigned long uuid = 0;
+  unsigned long uuid = event->member->user->id;
 
   if (event->data->options != NULL) {
-    char* uuid_str = NULL;
     for (int i = 0; i < event->data->options->size; i++) {
       const char* name = event->data->options->array[i].name;
       char* value = event->data->options->array[i].value;
 
-      if (strcmp(name, "user") == 0) uuid_str = value;
+      if (strcmp(name, "user") == 0) {
+        uuid = string_to_uuid(value);
+      }
     }
-
-    if (uuid_str == NULL) {
-      log_error("Could not get UUID argument");
-      return;
-    }
-
-    uuid = string_to_uuid(uuid_str);
-  } else {
-    uuid = event->member->user->id;
   }
 
   struct end_player* player = end_player_get(uuid);
-
   if (player == NULL) {
+    struct discord_interaction_response params = {
+        .type = DISCORD_INTERACTION_CHANNEL_MESSAGE_WITH_SOURCE,
+        .data = &(struct discord_interaction_callback_data){
+            .flags = DISCORD_MESSAGE_EPHEMERAL,
+            .content = "Could not get provided player",
+        }};
+
+    discord_create_interaction_response(client, event->id, event->token, &params, NULL);
     log_error("Could not get player %zi", uuid);
     return;
   }

@@ -202,7 +202,7 @@ void end_pos_human_readable(char* buf, size_t size, struct end_pos pos) {
   }
 
   if (system != NULL) {
-    const struct end_system* s = end_system_get(body);
+    const struct end_system* s = end_system_get(system);
     system_name = s->name;
   }
 

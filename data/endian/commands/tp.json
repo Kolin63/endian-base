@@ -1,0 +1,52 @@
+{
+  "type": "CHAT_INPUT",
+  "name": "tp",
+  "description": "Teleport a player",
+
+  "options": [
+    {
+      "type": "USER",
+      "name": "user",
+      "description": "The user to teleport. Leave blank to teleport yourself.",
+      "required": false
+    },
+    {
+      "type": "STRING",
+      "name": "system",
+      "description": "The system to teleport to. Format namespace:system, or without namespace to assume endian.",
+      "required": false
+    },
+    {
+      "type": "STRING",
+      "name": "body",
+      "description": "The body to teleport to. Format namespace:body, or without namespace to assume endian.",
+      "required": false
+    },
+    {
+      "type": "INTEGER",
+      "name": "x",
+      "description": "The X coordinate on the body",
+      "required": false,
+      "min_value": "0"
+    },
+    {
+      "type": "INTEGER",
+      "name": "y",
+      "description": "The Y coordinate on the body",
+      "required": false,
+      "min_value": "0"
+    },
+    {
+      "type": "INTEGER",
+      "name": "z",
+      "description": "The Z coordinate on the body",
+      "required": false,
+      "min_value": "0",
+      "max_value": "5"
+    }
+  ],
+
+  "default_member_permissions": 8,
+
+  "callback": "endian:tp_cb"
+}

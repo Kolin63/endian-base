@@ -123,3 +123,5 @@ int save_read(const char* ns, const char* dir, const char* file, const char* ext
 }
 
 struct fid fid_split(char* str) { return global->fid_split(str); }
+
+char* fid_to_json(const struct fid* fid) { return global->fid_to_json(fid); }

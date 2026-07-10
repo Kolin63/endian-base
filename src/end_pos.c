@@ -177,7 +177,7 @@ int end_pos_fillout(const char* mod_name, const char* namespace_name,
       }
       free(ns);
       pos->body = &body->fid;
-    } else if (strcmp(iter.key, "system") == 0) {
+    } else if (strcmp(iter.key, "sys") == 0) {
       // system can be null
       if (iter.val->type == JSMN_PRIMITIVE) {
         char buf[2];
@@ -241,14 +241,24 @@ char* end_pos_to_json(const struct end_pos* pos) {
   if (pos->sys == NULL) {
     sys = null;
   } else {
-    sys = fid_to_json(&end_system_get(pos->sys)->fid);
+    sys = malloc(1 + strlen(pos->sys->ns) + 1 + strlen(pos->sys->id) + 1 + 1);
+    strcpy(sys, "\"");
+    strcat(sys, pos->sys->ns);
+    strcat(sys, ":");
+    strcat(sys, pos->sys->id);
+    strcat(sys, "\"");
   }
 
   char* body;
   if (pos->body == NULL) {
     body = null;
   } else {
-    body = fid_to_json(&end_body_get(pos->body)->fid);
+    body = malloc(1 + strlen(pos->body->ns) + 1 + strlen(pos->body->id) + 1 + 1);
+    strcpy(body, "\"");
+    strcat(body, pos->body->ns);
+    strcat(body, ":");
+    strcat(body, pos->body->id);
+    strcat(body, "\"");
   }
 
   char i[32];

@@ -10,6 +10,8 @@
 #include "end_api.h"
 #include "end_body.h"
 #include "end_system.h"
+#include "fid.h"
+#include "str_cat_arr.h"
 
 int end_sys_pos_fillout(const char* mod_name, const char* namespace_name,
                         const char* file_name, const jsmntok_t* jsmn,
@@ -48,6 +50,29 @@ int end_sys_pos_fillout(const char* mod_name, const char* namespace_name,
   return error;
 }
 
+char* end_sys_pos_to_json(const struct end_sys_pos* sys_pos) {
+  char x[32];
+  char y[32];
+  char z[32];
+
+  // TODO: get rid of the printf
+  snprintf(x, sizeof(x), "%i", sys_pos->x);
+  snprintf(y, sizeof(y), "%i", sys_pos->y);
+  snprintf(z, sizeof(z), "%i", sys_pos->z);
+
+  const char* arr[] = {
+      "{\"x\":",
+      x,
+      ",\"y\":",
+      y,
+      ",\"z\":",
+      z,
+      "}",
+  };
+
+  return str_cat_arr(arr, sizeof(arr));
+}
+
 int end_body_pos_fillout(const char* mod_name, const char* namespace_name,
                          const char* file_name, const jsmntok_t* jsmn,
                          const char* json, struct end_body_pos* body_pos) {
@@ -83,6 +108,29 @@ int end_body_pos_fillout(const char* mod_name, const char* namespace_name,
     }
   }
   return error;
+}
+
+char* end_body_pos_to_json(const struct end_body_pos* body_pos) {
+  char x[32];
+  char y[32];
+  char z[32];
+
+  // TODO: get rid of the printf
+  snprintf(x, sizeof(x), "%lu", body_pos->x);
+  snprintf(y, sizeof(y), "%lu", body_pos->y);
+  snprintf(z, sizeof(z), "%lu", body_pos->z);
+
+  const char* arr[] = {
+      "{\"x\":",
+      x,
+      ",\"y\":",
+      y,
+      ",\"z\":",
+      z,
+      "}",
+  };
+
+  return str_cat_arr(arr, sizeof(arr));
 }
 
 int end_pos_fillout(const char* mod_name, const char* namespace_name,
@@ -184,6 +232,46 @@ int end_pos_fillout(const char* mod_name, const char* namespace_name,
   }
 
   return error;
+}
+
+char* end_pos_to_json(const struct end_pos* pos) {
+  char* null = "null";
+
+  char* sys;
+  if (pos->sys == NULL) {
+    sys = null;
+  } else {
+    sys = fid_to_json(&end_system_get(pos->sys)->fid);
+  }
+
+  char* body;
+  if (pos->body == NULL) {
+    body = null;
+  } else {
+    body = fid_to_json(&end_body_get(pos->body)->fid);
+  }
+
+  char i[32];
+
+  // TODO: get rid of printf
+  snprintf(i, sizeof(i), "%u", pos->i);
+
+  const char* arr[] = {
+      "{\"sys\":",
+      sys,
+      ",\"body\":",
+      body,
+      ",\"i\":",
+      i,
+      "}",
+  };
+
+  char* cat = str_cat_arr(arr, sizeof(arr));
+
+  if (sys != null) free(sys);
+  if (body != null) free(body);
+
+  return cat;
 }
 
 void end_pos_human_readable(char* buf, size_t size, struct end_pos pos) {

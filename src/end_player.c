@@ -8,6 +8,7 @@
 #include "end_player.h"
 #include "end_pos.h"
 #include "end_regman.h"
+#include "str_cat_arr.h"
 
 static pthread_rwlock_t lock = PTHREAD_RWLOCK_INITIALIZER;
 
@@ -63,4 +64,35 @@ struct end_player* end_player_get(unsigned long uuid) {
   }
   pthread_rwlock_unlock(&lock);
   return *ret_ptr;
+}
+
+void end_player_save(const struct end_player* elem) {
+  char* pos = end_pos_to_json(&elem->pos);
+
+  const char* arr[] = {
+      "{\"pos\":",
+      pos,
+      "}",
+  };
+
+  char* cat = str_cat_arr(arr, sizeof(arr));
+
+  free(pos);
+
+  char uuid[UUID_STR_LEN];
+  uuid_to_string(elem->user->uuid, uuid);
+
+  save_write("endian", "players", uuid, "json", cat);
+
+  free(cat);
+
+  log_info("Saving player %s", uuid);
+}
+
+void end_player_save_all() {
+  const struct registry* reg = end_regman_get_player();
+  for (int i = 0; i < reg->length; i++) {
+    const struct end_player** elem = registry_itov(reg, i);
+    end_player_save(*elem);
+  }
 }

@@ -3,6 +3,7 @@
 
 #include "end_api.h"
 #include "end_body.h"
+#include "end_player.h"
 #include "end_system.h"
 #include "end_tile.h"
 #include "end_tile_com.h"
@@ -21,6 +22,7 @@ void load_data() {
 void save_data() {
   log_info("Saving data from endian!");
   end_system_save_all();
+  end_player_save_all();
   log_info("Done saving data from endian!");
 }
 

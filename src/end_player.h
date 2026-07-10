@@ -21,6 +21,8 @@ struct end_player* end_player_init(unsigned long uuid);
 // initializes the player if it is not in registry
 struct end_player* end_player_get(unsigned long uuid);
 
+void end_player_load(struct end_player* elem);
+
 void end_player_save(const struct end_player* elem);
 void end_player_save_all();
 

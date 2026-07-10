@@ -1,7 +1,9 @@
 #include "end_player.h"
 
+#include <concord/jsmn.h>
 #include <pthread.h>
 #include <stdlib.h>
+#include <string.h>
 #include <user.h>
 
 #include "end_api.h"
@@ -47,6 +49,8 @@ struct end_player* end_player_init(unsigned long uuid) {
     return NULL;
   }
 
+  end_player_load(player);
+
   log_info("Initializing player %s (%zi)", player->user->username, uuid);
   pthread_rwlock_unlock(&lock);
   return player;
@@ -64,6 +68,34 @@ struct end_player* end_player_get(unsigned long uuid) {
   }
   pthread_rwlock_unlock(&lock);
   return *ret_ptr;
+}
+
+void end_player_load(struct end_player* elem) {
+  char uuid[UUID_STR_LEN];
+  uuid_to_string(elem->user->uuid, uuid);
+
+  char* json = NULL;
+  if (save_read("endian", "players", uuid, "json", &json) != 0) {
+    log_error("Could not load player %s (%s)", elem->user->username, uuid);
+    free(json);
+    return;
+  }
+
+  jsmntok_t* jsmn = fileio_read_json(json);
+
+  struct jsmn_iterator iter;
+  jsmn_iterator_init(&iter, jsmn, json);
+
+  while (jsmn_iterator_next(&iter)) {
+    if (strcmp(iter.key, "pos") == 0) {
+      if (end_pos_fillout("null", "endian", uuid, iter.val, json, &elem->pos) != 0) {
+        log_error("Could not parse pos from player %s (%s)", elem->user->username, uuid);
+        elem->pos = (struct end_pos){};
+      }
+    }
+  }
+
+  log_info("Loading player %s (%s)", elem->user->username, uuid);
 }
 
 void end_player_save(const struct end_player* elem) {

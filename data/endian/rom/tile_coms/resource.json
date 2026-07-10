@@ -2,6 +2,9 @@
   "name": "resource",
   "fillout": "endian:end_tile_com_resource_fillout",
   "to_json": "endian:end_tile_com_resource_to_json",
+  "tags": [
+    "endian:can_mine"
+  ],
 
   "template": "iron"
 }

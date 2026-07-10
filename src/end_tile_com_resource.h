@@ -6,6 +6,7 @@
 
 #include "end_tile_com.h"
 
+// TODO: remove enum and instead use item ids
 enum end_resource_type {
   ERT_NONE,
   ERT_WOOD,

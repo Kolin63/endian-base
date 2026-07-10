@@ -5,6 +5,7 @@
 
 #include "end_api.h"
 #include "end_regman.h"
+#include "end_tile_com_tag.h"
 #include "fid.h"
 #include "function.h"
 #include "jsmn_iterator.h"
@@ -47,12 +48,39 @@ void end_tile_com_cleanup(struct end_tile_com* elem) {
   if (elem->data != NULL) free(elem->data);
 }
 
+int end_tile_com_ent_tags_fillout(const char* mod_name, const char* namespace_name,
+                                  const char* file_name, const jsmntok_t* jsmn,
+                                  const char* json, struct registry* tags) {
+  int error = 0;
+
+  struct jsmn_iterator iter;
+  jsmn_iterator_init(&iter, jsmn, json);
+
+  while (jsmn_iterator_next(&iter)) {
+    END_JSON_CHECK_STRING(iter);
+    char* fid_str = jsmn_iterator_get_string_heap(json, iter.val);
+    struct fid fid = fid_split(fid_str);
+    struct end_tile_com_tag tag = end_tile_com_tag_get(&fid);
+    if (tag.id == -1) {
+      log_error("In tile com %s:%s:%s, tile com tag %s does not exist",
+                mod_name, namespace_name, file_name, fid_str);
+      error++;
+      return error;
+    }
+    free(fid_str);
+    registry_add(tags, &tag);
+  }
+
+  return error;
+}
+
 int end_tile_com_ent_fillout(const char* mod_name, const char* namespace_name,
                              const char* file_name, const jsmntok_t* jsmn,
                              const char* json, struct end_tile_com_ent* com) {
   int error = 0;
 
   com->fid.ns = namespace_name;
+  registry_init(&com->tags, sizeof(struct end_tile_com_tag), (void*)end_tile_com_tag_cmp, (void*)end_tile_com_tag_cleanup);
   com->fillout = NULL;
   com->to_json = NULL;
   com->cleanup = NULL;
@@ -148,6 +176,9 @@ int end_tile_com_ent_fillout(const char* mod_name, const char* namespace_name,
       }
       com->cleanup = (void*)func_data->function;
       free(func_name);
+    } else if (strcmp(iter.key, "tags") == 0) {
+      END_JSON_CHECK_ARRAY(iter);
+      error += end_tile_com_ent_tags_fillout(mod_name, namespace_name, file_name, iter.val, json, &com->tags);
     } else if (strcmp(iter.key, "template") == 0) {
       continue;
     } else {

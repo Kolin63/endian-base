@@ -7,10 +7,12 @@
 #include "end_system.h"
 #include "end_tile.h"
 #include "end_tile_com.h"
+#include "end_tile_com_tag.h"
 #include "save.h"
 
 void load_data() {
   log_info("Loading data from endian!");
+  rom_load("endian", "tile_com_tags", end_tile_com_tag_ent_load(file_path, mod_name, "endian", file_name));
   rom_load("endian", "tile_coms", end_tile_com_ent_load(file_path, mod_name, "endian", file_name));
   rom_load("endian", "tiles", end_tile_ent_load(file_path, mod_name, "endian", file_name));
   rom_load("endian", "systems", end_system_load(file_path, mod_name, "endian", file_name));

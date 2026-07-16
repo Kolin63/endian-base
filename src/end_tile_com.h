@@ -19,7 +19,7 @@ struct end_tile_com_ent {
   int (*fillout)(const char* mod_name, const char* namespace_name,
                  const char* file_name, const jsmntok_t* jsmn,
                  const char* json, struct end_tile_com* com);
-  // returned pointer will be passed to free()
+  // returned pointer must be passed to free()
   char* (*to_json)(const void* elem);
   void (*cleanup)(void* elem);
 };

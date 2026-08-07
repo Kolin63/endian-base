@@ -4,8 +4,11 @@
 #include "registry.h"
 
 struct end_regman {
+  struct registry tile_com_rich_tag;
   struct registry tile_com_tag;
   struct registry tile_com;
+  struct registry tile_rich_tag;
+  struct registry tile_tag;
   struct registry tile;
   struct registry system;
   struct registry body;

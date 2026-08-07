@@ -5,6 +5,7 @@
 
 #include "end_api.h"
 #include "end_regman.h"
+#include "end_tile_com_rich_tag.h"
 #include "end_tile_com_tag.h"
 #include "fid.h"
 #include "function.h"
@@ -46,6 +47,33 @@ int end_tile_com_cmp(const struct end_tile_com* a, const struct end_tile_com* b)
 
 void end_tile_com_cleanup(struct end_tile_com* elem) {
   if (elem->data != NULL) free(elem->data);
+}
+
+int end_tile_com_ent_rich_tags_fillout(const char* mod_name, const char* namespace_name,
+                                       const char* file_name, const jsmntok_t* jsmn,
+                                       const char* json, struct registry* rich_tags) {
+  int error = 0;
+
+  struct jsmn_iterator iter;
+  jsmn_iterator_init(&iter, jsmn, json);
+
+  while (jsmn_iterator_next(&iter)) {
+    END_JSON_CHECK_OBJECT(iter);
+    char* fid_str = jsmn_iterator_get_string_heap(json, iter.val);
+    struct fid fid = fid_split(fid_str);
+    struct end_tile_com_rich_tag tag = end_tile_com_rich_tag_get(&fid);
+    if (tag.id == -1) {
+      log_error("In tile com %s:%s:%s, tile com rich tag %s does not exist",
+                mod_name, namespace_name, file_name, fid_str);
+      error++;
+      return error;
+    }
+    free(fid_str);
+    error += end_tile_com_rich_tag_ent_get(&fid)->fillout(mod_name, namespace_name, file_name, iter.val, json, &tag);
+    registry_add(rich_tags, &tag);
+  }
+
+  return error;
 }
 
 int end_tile_com_ent_tags_fillout(const char* mod_name, const char* namespace_name,
@@ -176,6 +204,9 @@ int end_tile_com_ent_fillout(const char* mod_name, const char* namespace_name,
       }
       com->cleanup = (void*)func_data->function;
       free(func_name);
+    } else if (strcmp(iter.key, "rich_tags") == 0) {
+      END_JSON_CHECK_OBJECT(iter);
+      error += end_tile_com_ent_rich_tags_fillout(mod_name, namespace_name, file_name, iter.val, json, &com->rich_tags);
     } else if (strcmp(iter.key, "tags") == 0) {
       END_JSON_CHECK_ARRAY(iter);
       error += end_tile_com_ent_tags_fillout(mod_name, namespace_name, file_name, iter.val, json, &com->tags);

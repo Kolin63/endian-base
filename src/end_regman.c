@@ -8,15 +8,21 @@
 #include "end_system.h"
 #include "end_tile.h"
 #include "end_tile_com.h"
+#include "end_tile_com_rich_tag.h"
 #include "end_tile_com_tag.h"
+#include "end_tile_rich_tag.h"
+#include "end_tile_tag.h"
 
 struct end_regman* global;
 
 void end_regman_init() {
   global = malloc(sizeof(struct end_regman));
 
+  registry_init(&(global->tile_com_rich_tag), sizeof(struct end_tile_com_rich_tag_ent), (void*)end_tile_com_rich_tag_ent_cmp, (void*)end_tile_com_rich_tag_ent_cleanup);
   registry_init(&(global->tile_com_tag), sizeof(struct end_tile_com_tag_ent), (void*)end_tile_com_tag_ent_cmp, (void*)end_tile_com_tag_ent_cleanup);
   registry_init(&(global->tile_com), sizeof(struct end_tile_com_ent), (void*)end_tile_com_ent_cmp, (void*)end_tile_com_ent_cleanup);
+  registry_init(&(global->tile_rich_tag), sizeof(struct end_tile_rich_tag_ent), (void*)end_tile_rich_tag_ent_cmp, (void*)end_tile_rich_tag_ent_cleanup);
+  registry_init(&(global->tile_tag), sizeof(struct end_tile_tag_ent), (void*)end_tile_tag_ent_cmp, (void*)end_tile_tag_ent_cleanup);
   registry_init(&(global->tile), sizeof(struct end_tile_ent), (void*)end_tile_ent_cmp, (void*)end_tile_ent_cleanup);
   registry_init(&(global->system), sizeof(struct end_system), (void*)end_system_cmp, (void*)end_system_cleanup);
   registry_init(&(global->body), sizeof(struct end_body), (void*)end_body_cmp, (void*)end_body_cleanup);

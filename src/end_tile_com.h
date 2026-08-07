@@ -15,6 +15,7 @@ struct end_tile_com {
 
 struct end_tile_com_ent {
   struct fid fid;
+  struct registry rich_tags;
   struct registry tags;
   int (*fillout)(const char* mod_name, const char* namespace_name,
                  const char* file_name, const jsmntok_t* jsmn,

@@ -1,0 +1,10 @@
+{
+  "id": "foo",
+  "fillout": "bar:foo_fillout",
+  "to_json": "bar:foo_to_json",
+  "cleanup": "bar:foo_cleanup",
+
+  "template": {
+    "foo": 20
+  }
+}

@@ -1,7 +1,0 @@
-{
-  "type": "CHAT_INPUT",
-  "name": "save",
-  "description": "Save all data",
-  "default_member_permissions": 8,
-  "callback": "endian:save_cb"
-}

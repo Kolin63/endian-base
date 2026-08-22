@@ -1,9 +1,0 @@
-{
-  "type": "CHAT_INPUT",
-
-  "name": "ping",
-
-  "description": "Tests connection",
-
-  "callback": "endian:ping_cb"
-}

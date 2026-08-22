@@ -1,6 +1,0 @@
-{
-  "name": "stop",
-  "description": "Stop the bot",
-  "callback": "endian:stop_cb",
-  "default_member_permissions": 8
-}

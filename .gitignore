@@ -7,12 +7,9 @@
 
 !data
 !data/endian
-!data/endian/commands
-!data/endian/commands/*.json
-!data/endian/functions
-!data/endian/functions/*.json
-!data/endian/rom
-!data/endian/rom/**
+!data/endian/*
+!data/endian/*/*.c
+
 !src
 !src/*.c
 !src/*.h

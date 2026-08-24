@@ -88,7 +88,7 @@ ENDIAN_MIRROR_TAG_END();
 
 // void (struct discord* client, const struct discord_interaction* event)
 ENDIAN_MIRROR_TAG_START(command_cb);
-ENDIAN_MIRROR_TAG_DATA(ping);
+ENDIAN_MIRROR_TAG_DATA(<< dont forget to set command id in tag data >>);
 {
   struct discord_interaction_response params = {
       .type = DISCORD_INTERACTION_CHANNEL_MESSAGE_WITH_SOURCE,

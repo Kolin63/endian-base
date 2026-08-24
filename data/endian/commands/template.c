@@ -6,7 +6,7 @@ ENDIAN_MIRROR_TAG_END();
 
 ENDIAN_MIRROR_TAG_START(command);
 ENDIAN_MIRROR_TAG_DATA(<< dont forget to set command id in tag data >>);
-{
+(struct command){
   // DISCORD_APPLICATION_CHAT_INPUT
   // DISCORD_APPLICATION_USER
   // DISCORD_APPLICATION_MESSAGE

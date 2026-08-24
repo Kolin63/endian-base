@@ -2,7 +2,7 @@
 
 ENDIAN_MIRROR_TAG_START(command);
 ENDIAN_MIRROR_TAG_DATA(ping);
-{
+(struct command){
   .type = DISCORD_APPLICATION_CHAT_INPUT,
 
   .name = "ping",

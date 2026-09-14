@@ -1,5 +1,0 @@
-{
-  "type": "TO_JSON",
-  "name": "end_tile_com_biome_to_json",
-  "plugin": "endian:libendian"
-}

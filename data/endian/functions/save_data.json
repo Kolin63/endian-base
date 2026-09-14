@@ -1,5 +1,0 @@
-{
-  "type": "SAVE",
-  "name": "save_data",
-  "plugin": "endian:libendian"
-}

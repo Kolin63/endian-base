@@ -1,5 +1,0 @@
-{
-  "type": "GET_API",
-  "name": "end_api_set",
-  "plugin": "endian:libendian"
-}

@@ -1,5 +1,0 @@
-{
-  "type": "CALLBACK",
-  "name": "view_cb",
-  "plugin": "endian:libendian"
-}

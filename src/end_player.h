@@ -1,7 +1,7 @@
 #ifndef ENDIAN_BASE_PLAYER_H_
 #define ENDIAN_BASE_PLAYER_H_
 
-#include <user.h>
+#include <endapi/user.h>
 
 #include "end_pos.h"
 

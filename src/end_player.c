@@ -4,9 +4,12 @@
 #include <pthread.h>
 #include <stdlib.h>
 #include <string.h>
-#include <user.h>
+#include <endapi/user.h>
+#include <log.h>
+#include <endapi/save.h>
+#include <jsmn_iterator.h>
+#include <endapi/fileio.h>
 
-#include "end_api.h"
 #include "end_player.h"
 #include "end_pos.h"
 #include "end_regman.h"

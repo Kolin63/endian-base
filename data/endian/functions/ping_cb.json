@@ -1,5 +1,0 @@
-{
-  "type": "CALLBACK",
-  "name": "ping_cb",
-  "plugin": "endian:libendian"
-}

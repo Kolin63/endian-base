@@ -1,6 +1,0 @@
-{
-  "type": "LOAD",
-  "name": "load_data",
-
-  "plugin": "endian:libendian"
-}

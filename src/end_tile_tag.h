@@ -1,3 +1,0 @@
-#ifndef ENDIAN_BASE_END_TILE_TAG_H_
-#define ENDIAN_BASE_END_TILE_TAG_H_
-#endif

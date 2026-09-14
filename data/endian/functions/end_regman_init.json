@@ -1,5 +1,0 @@
-{
-  "type": "INIT",
-  "name": "end_regman_init",
-  "plugin": "endian:libendian"
-}

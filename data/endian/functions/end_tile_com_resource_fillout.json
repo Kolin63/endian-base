@@ -1,5 +1,0 @@
-{
-  "type": "FILLOUT",
-  "name": "end_tile_com_resource_fillout",
-  "plugin": "endian:libendian"
-}

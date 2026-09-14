@@ -1,10 +1,9 @@
 #include <concord/discord.h>
 #include <stdlib.h>
 #include <string.h>
+#include <log.h>
 
-#include "end_api.h"
 #include "end_player.h"
-#include "end_pos.h"
 #include "str_cat_arr.h"
 
 void view_cb(struct discord* client, const struct discord_interaction* event) {
@@ -42,12 +41,8 @@ void view_cb(struct discord* client, const struct discord_interaction* event) {
       },
   };
 
-  char pos[128];
-  end_pos_human_readable(pos, sizeof(pos), player->pos);
-
   const char* desc_array[] = {
       "Interesting, a description!\n",
-      pos,
       "\n\n",
       "foobar",
   };

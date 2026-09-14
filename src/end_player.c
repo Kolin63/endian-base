@@ -1,21 +1,31 @@
 #include "end_player.h"
 
+#define JSMN_HEADER
 #include <concord/jsmn.h>
+#include <endapi/fileio.h>
+#include <endapi/save.h>
+#include <endapi/user.h>
+#include <jsmn_iterator.h>
+#include <log.h>
 #include <pthread.h>
+#include <registry.h>
 #include <stdlib.h>
 #include <string.h>
-#include <endapi/user.h>
-#include <log.h>
-#include <endapi/save.h>
-#include <jsmn_iterator.h>
-#include <endapi/fileio.h>
 
 #include "end_player.h"
-#include "end_pos.h"
-#include "end_regman.h"
 #include "str_cat_arr.h"
 
+static struct registry reg;
+
 static pthread_rwlock_t lock = PTHREAD_RWLOCK_INITIALIZER;
+
+void end_player_reg_init() {
+  registry_init(&reg, sizeof(struct end_player*), (void*)end_player_cmp, (void*)end_player_cleanup);
+}
+
+void end_player_reg_cleanup() {
+  registry_cleanup(&reg);
+}
 
 int end_player_cmp(struct end_player* const* a, struct end_player* const* b) {
   const struct end_player* x = *a;
@@ -41,11 +51,10 @@ struct end_player* end_player_init(unsigned long uuid) {
 
   struct end_player* player = malloc(sizeof(struct end_player));
   player->user = disc;
-  player->pos = (struct end_pos){};  // TODO: load save data
 
   pthread_rwlock_wrlock(&lock);
 
-  if (registry_add(end_regman_get_player(), &player) == NULL) {
+  if (registry_add(&reg, &player) == NULL) {
     log_error("Could not initialize player %zi", uuid);
     free(player);
     pthread_rwlock_unlock(&lock);
@@ -64,7 +73,7 @@ struct end_player* end_player_get(unsigned long uuid) {
   struct end_player* key = &(struct end_player){.user = key_user};
 
   pthread_rwlock_rdlock(&lock);
-  struct end_player** ret_ptr = registry_ktov(end_regman_get_player(), &key);
+  struct end_player** ret_ptr = registry_ktov(&reg, &key);
   if (ret_ptr == NULL) {
     pthread_rwlock_unlock(&lock);
     return end_player_init(uuid);
@@ -90,29 +99,18 @@ void end_player_load(struct end_player* elem) {
   jsmn_iterator_init(&iter, jsmn, json);
 
   while (jsmn_iterator_next(&iter)) {
-    if (strcmp(iter.key, "pos") == 0) {
-      if (end_pos_fillout("null", "endian", uuid, iter.val, json, &elem->pos) != 0) {
-        log_error("Could not parse pos from player %s (%s)", elem->user->username, uuid);
-        elem->pos = (struct end_pos){};
-      }
-    }
   }
 
   log_info("Loading player %s (%s)", elem->user->username, uuid);
 }
 
 void end_player_save(const struct end_player* elem) {
-  char* pos = end_pos_to_json(&elem->pos);
-
   const char* arr[] = {
-      "{\"pos\":",
-      pos,
+      "{",
       "}",
   };
 
   char* cat = str_cat_arr(arr, sizeof(arr));
-
-  free(pos);
 
   char uuid[UUID_STR_LEN];
   uuid_to_string(elem->user->uuid, uuid);
@@ -125,9 +123,8 @@ void end_player_save(const struct end_player* elem) {
 }
 
 void end_player_save_all() {
-  const struct registry* reg = end_regman_get_player();
-  for (int i = 0; i < reg->length; i++) {
-    const struct end_player** elem = registry_itov(reg, i);
+  for (int i = 0; i < reg.length; i++) {
+    const struct end_player** elem = registry_itov(&reg, i);
     end_player_save(*elem);
   }
 }

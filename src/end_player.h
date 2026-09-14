@@ -3,13 +3,12 @@
 
 #include <endapi/user.h>
 
-#include "end_pos.h"
-
 struct end_player {
   struct user* user;
-  struct end_pos pos;
 };
 
+void end_player_reg_init();
+void end_player_reg_cleanup();
 int end_player_cmp(struct end_player* const* a, struct end_player* const* b);
 void end_player_cleanup(struct end_player** elem);
 

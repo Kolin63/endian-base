@@ -17,8 +17,8 @@ ENDIAN_MIRROR_TAG_DATA(<< dont forget to set command id in tag data >>);
   .description = "Description for CHAT_INPUT commands, 1-100 characters. Empty string for USER and MESSAGE commands",
 
   .options = (struct command_options){
-    .size = 1,
-    .options = (struct command_option[]){
+    .len = 1,
+    .arr = (struct command_option[]){
       (struct command_option){
         // DISCORD_APPLICATION_OPTION_SUB_COMMAND
         // DISCORD_APPLICATION_OPTION_SUB_COMMAND_GROUP

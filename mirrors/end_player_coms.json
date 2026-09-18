@@ -1,0 +1,64 @@
+{
+  "id": "end_player_coms",
+  "files": [
+    {
+      "name": "end_player_coms.ref.h",
+      "format": [
+        "#ifndef ENDIAN_BASE_REFLECTIONS_END_PLAYER_COMS_H_",
+        "#define ENDIAN_BASE_REFLECTIONS_END_PLAYER_COMS_H_",
+        "",
+        "__PREPROC__",
+        "",
+        {
+          "tag": "end_player_com",
+          "format": [
+            "struct end_player_com_%n_%d %t;",
+          ]
+        },
+        "",
+        "struct end_player_coms {",
+        {
+          "tag": "end_player_com",
+          "format": [
+            "  struct end_player_com_%n_%d %n_%d;"
+          ]
+        },
+        "};",
+        "",
+        "#endif"
+      ]
+    },
+
+
+
+
+
+
+
+
+    {
+      "name": "end_player_coms.ref.c",
+      "format": [
+        "#include \"end_player_coms.ref.h\"",
+        "",
+        {
+          "tag": "end_player_com_cleanup",
+          "format": [
+            "void",
+            "end_player_coms_%n_%d_cleanup(struct end_player_coms_%n_%d* x) {%t}",
+            ""
+          ]
+        },
+        "void",
+        "end_player_coms_cleanup(struct end_player_coms* coms) {",
+        {
+          "tag": "end_player_com_cleanup",
+          "format": [
+            "  end_player_coms_%n_%d_cleanup(&coms->%n_%d);"
+          ]
+        },
+        "}"
+      ]
+    }
+  ]
+}

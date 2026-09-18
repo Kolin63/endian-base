@@ -1,0 +1,48 @@
+{
+  "id": "end_view_coms",
+  "files": [
+    {
+      "name": "end_view_coms.ref.c",
+      "format": [
+        "#include <stddef.h>",
+        "#include <stdlib.h>",
+        "#include <string.h>",
+        "",
+        "#include \"base/end_view_coms.h\"",
+        "",
+        "__PREPROC__",
+        "",
+        {
+          "tag": "end_view_com",
+          "format": [
+            "char*",
+            "end_view_com_%n_%d_gen(const struct end_player* player) {%t}",
+            ""
+          ]
+        },
+        "char*",
+        "end_view_coms_gen(const struct end_player* player) {",
+        "  char* ret_buf = strdup(\"\\0\");",
+        "  size_t ret_len = 0;",
+        "",
+        {
+          "tag": "end_view_com",
+          "format": [
+            "  // %n_%d",
+            "  {",
+            "    char* buf = end_view_com_%n_%d_gen(player);",
+            "    ret_len += strlen(buf) + 2;",
+            "    ret_buf = realloc(ret_buf, ret_len + 1);",
+            "    strcat(ret_buf, buf);",
+            "    strcat(ret_buf, \"\\n\\n\");",
+            "    free(buf);",
+            "  }",
+            ""
+          ]
+        },
+        "  return ret_buf;",
+        "}"
+      ]
+    }
+  ]
+}

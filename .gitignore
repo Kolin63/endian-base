@@ -10,6 +10,9 @@
 !data/endian/*
 !data/endian/*/*.c
 
+!mirrors
+!mirrors/*.json
+
 !src
 !src/*.c
 !src/*.h

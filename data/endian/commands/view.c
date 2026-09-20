@@ -35,11 +35,11 @@ ENDIAN_MIRROR_TAG_DATA(view);
 {
   unsigned long uuid = event->member->user->id;
 
-  BEGIN_GET_COMMAND_OPTIONS(event)
-  GET_COMMAND_OPTION("player") {
-    uuid = string_to_uuid(value);
+  GET_COMMAND_OPTIONS(event) {
+    GET_COMMAND_OPTION("player") {
+      uuid = string_to_uuid(value);
+    }
   }
-  END_GET_COMMAND_OPTIONS()
 
   struct end_player* player = end_player_get(uuid);
   if (player == NULL) {

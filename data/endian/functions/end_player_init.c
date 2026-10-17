@@ -1,10 +1,10 @@
-ENDIAN_MIRROR_TAG_START(PREPROC);
+#mir_tag_start PREPROC
 #include "base/end_player.h"
-ENDIAN_MIRROR_TAG_END();
+#mir_tag_end
 
-ENDIAN_MIRROR_TAG_START(function_init);
-ENDIAN_MIRROR_TAG_DATA(end_player_init);
+#mir_tag_start function_init
+#mir_tag_data end_player_init
 
 end_player_reg_init();
 
-ENDIAN_MIRROR_TAG_END();
+#mir_tag_end

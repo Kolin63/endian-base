@@ -1,14 +1,14 @@
-ENDIAN_MIRROR_TAG_START(PREPROC);
+#mir_tag_start PREPROC
 #include <stdio.h>
-ENDIAN_MIRROR_TAG_END();
+#mir_tag_end
 
 // function_init
 // function_load
 // function_save
 // function_cleanup
-ENDIAN_MIRROR_TAG_START(function_init);
-ENDIAN_MIRROR_TAG_DATA(<< dont forget to set function name in tag data >>);
+#mir_tag_start function_init
+#mir_tag_data << dont forget to set function name in tag data >>
 
 printf("hello, world!");
 
-ENDIAN_MIRROR_TAG_END();
+#mir_tag_end

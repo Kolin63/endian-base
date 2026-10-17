@@ -1,9 +1,9 @@
-ENDIAN_MIRROR_TAG_START(PREPROC);
+#mir_tag_start PREPROC
 #include <strint.h>
-ENDIAN_MIRROR_TAG_END();
+#mir_tag_end
 
-ENDIAN_MIRROR_TAG_START(end_view_com);
-ENDIAN_MIRROR_TAG_DATA(pos);
+#mir_tag_start end_view_com
+#mir_tag_data pos
 {
   char* buf = malloc(STRINT_32 + 2 + STRINT_32 + 1);
   char tmp[STRINT_32];
@@ -14,4 +14,4 @@ ENDIAN_MIRROR_TAG_DATA(pos);
 
   return buf;
 }
-ENDIAN_MIRROR_TAG_END();
+#mir_tag_end

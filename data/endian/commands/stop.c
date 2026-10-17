@@ -1,25 +1,25 @@
 // https://docs.discord.com/developers/interactions/application-commands
 
-ENDIAN_MIRROR_TAG_START(PREPROC);
+#mir_tag_start PREPROC
 #include <log.h>
 
 #include <endapi/exit.h>
-ENDIAN_MIRROR_TAG_END();
+#mir_tag_end
 
-ENDIAN_MIRROR_TAG_START(command);
-ENDIAN_MIRROR_TAG_DATA(stop);
+#mir_tag_start command
+#mir_tag_data stop
 (struct command){
   .type = DISCORD_APPLICATION_CHAT_INPUT,
   .name = "stop",
   .description = "Stop the bot",
   .default_member_permissions = 8,
 }
-ENDIAN_MIRROR_TAG_END();
+#mir_tag_end
 
 
 // void (struct discord* client, const struct discord_interaction* event)
-ENDIAN_MIRROR_TAG_START(command_cb);
-ENDIAN_MIRROR_TAG_DATA(stop);
+#mir_tag_start command_cb
+#mir_tag_data stop
 {
   struct discord_interaction_response params = {
       .type = DISCORD_INTERACTION_CHANNEL_MESSAGE_WITH_SOURCE,
@@ -30,4 +30,4 @@ ENDIAN_MIRROR_TAG_DATA(stop);
   log_info("Stopping bot!");
   handle_exit();
 }
-ENDIAN_MIRROR_TAG_END();
+#mir_tag_end

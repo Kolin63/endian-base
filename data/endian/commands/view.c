@@ -1,14 +1,14 @@
 // https://docs.discord.com/developers/interactions/application-commands
 
-ENDIAN_MIRROR_TAG_START(PREPROC);
+#mir_tag_start PREPROC
 #include <stdlib.h>
 
 #include "base/end_player.h"
 #include "base/end_view_coms.h"
-ENDIAN_MIRROR_TAG_END();
+#mir_tag_end
 
-ENDIAN_MIRROR_TAG_START(command);
-ENDIAN_MIRROR_TAG_DATA(view);
+#mir_tag_start command
+#mir_tag_data view
 (struct command) {
   .type = DISCORD_APPLICATION_CHAT_INPUT,
 
@@ -27,11 +27,11 @@ ENDIAN_MIRROR_TAG_DATA(view);
     }
   }
 }
-ENDIAN_MIRROR_TAG_END();
+#mir_tag_end
 
 // void (struct discord* client, const struct discord_interaction* event)
-ENDIAN_MIRROR_TAG_START(command_cb);
-ENDIAN_MIRROR_TAG_DATA(view);
+#mir_tag_start command_cb
+#mir_tag_data view
 {
   unsigned long uuid = event->member->user->id;
 
@@ -80,4 +80,4 @@ ENDIAN_MIRROR_TAG_DATA(view);
 
   free(buf);
 }
-ENDIAN_MIRROR_TAG_END();
+#mir_tag_end

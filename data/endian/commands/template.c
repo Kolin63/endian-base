@@ -1,11 +1,11 @@
 // https://docs.discord.com/developers/interactions/application-commands
 
-ENDIAN_MIRROR_TAG_START(PREPROC);
+#mir_tag_start PREPROC
 #include <stdio.h>
-ENDIAN_MIRROR_TAG_END();
+#mir_tag_end
 
-ENDIAN_MIRROR_TAG_START(command);
-ENDIAN_MIRROR_TAG_DATA(<< dont forget to set command id in tag data >>);
+#mir_tag_start command
+#mir_tag_data << dont forget to set command id in tag data >>
 (struct command){
   // DISCORD_APPLICATION_CHAT_INPUT
   // DISCORD_APPLICATION_USER
@@ -88,12 +88,12 @@ ENDIAN_MIRROR_TAG_DATA(<< dont forget to set command id in tag data >>);
   // discord.dev -> select app -> Overview -> Bot -> Bot Permissions
   .default_member_permissions = 123,
 }
-ENDIAN_MIRROR_TAG_END();
+#mir_tag_end
 
 
 // void (struct discord* client, const struct discord_interaction* event)
-ENDIAN_MIRROR_TAG_START(command_cb);
-ENDIAN_MIRROR_TAG_DATA(<< dont forget to set command id in tag data >>);
+#mir_tag_start command_cb
+#mir_tag_data << dont forget to set command id in tag data >>
 {
   struct discord_interaction_response params = {
       .type = DISCORD_INTERACTION_CHANNEL_MESSAGE_WITH_SOURCE,
@@ -101,4 +101,4 @@ ENDIAN_MIRROR_TAG_DATA(<< dont forget to set command id in tag data >>);
 
   discord_create_interaction_response(client, event->id, event->token, &params, NULL);
 }
-ENDIAN_MIRROR_TAG_END();
+#mir_tag_end

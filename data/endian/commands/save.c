@@ -1,24 +1,24 @@
 // https://docs.discord.com/developers/interactions/application-commands
 
-ENDIAN_MIRROR_TAG_START(PREPROC);
+#mir_tag_start PREPROC
 #include <endapi/function.h>
 
 #include "base/data.h"
-ENDIAN_MIRROR_TAG_END();
+#mir_tag_end
 
-ENDIAN_MIRROR_TAG_START(command);
-ENDIAN_MIRROR_TAG_DATA(save);
+#mir_tag_start command
+#mir_tag_data save
 (struct command){
     .type = DISCORD_APPLICATION_CHAT_INPUT,
     .name = "save",
     .description = "Save all data",
     .default_member_permissions = 8,
 }
-ENDIAN_MIRROR_TAG_END();
+#mir_tag_end
 
 // void (struct discord* client, const struct discord_interaction* event)
-ENDIAN_MIRROR_TAG_START(command_cb);
-ENDIAN_MIRROR_TAG_DATA(save);
+#mir_tag_start command_cb
+#mir_tag_data save
 {
   function_call_save();
   struct discord_interaction_response params = {
@@ -28,4 +28,4 @@ ENDIAN_MIRROR_TAG_DATA(save);
           .flags = DISCORD_MESSAGE_EPHEMERAL}};
   discord_create_interaction_response(client, event->id, event->token, &params, NULL);
 }
-ENDIAN_MIRROR_TAG_END();
+#mir_tag_end

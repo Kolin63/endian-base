@@ -19,26 +19,31 @@ static struct registry reg;
 
 static pthread_rwlock_t lock = PTHREAD_RWLOCK_INITIALIZER;
 
-void end_player_reg_init() {
+void
+end_player_reg_init() {
   registry_init(&reg, sizeof(struct end_player*), (void*)end_player_cmp, (void*)end_player_cleanup);
 }
 
-void end_player_reg_cleanup() {
+void
+end_player_reg_cleanup() {
   registry_cleanup(&reg);
 }
 
-int end_player_cmp(struct end_player* const* a, struct end_player* const* b) {
+int
+end_player_cmp(struct end_player* const* a, struct end_player* const* b) {
   const struct end_player* x = *a;
   const struct end_player* y = *b;
   return user_cmp(&(x->user), &(y->user));
 }
 
-void end_player_cleanup(struct end_player** elem) {
+void
+end_player_cleanup(struct end_player** elem) {
   struct end_player* x = *elem;
   free(x);
 }
 
-struct end_player* end_player_init(unsigned long uuid) {
+struct end_player*
+end_player_init(unsigned long uuid) {
   struct user* disc = user_get(uuid);
   if (disc == NULL) {
     log_error("Could not initialize player %zi", uuid);
@@ -68,7 +73,8 @@ struct end_player* end_player_init(unsigned long uuid) {
   return player;
 }
 
-struct end_player* end_player_get(unsigned long uuid) {
+struct end_player*
+end_player_get(unsigned long uuid) {
   struct user* key_user = &(struct user){.uuid = uuid};
   struct end_player* key = &(struct end_player){.user = key_user};
 
@@ -82,7 +88,8 @@ struct end_player* end_player_get(unsigned long uuid) {
   return *ret_ptr;
 }
 
-void end_player_load(struct end_player* elem) {
+void
+end_player_load(struct end_player* elem) {
   char uuid[UUID_STR_LEN];
   uuid_to_string(elem->user->uuid, uuid);
 
@@ -104,10 +111,11 @@ void end_player_load(struct end_player* elem) {
   log_info("Loading player %s (%s)", elem->user->username, uuid);
 }
 
-void end_player_save(const struct end_player* elem) {
+void
+end_player_save(const struct end_player* elem) {
   const char* arr[] = {
-      "{",
-      "}",
+    "{",
+    "}",
   };
 
   char* cat = str_cat_arr(arr, sizeof(arr));
@@ -122,7 +130,8 @@ void end_player_save(const struct end_player* elem) {
   log_info("Saving player %s", uuid);
 }
 
-void end_player_save_all() {
+void
+end_player_save_all() {
   for (int i = 0; i < reg.length; i++) {
     const struct end_player** elem = registry_itov(&reg, i);
     end_player_save(*elem);

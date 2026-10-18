@@ -5,7 +5,7 @@
 #mir_tag_end
 
 #mir_tag_start command
-#mir_tag_data << dont forget to set command id in tag data >>
+#mir_tag_data << dont forget to set command id in tag data>>
 (struct command){
   // DISCORD_APPLICATION_CHAT_INPUT
   // DISCORD_APPLICATION_USER
@@ -47,9 +47,9 @@
 
               // Value for the choice, up to 100 characters if string
               // Can be STRING, INTEGER, or NUMBER, but must be formatted as a string
-              .value = "500"
-            }
-          }
+              .value = "500",
+            },
+          },
         },
 
         // array of application command option. max 25
@@ -80,9 +80,9 @@
 
         // may not be set to true if choices are present.
         .autocomplete = true,
-      }
-    }
-  }
+      },
+    },
+  },
 
   // Set of permissions represented as a bit set
   // discord.dev -> select app -> Overview -> Bot -> Bot Permissions
@@ -90,14 +90,13 @@
 }
 #mir_tag_end
 
-
 // void (struct discord* client, const struct discord_interaction* event)
 #mir_tag_start command_cb
-#mir_tag_data << dont forget to set command id in tag data >>
+#mir_tag_data << dont forget to set command id in tag data>>
 {
   struct discord_interaction_response params = {
-      .type = DISCORD_INTERACTION_CHANNEL_MESSAGE_WITH_SOURCE,
-      .data = &(struct discord_interaction_callback_data){.content = "hello, world!"}};
+    .type = DISCORD_INTERACTION_CHANNEL_MESSAGE_WITH_SOURCE,
+    .data = &(struct discord_interaction_callback_data){.content = "hello, world!"}};
 
   discord_create_interaction_response(client, event->id, event->token, &params, NULL);
 }

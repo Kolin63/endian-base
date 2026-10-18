@@ -9,14 +9,13 @@
 }
 #mir_tag_end
 
-
 // void (struct discord* client, const struct discord_interaction* event)
 #mir_tag_start command_cb
 #mir_tag_data ping
 {
   struct discord_interaction_response params = {
-      .type = DISCORD_INTERACTION_CHANNEL_MESSAGE_WITH_SOURCE,
-      .data = &(struct discord_interaction_callback_data){.content = "pong!"}};
+    .type = DISCORD_INTERACTION_CHANNEL_MESSAGE_WITH_SOURCE,
+    .data = &(struct discord_interaction_callback_data){.content = "pong!"}};
 
   discord_create_interaction_response(client, event->id, event->token, &params, NULL);
 }

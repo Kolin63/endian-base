@@ -4,7 +4,8 @@
 
 #include "test_suite.h"
 
-void test_digit(int n, int digits) {
+void
+test_digit(int n, int digits) {
   int res = spaceint_get_amt_digits(n);
   if (res == digits) {
     test_pass("%i is %i digits\n", n, res);
@@ -13,7 +14,8 @@ void test_digit(int n, int digits) {
   }
 }
 
-void test_limit() {
+void
+test_limit() {
   const unsigned long limit64 = 0xffffffffffffffff;
   const spaceint_t limit128 = 0 - 1;
   const unsigned long* a = (const unsigned long*)&limit128;
@@ -25,7 +27,8 @@ void test_limit() {
   }
 }
 
-void _test_str_to_int(const char* str, spaceint_t n) {
+void
+_test_str_to_int(const char* str, spaceint_t n) {
   spaceint_t res = string_to_spaceint(str);
   if (res == n) {
     test_pass("Converted string %s\n", str);
@@ -36,7 +39,8 @@ void _test_str_to_int(const char* str, spaceint_t n) {
 
 #define test_str_to_int(n) _test_str_to_int(#n, n);
 
-void _test_int_to_str(spaceint_t n, const char* str) {
+void
+_test_int_to_str(spaceint_t n, const char* str) {
   char buf[64];
   spaceint_to_string(n, buf, sizeof(buf));
   if (strcmp(str, buf) == 0) {
@@ -48,7 +52,8 @@ void _test_int_to_str(spaceint_t n, const char* str) {
 
 #define test_int_to_str(n) _test_int_to_str(n, #n);
 
-void test_scinot(const char* str, spaceint_t n) {
+void
+test_scinot(const char* str, spaceint_t n) {
   char buf[64];
   spaceint_to_string(n, buf, sizeof(buf));
 
@@ -63,7 +68,8 @@ void test_scinot(const char* str, spaceint_t n) {
   }
 }
 
-void test_sqrt(spaceint_t num, unsigned long expect) {
+void
+test_sqrt(spaceint_t num, unsigned long expect) {
   char buf[64];
   spaceint_to_string(num, buf, sizeof(buf));
 
@@ -75,7 +81,8 @@ void test_sqrt(spaceint_t num, unsigned long expect) {
   }
 }
 
-int main() {
+int
+main() {
   const spaceint_t limit128 = 0 - 1;
   const unsigned long limit64 = 0xffffffffffffffff;
 

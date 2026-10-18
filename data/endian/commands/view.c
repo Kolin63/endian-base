@@ -44,11 +44,11 @@
   struct end_player* player = end_player_get(uuid);
   if (player == NULL) {
     struct discord_interaction_response params = {
-        .type = DISCORD_INTERACTION_CHANNEL_MESSAGE_WITH_SOURCE,
-        .data = &(struct discord_interaction_callback_data){
-            .flags = DISCORD_MESSAGE_EPHEMERAL,
-            .content = "Could not get provided player",
-        }};
+      .type = DISCORD_INTERACTION_CHANNEL_MESSAGE_WITH_SOURCE,
+      .data = &(struct discord_interaction_callback_data){
+        .flags = DISCORD_MESSAGE_EPHEMERAL,
+        .content = "Could not get provided player",
+      }};
 
     discord_create_interaction_response(client, event->id, event->token, &params, NULL);
     log_error("Could not get player %zi", uuid);
@@ -58,23 +58,23 @@
   char* buf = end_view_coms_gen(player);
 
   struct discord_embed embeds[] = {
-      {
-          .title = player->user->username,
-          .description = buf,
-          .color = 0x3498DB,
-          .thumbnail = &(struct discord_embed_thumbnail){
-              .url = player->user->avatar,
-          },
+    {
+      .title = player->user->username,
+      .description = buf,
+      .color = 0x3498DB,
+      .thumbnail = &(struct discord_embed_thumbnail){
+        .url = player->user->avatar,
       },
+    },
   };
 
   struct discord_interaction_response params = {
-      .type = DISCORD_INTERACTION_CHANNEL_MESSAGE_WITH_SOURCE,
-      .data = &(struct discord_interaction_callback_data){
-          .embeds = &(struct discord_embeds){
-              .size = sizeof(embeds) / sizeof *embeds,
-              .array = embeds,
-          }}};
+    .type = DISCORD_INTERACTION_CHANNEL_MESSAGE_WITH_SOURCE,
+    .data = &(struct discord_interaction_callback_data){
+      .embeds = &(struct discord_embeds){
+        .size = sizeof(embeds) / sizeof *embeds,
+        .array = embeds,
+      }}};
 
   discord_create_interaction_response(client, event->id, event->token, &params, NULL);
 

@@ -3,7 +3,8 @@
 #include <stdlib.h>
 #include <string.h>
 
-spaceint_t string_to_spaceint(const char* str) {
+spaceint_t
+string_to_spaceint(const char* str) {
   spaceint_t ret = 0;
   const char* ptr = str;
   while (1) {
@@ -20,7 +21,8 @@ spaceint_t string_to_spaceint(const char* str) {
   return ret;
 }
 
-spaceint_t scinot_to_spaceint(const char* str) {
+spaceint_t
+scinot_to_spaceint(const char* str) {
   // mantissa
   int m;
   // exponent
@@ -94,7 +96,8 @@ spaceint_t scinot_to_spaceint(const char* str) {
   return res;
 }
 
-void spaceint_to_string(spaceint_t val, char* buf, size_t size) {
+void
+spaceint_to_string(spaceint_t val, char* buf, size_t size) {
   const int amt_digits = spaceint_get_amt_digits(val);
 
   // char where null terminator goes
@@ -121,7 +124,8 @@ void spaceint_to_string(spaceint_t val, char* buf, size_t size) {
   }
 }
 
-int spaceint_get_amt_digits(spaceint_t val) {
+int
+spaceint_get_amt_digits(spaceint_t val) {
   int n = 0;
   do {
     val /= 10;
@@ -130,7 +134,8 @@ int spaceint_get_amt_digits(spaceint_t val) {
   return n;
 }
 
-unsigned long spaceint_sqrt(spaceint_t val) {
+unsigned long
+spaceint_sqrt(spaceint_t val) {
   // https://en.wikipedia.org/wiki/Integer_square_root#Algorithm_using_Newton's_method
 
   if (val <= 1) return val;

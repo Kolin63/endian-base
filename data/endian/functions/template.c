@@ -1,5 +1,4 @@
 #mir_tag_start PREPROC
-#include <stdio.h>
 #mir_tag_end
 
 // function_init

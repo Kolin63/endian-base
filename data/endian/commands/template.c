@@ -1,7 +1,6 @@
 // https://docs.discord.com/developers/interactions/application-commands
 
 #mir_tag_start PREPROC
-#include <stdio.h>
 #mir_tag_end
 
 #mir_tag_start command

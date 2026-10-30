@@ -12,6 +12,7 @@
         {
           "tag": "end_player_com",
           "format": [
+            "// %B",
             "struct end_player_com_%n_%d %t;",
           ]
         },
@@ -20,7 +21,7 @@
         {
           "tag": "end_player_com",
           "format": [
-            "  struct end_player_com_%n_%d %n_%d;"
+            "  struct end_player_com_%n_%d %n_%d;  // %B"
           ]
         },
         "};",
@@ -44,6 +45,7 @@
         {
           "tag": "end_player_com_cleanup",
           "format": [
+            "// %B",
             "void",
             "end_player_coms_%n_%d_cleanup(struct end_player_coms_%n_%d* x) {%t}",
             ""
@@ -54,7 +56,7 @@
         {
           "tag": "end_player_com_cleanup",
           "format": [
-            "  end_player_coms_%n_%d_cleanup(&coms->%n_%d);"
+            "  end_player_coms_%n_%d_cleanup(&coms->%n_%d);  // %B"
           ]
         },
         "}"

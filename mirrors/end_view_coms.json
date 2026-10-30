@@ -15,6 +15,7 @@
         {
           "tag": "end_view_com",
           "format": [
+            "// %B",
             "char*",
             "end_view_com_%n_%d_gen(const struct end_player* player) {%t}",
             ""
@@ -28,7 +29,7 @@
         {
           "tag": "end_view_com",
           "format": [
-            "  // %n_%d",
+            "  // %B (%n_%d)",
             "  {",
             "    char* buf = end_view_com_%n_%d_gen(player);",
             "    ret_len += strlen(buf) + 2;",

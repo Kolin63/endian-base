@@ -1,0 +1,66 @@
+{
+  "id": "end_poi_types",
+  "files": [
+    {
+      "name": "end_poi_types.ref.h",
+      "format": [
+        "#ifndef ENDIAN_BASE_REFLECTIONS_END_POI_TYPES_H_",
+        "#define ENDIAN_BASE_REFLECTIONS_END_POI_TYPES_H_",
+        "",
+        "#include \"base/end_poi_type.h\"",
+        "",
+        "__PREPROC__",
+        "",
+        "enum end_poi_type_id {",
+        "  END_POI_TYPE_UNKNOWN_,",
+        {
+          "tag": "end_poi_type",
+          "format": [
+            "  END_POI_TYPE_%N_%D,  // %B"
+          ]
+        },
+        "};",
+        "",
+        "static struct end_poi_type end_poi_types[] = {",
+        {
+          "tag": "end_poi_type",
+          "format": [
+            "// %B",
+            "%t,"
+          ]
+        },
+        "};",
+        "",
+        "#endif"
+      ]
+    },
+
+
+
+
+
+
+
+
+    {
+      "name": "end_poi_types.ref.c",
+      "format": [
+        "#include \"end_poi_types.ref.h\"",
+        "",
+        "enum",
+        "end_poi_type_id end_poi_type_id_get(const char* id_str) {",
+        {
+          "tag": "end_poi_type",
+          "format": [
+            "%Aid_str",
+            "%A%n_%d",
+            "%Areturn END_POI_TYPE_%N_%D;",
+            "%Areturn END_POI_TYPE_UNKNOWN_;",
+            "%A"
+          ]
+        },
+        "}"
+      ]
+    }
+  ]
+}

@@ -3,11 +3,11 @@
 
 #include <endapi/user.h>
 
-#include "end_player_coms.h"
+#include "end_coms.h"
 
 struct end_player {
   struct user* user;
-  struct end_player_coms coms;
+  struct end_com_group_endian_player coms;
 };
 
 void end_player_reg_init();

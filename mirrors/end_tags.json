@@ -1,0 +1,61 @@
+{
+  "id": "end_tags",
+  "files": [
+    {
+      "name": "end_tags.ref.h",
+      "format": [
+        "#ifndef ENDIAN_BASE_REFLECTIONS_END_TAGS_H_",
+        "#define ENDIAN_BASE_REFLECTIONS_END_TAGS_H_",
+        "",
+        "#include \"base/end_tags.h\"",
+        "",
+        "__PREPROC__",
+        "",
+        "enum end_tag {",
+        "  END_TAG_UNKNOWN_,",
+        {
+          "tag": "end_tag",
+          "format": [
+            "  END_TAG_%N_%D,  // %B"
+          ]
+        },
+        "  END_TAG_AMOUNT_,",
+        "};",
+        "",
+        "struct end_tags {",
+        "  const bool tags [END_TAG_AMOUNT_];",
+        "};",
+        "",
+        "#endif"
+      ]
+    },
+
+
+
+
+
+
+
+
+    {
+      "name": "end_tags.ref.c",
+      "format": [
+        "#include \"end_tags.ref.h\"",
+        "",
+        "enum end_tag",
+        "end_tag_get(const char* id_str) {",
+        {
+          "tag": "end_tag",
+          "format": [
+            "%Aid_str",
+            "%A%n_%d",
+            "%Areturn END_TAG_%N_%D;",
+            "%Areturn END_TAG_UNKNOWN_;",
+            "%A"
+          ]
+        },
+        "}"
+      ]
+    }
+  ]
+}

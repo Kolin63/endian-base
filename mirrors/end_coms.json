@@ -1,0 +1,40 @@
+{
+  "id": "end_coms",
+  "files": [
+    {
+      "name": "end_coms.ref.h",
+      "format": [
+        "#ifndef ENDIAN_BASE_REFLECTIONS_END_COMS_H_",
+        "#define ENDIAN_BASE_REFLECTIONS_END_COMS_H_",
+        "",
+        "__PREPROC__",
+        "",
+        {
+          "tag": "end_com",
+          "format": [
+            "// %B",
+            "struct end_com_%n_%d %t;",
+          ]
+        },
+        "",
+        "#endif"
+      ]
+    },
+
+    {
+      "name": "end_coms.ref.c",
+      "format": [
+        "#include \"end_coms.ref.h\"",
+        "",
+        {
+          "tag": "end_com_cleanup",
+          "format": [
+            "// %B",
+            "void",
+            "end_com_%n_%d_cleanup(struct end_com_%n_%d* x) {%t}"
+          ]
+        }
+      ]
+    }
+  ]
+}

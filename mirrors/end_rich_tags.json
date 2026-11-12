@@ -1,0 +1,66 @@
+{
+  "id": "end_rich_tags",
+  "files": [
+    {
+      "name": "end_rich_tags.ref.h",
+      "format": [
+        "#ifndef ENDIAN_BASE_REFLECTIONS_END_RICH_TAGS_H_",
+        "#define ENDIAN_BASE_REFLECTIONS_END_RICH_TAGS_H_",
+        "",
+        "__PREPROC__",
+        "",
+        {
+          "tag": "end_rich_tag",
+          "format": [
+            "// %B",
+            "struct end_rich_tag_%n_%d %t;",
+          ]
+        },
+        "",
+        "struct end_rich_tags {",
+        {
+          "tag": "end_rich_tag",
+          "format": [
+            "  struct end_rich_tag_%n_%d %n_%d;  // %B"
+          ]
+        },
+        "};",
+        "",
+        "#endif"
+      ]
+    },
+
+
+
+
+
+
+
+
+    {
+      "name": "end_rich_tags.ref.c",
+      "format": [
+        "#include \"end_rich_tags.ref.h\"",
+        "",
+        {
+          "tag": "end_rich_tag_cleanup",
+          "format": [
+            "// %B",
+            "void",
+            "end_rich_tags_%n_%d_cleanup(struct end_rich_tags_%n_%d* x) {%t}",
+            ""
+          ]
+        },
+        "void",
+        "end_rich_tags_cleanup(struct end_rich_tags* rich_tags) {",
+        {
+          "tag": "end_rich_tag_cleanup",
+          "format": [
+            "  end_rich_tags_%n_%d_cleanup(&rich_tags->%n_%d);  // %B"
+          ]
+        },
+        "}"
+      ]
+    }
+  ]
+}

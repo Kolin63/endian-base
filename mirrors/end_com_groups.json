@@ -1,0 +1,45 @@
+{
+  "id": "end_com_groups",
+  "files": [
+    {
+      "name": "end_com_groups.ref.h",
+      "format": [
+        "#ifndef ENDIAN_BASE_REFLECTIONS_END_COM_GROUPS_H_",
+        "#define ENDIAN_BASE_REFLECTIONS_END_COM_GROUPS_H_",
+        "",
+        "#include \"ref/end_coms.ref.h\"",
+        "",
+        "__PREPROC__",
+        "",
+        {
+          "tag": "end_com_group",
+          "format": [
+            "// %B",
+            "struct end_com_group_%n_%d {",
+            "%{  struct end_com_%l %l;  // %B%}",
+            "};",
+          ]
+        },
+        "",
+        "#endif"
+      ]
+    },
+
+    {
+      "name": "end_com_groups.ref.c",
+      "format": [
+        "#include \"end_com_groups.ref.h\"",
+        "",
+        {
+          "tag": "end_com_group",
+          "format": [
+            "void",
+            "end_com_group_%n_%d_cleanup(struct end_com_group_%n_%d* coms) {",
+            "%{  end_com_%l_cleanup(&coms->%l);  // %B%}",
+            "}"
+          ]
+        }
+      ]
+    }
+  ]
+}

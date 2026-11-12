@@ -1,10 +1,10 @@
 #ifndef ENDIAN_BASE_POS_H_
 #define ENDIAN_BASE_POS_H_
 
-struct end_pos {
-  int x;
-  int y;
-};
+#include "base/end_coms.h"
+
+struct end_com_endian_pos;
+#define end_pos end_com_endian_pos
 
 #define END_POS_HR_BUF_LEN 32
 

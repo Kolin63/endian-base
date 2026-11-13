@@ -30,13 +30,19 @@
       "format": [
         "#include \"end_com_groups.ref.h\"",
         "",
+        "// forward declarations",
+        {
+          "tag": "end_com_group",
+          "format": [
+            "%{void end_com_%l_cleanup(struct end_com_%l* x);  // %B%}"
+          ]
+        },
         {
           "tag": "end_com_group",
           "format": [
             "void",
             "end_com_group_%n_%d_cleanup(struct end_com_group_%n_%d* coms) {",
-            "%{  end_com_%l_cleanup(&coms->%l);  // %B%}",
-            "}"
+            "%{  end_com_%l_cleanup(&coms->%l);  // %B%}", "}"
           ]
         }
       ]

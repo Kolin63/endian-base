@@ -74,7 +74,9 @@
       .embeds = &(struct discord_embeds){
         .size = sizeof(embeds) / sizeof *embeds,
         .array = embeds,
-      }}};
+      },
+    },
+  };
 
   discord_create_interaction_response(client, event->id, event->token, &params, NULL);
 

@@ -18,6 +18,9 @@
             "struct end_com_group_%n_%d {",
             "%{  struct end_com_%l %l;  // %B%}",
             "};",
+
+            "void end_com_group_%n_%d_new(struct end_com_group_%n_%d* coms);",
+            "void end_com_group_%n_%d_cleanup(struct end_com_group_%n_%d* coms);",
           ]
         },
         "",
@@ -34,7 +37,16 @@
         {
           "tag": "end_com_group",
           "format": [
+            "%{void end_com_%l_new(struct end_com_%l* x);  // %B%}",
             "%{void end_com_%l_cleanup(struct end_com_%l* x);  // %B%}"
+          ]
+        },
+        {
+          "tag": "end_com_group",
+          "format": [
+            "void",
+            "end_com_group_%n_%d_new(struct end_com_group_%n_%d* coms) {",
+            "%{  end_com_%l_new(&coms->%l);  // %B%}", "}"
           ]
         },
         {

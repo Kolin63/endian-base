@@ -95,8 +95,10 @@ end_player_load(struct end_player* elem) {
 
   char* json = NULL;
   if (save_read("endian", "players", uuid, "json", &json) != 0) {
-    log_error("Could not load player %s (%s)", elem->user->username, uuid);
     free(json);
+    log_info("Creating new player save for %s", uuid);
+    elem->coms = (struct end_com_group_endian_player){};
+    end_com_group_endian_player_new(&elem->coms);
     return;
   }
 

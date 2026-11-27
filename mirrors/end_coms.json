@@ -27,6 +27,14 @@
         "#include \"end_coms.ref.h\"",
         "",
         {
+          "tag": "end_com_new",
+          "format": [
+            "// %B",
+            "void",
+            "end_com_%n_%d_new(struct end_com_%n_%d* x) {%t}"
+          ]
+        },
+        {
           "tag": "end_com_cleanup",
           "format": [
             "// %B",

@@ -7,7 +7,6 @@
 #include <endapi/user.h>
 #include <jsmn_iterator.h>
 #include <log.h>
-#include <pthread.h>
 #include <registry.h>
 #include <stdlib.h>
 #include <string.h>
@@ -16,8 +15,6 @@
 #include "str_cat_arr.h"
 
 static struct registry reg;
-
-static pthread_rwlock_t lock = PTHREAD_RWLOCK_INITIALIZER;
 
 void
 end_player_reg_init() {
@@ -57,19 +54,15 @@ end_player_init(unsigned long uuid) {
   struct end_player* player = malloc(sizeof(struct end_player));
   player->user = disc;
 
-  pthread_rwlock_wrlock(&lock);
-
   if (registry_add(&reg, &player) == NULL) {
     log_error("Could not initialize player %zi", uuid);
     free(player);
-    pthread_rwlock_unlock(&lock);
     return NULL;
   }
 
   end_player_load(player);
 
   log_info("Initializing player %s (%zi)", player->user->username, uuid);
-  pthread_rwlock_unlock(&lock);
   return player;
 }
 
@@ -78,13 +71,10 @@ end_player_get(unsigned long uuid) {
   struct user* key_user = &(struct user){.uuid = uuid};
   struct end_player* key = &(struct end_player){.user = key_user};
 
-  pthread_rwlock_rdlock(&lock);
   struct end_player** ret_ptr = registry_ktov(&reg, &key);
   if (ret_ptr == NULL) {
-    pthread_rwlock_unlock(&lock);
     return end_player_init(uuid);
   }
-  pthread_rwlock_unlock(&lock);
   return *ret_ptr;
 }
 

@@ -86,6 +86,7 @@
   // Set of permissions represented as a bit set
   // discord.dev -> select app -> Overview -> Bot -> Bot Permissions
   .default_member_permissions = 123,
+  .owner_only = false,
 }
 #mir_tag_end
 

@@ -13,6 +13,7 @@
   .name = "save",
   .description = "Save all data",
   .default_member_permissions = 8,
+  .owner_only = true,
 }
 #mir_tag_end
 

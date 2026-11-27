@@ -94,9 +94,18 @@
 #mir_tag_start command_cb
 #mir_tag_data <<SET_ID>>
 {
+  unsigned long uuid = event->member->user->id;
+
+  GET_COMMAND_OPTIONS(event) {
+    GET_COMMAND_OPTION("player") {
+      uuid = string_to_uuid(value);
+    }
+  }
+
   struct discord_interaction_response params = {
     .type = DISCORD_INTERACTION_CHANNEL_MESSAGE_WITH_SOURCE,
-    .data = &(struct discord_interaction_callback_data){.content = "hello, world!"}};
+    .data = &(struct discord_interaction_callback_data){.content = "hello, world!"},
+  };
 
   discord_create_interaction_response(client, event->id, event->token, &params, NULL);
 }

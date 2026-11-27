@@ -9,8 +9,8 @@ end_pos_hr(char buf[END_POS_HR_BUF_LEN], const struct end_pos* pos) {
   char x[STRINT_32];
   char y[STRINT_32];
 
-  i32_to_str(x, pos->x, NULL);
-  i32_to_str(y, pos->y, NULL);
+  i32_to_str(x, pos->x);
+  i32_to_str(y, pos->y);
 
   strcpy(buf, "(");
   strcat(buf, x);

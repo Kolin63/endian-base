@@ -6,7 +6,7 @@
 // function_save
 // function_cleanup
 #mir_tag_start function_init
-#mir_tag_data << dont forget to set function name in tag data>>
+#mir_tag_data <<SET_ID>>
 
 printf("hello, world!");
 

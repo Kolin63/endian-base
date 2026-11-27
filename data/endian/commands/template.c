@@ -4,7 +4,7 @@
 #mir_tag_end
 
 #mir_tag_start command
-#mir_tag_data << dont forget to set command id in tag data>>
+#mir_tag_data <<SET_ID>>
 (struct command){
   // DISCORD_APPLICATION_CHAT_INPUT
   // DISCORD_APPLICATION_USER
@@ -91,7 +91,7 @@
 
 // void (struct discord* client, const struct discord_interaction* event)
 #mir_tag_start command_cb
-#mir_tag_data << dont forget to set command id in tag data>>
+#mir_tag_data <<SET_ID>>
 {
   struct discord_interaction_response params = {
     .type = DISCORD_INTERACTION_CHANNEL_MESSAGE_WITH_SOURCE,

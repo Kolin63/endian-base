@@ -1,5 +1,5 @@
 #mir_tag_start end_rich_tag
-#mir_tag_data << dont forget to set id in tag data>>
+#mir_tag_data <<SET_ID>>
 {
   int x;
   int y;

@@ -1,5 +1,5 @@
 #mir_tag_start end_poi_type
-#mir_tag_data << dont forget to set id in tag data>>
+#mir_tag_data <<SET_ID>>
 {
   .name = "Foo",
 }

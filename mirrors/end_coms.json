@@ -10,6 +10,7 @@
         "__PREPROC__",
         "",
         "enum end_com_id {",
+        "  END_COM_UNKNOWN_,",
         {
           "tag": "end_com",
           "format": [

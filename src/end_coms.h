@@ -18,6 +18,7 @@ enum end_com_id;
 // functions for each com group:
 // void end_com_group_%n_%d_new(struct end_com_group_%n_%d* coms)
 // void end_com_group_%n_%d_cleanup(struct end_com_group_%n_%d* coms)
+// void* end_com_group_%n_%d_get_com(struct end_com_group_%n_%d* coms, enum end_com_id com_id);
 
 #include "ref/end_coms.ref.h"
 #include "ref/end_com_groups.ref.h"

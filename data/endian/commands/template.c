@@ -94,7 +94,7 @@
 #mir_tag_start command_cb
 #mir_tag_data <<SET_ID>>
 {
-  unsigned long uuid = event->member->user->id;
+  unsigned long uuid = command_event_get_uuid(event);
 
   GET_COMMAND_OPTIONS(event) {
     GET_COMMAND_OPTION("player") {

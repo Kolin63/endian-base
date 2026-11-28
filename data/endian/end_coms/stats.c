@@ -1,5 +1,5 @@
 #mir_tag_start PREPROC
-#include "time.h"
+#include <time.h>
 #mir_tag_end
 
 #mir_tag_start end_com

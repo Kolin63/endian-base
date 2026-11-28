@@ -7,6 +7,10 @@
 // void end_com_%n_%d_new(struct end_com_%n_%d* x)
 // void end_com_%n_%d_cleanup(struct end_com_%n_%d* x)
 
+// enum value defined for each com:
+// END_COM_%N_%D
+enum end_com_id;
+
 // structs defined for each com group:
 //   struct end_com_group_%n_%d %n_%d {%t};
 // struct has members:

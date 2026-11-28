@@ -9,6 +9,15 @@
         "",
         "__PREPROC__",
         "",
+        "enum end_com_id {",
+        {
+          "tag": "end_com",
+          "format": [
+            "  END_COM_%N_%D,"
+          ]
+        },
+        "};",
+        "",
         {
           "tag": "end_com",
           "format": [

@@ -11,7 +11,7 @@
   // DISCORD_APPLICATION_MESSAGE
   .type = DISCORD_APPLICATION_CHAT_INPUT,
 
-  .name = "1-32 characters",
+  .name = "<<SET_ID>>",
 
   .description = "Description for CHAT_INPUT commands, 1-100 characters. Empty string for USER and MESSAGE commands",
 
@@ -104,7 +104,9 @@
 
   struct discord_interaction_response params = {
     .type = DISCORD_INTERACTION_CHANNEL_MESSAGE_WITH_SOURCE,
-    .data = &(struct discord_interaction_callback_data){.content = "hello, world!"},
+    .data = &(struct discord_interaction_callback_data){
+      .content = "hello, world!",
+    },
   };
 
   discord_create_interaction_response(client, event->id, event->token, &params, NULL);

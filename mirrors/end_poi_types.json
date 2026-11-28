@@ -4,31 +4,20 @@
     {
       "name": "end_poi_types.ref.h",
       "format": [
-        "#ifndef ENDIAN_BASE_REFLECTIONS_END_POI_TYPES_H_",
-        "#define ENDIAN_BASE_REFLECTIONS_END_POI_TYPES_H_",
-        "",
-        "#include \"base/end_poi_type.h\"",
+        "#ifndef ENDIAN_BASE_REFLECTIONS_END_POIS_H_",
+        "#define ENDIAN_BASE_REFLECTIONS_END_POIS_H_",
         "",
         "__PREPROC__",
         "",
         "enum end_poi_type_id {",
-        "  END_POI_TYPE_UNKNOWN_,",
+        "  END_POI_UNKNOWN_,",
         {
           "tag": "end_poi_type",
           "format": [
-            "  END_POI_TYPE_%N_%D,  // %B"
+            "  END_POI_%N_%D,  // %B"
           ]
         },
-        "};",
-        "",
-        "static struct end_poi_type end_poi_types[] = {",
-        {
-          "tag": "end_poi_type",
-          "format": [
-            "// %B",
-            "%t,"
-          ]
-        },
+        "  END_POI_MAX_,",
         "};",
         "",
         "#endif"
@@ -47,18 +36,97 @@
       "format": [
         "#include \"end_poi_types.ref.h\"",
         "",
-        "enum",
-        "end_poi_type_id end_poi_type_id_get(const char* id_str) {",
+        "#include <stdlib.h>",
+        "#include <stddef.h>",
+        "#include <string.h>",
+        "",
+        "#include <log.h>",
+        "",
+        "#include \"base/end_coms.h\"",
+        "#include \"base/end_poi.h\"",
+        "",
+        "enum end_poi_type_id",
+        "end_poi_type_id_get(const char* id_str) {",
         {
           "tag": "end_poi_type",
           "format": [
             "%Aid_str",
             "%A%n_%d",
-            "%Areturn END_POI_TYPE_%N_%D;",
-            "%Areturn END_POI_TYPE_UNKNOWN_;",
+            "%Areturn END_POI_%N_%D;",
+            "%Areturn END_POI_UNKNOWN_;",
             "%A"
           ]
         },
+        "}",
+        "",
+        "void*",
+        "end_poi_coms_init(enum end_poi_type_id type) {",
+        "  size_t size = 0;",
+        "  switch (type) {",
+        {
+          "tag": "end_poi_type",
+          "format": [
+            "  case END_POI_%N_%D: size = sizeof(struct end_com_group_%n_%d); break;",
+          ]
+        },
+        "  default:",
+        "    log_error(\"Unknown poi type %%i\", type);",
+        "    return NULL;",
+        "  }",
+        "  ",
+        "  if (size == 0) {",
+        "    log_error(\"Could not init poi coms (type %%i)\", type);",
+        "    return NULL;",
+        "  }",
+        "  ",
+        "  void* ret = malloc(size);",
+        "  memset(ret, 0, size);",
+        "  return ret;",
+        "}",
+        "",
+        "void",
+        "end_poi_coms_cleanup(enum end_poi_type_id type, void* coms) {",
+        "  switch (type) {",
+        {
+          "tag": "end_poi_type",
+          "format": [
+            "  case END_POI_%N_%D:",
+            "    end_com_group_%n_%d_cleanup(coms);",
+            "    break;"
+          ]
+        },
+        "  default:",
+        "    log_error(\"Unknown poi type %%i\", type);",
+        "    return;",
+        "  }",
+        "}",
+        "",
+        "void*",
+        "end_poi_get_com(struct end_poi* poi, enum end_com_id com_id) {",
+        "  switch (poi->type) {",
+        {
+          "tag": "end_poi_type",
+          "format": [
+            "  case END_POI_%N_%D: return end_com_group_%n_%d_get_com(poi->coms, com_id);"
+          ]
+        },
+        "  default:",
+        "    log_error(\"Unknown poi %%i\", poi->type);",
+        "    return NULL;",
+        "  }",
+        "}",
+        "",
+        "const char*",
+        "end_poi_type_to_str(enum end_poi_type_id type) {",
+        "  switch (type) {",
+        {
+          "tag": "end_poi_type",
+          "format": [
+            "  case END_POI_%N_%D: return \"%n_%d\";",
+          ]
+        },
+        "  default: return \"???\";",
+        "  }",
         "}"
       ]
     }

@@ -15,10 +15,11 @@
 #include "str_cat_arr.h"
 
 static struct registry reg;
+typedef struct end_player* end_player_ptr;  // used for registry
 
 void
 end_player_reg_init() {
-  registry_init(&reg, sizeof(struct end_player*), (void*)end_player_cmp, (void*)end_player_cleanup);
+  registry_init(&reg, sizeof(end_player_ptr), (void*)end_player_cmp, (void*)end_player_cleanup);
 }
 
 void
@@ -27,14 +28,14 @@ end_player_reg_cleanup() {
 }
 
 int
-end_player_cmp(struct end_player* const* a, struct end_player* const* b) {
+end_player_cmp(const end_player_ptr* a, const end_player_ptr* b) {
   const struct end_player* x = *a;
   const struct end_player* y = *b;
   return user_cmp(&(x->user), &(y->user));
 }
 
 void
-end_player_cleanup(struct end_player** elem) {
+end_player_cleanup(end_player_ptr* elem) {
   struct end_player* x = *elem;
   free(x);
 }
@@ -71,7 +72,7 @@ end_player_get(unsigned long uuid) {
   struct user* key_user = &(struct user){.uuid = uuid};
   struct end_player* key = &(struct end_player){.user = key_user};
 
-  struct end_player** ret_ptr = registry_ktov(&reg, &key);
+  end_player_ptr* ret_ptr = registry_ktov(&reg, &key);
   if (ret_ptr == NULL) {
     return end_player_init(uuid);
   }
@@ -125,7 +126,7 @@ end_player_save(const struct end_player* elem) {
 void
 end_player_save_all() {
   for (int i = 0; i < reg.length; i++) {
-    const struct end_player** elem = registry_itov(&reg, i);
+    const end_player_ptr* elem = registry_itov(&reg, i);
     end_player_save(*elem);
   }
 }
